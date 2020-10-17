@@ -2877,6 +2877,9 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 		mesh->mesh = array_mesh;
 
 		mesh->blend_weights.resize(array_mesh->get_blend_shape_count());
+		for (int32_t weight_i = 0; weight_i < mesh->blend_weights.size(); weight_i++) {
+			mesh->blend_weights.write[weight_i] = 0.0f;
+		}
 
 		if (d.has("weights")) {
 			const Array &weights = d["weights"];
