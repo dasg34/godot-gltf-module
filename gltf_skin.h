@@ -1,7 +1,39 @@
-#pragma once
+/*************************************************************************/
+/*  gltf_skin.h                                                          */
+/*************************************************************************/
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
+/*************************************************************************/
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
+#ifndef GLTF_SKIN_H
+#define GLTF_SKIN_H
+
 #include "core/resource.h"
+#include "core/variant/variant_conversion.h"
 #include "gltf_document.h"
-#include "godot_conversion_operators.h"
 
 class GLTFSkin : public Resource {
 	GDCLASS(GLTFSkin, Resource);
@@ -63,10 +95,10 @@ public:
 
 
 	Array get_inverse_binds() {
-		return godot_conv::to_array(this->inverse_binds);
+		return VariantConversion::to_array(this->inverse_binds);
 	}
 	void set_inverse_binds(Array p_inverse_binds) {
-		godot_conv::set_from_array(this->inverse_binds, p_inverse_binds);
+		VariantConversion::set_from_array(this->inverse_binds, p_inverse_binds);
 	}
 
 
@@ -103,10 +135,10 @@ public:
 
 
 	Dictionary get_joint_i_to_bone_i() {
-		return godot_conv::to_dict(this->joint_i_to_bone_i);
+		return VariantConversion::to_dict(this->joint_i_to_bone_i);
 	}
 	void set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
-		godot_conv::set_from_dict(this->joint_i_to_bone_i, p_joint_i_to_bone_i);
+		VariantConversion::set_from_dict(this->joint_i_to_bone_i, p_joint_i_to_bone_i);
 	}
 
 
@@ -138,4 +170,4 @@ public:
 	GLTFSkin() :
 			skin_root(-1), skeleton(-1) {}
 };
-
+#endif

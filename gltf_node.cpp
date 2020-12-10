@@ -1,16 +1,45 @@
+/*************************************************************************/
+/*  gltf_node.cpp                                                        */
+/*************************************************************************/
+/*                       This file is part of:                           */
+/*                           GODOT ENGINE                                */
+/*                      https://godotengine.org                          */
+/*************************************************************************/
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/*                                                                       */
+/* Permission is hereby granted, free of charge, to any person obtaining */
+/* a copy of this software and associated documentation files (the       */
+/* "Software"), to deal in the Software without restriction, including   */
+/* without limitation the rights to use, copy, modify, merge, publish,   */
+/* distribute, sublicense, and/or sell copies of the Software, and to    */
+/* permit persons to whom the Software is furnished to do so, subject to */
+/* the following conditions:                                             */
+/*                                                                       */
+/* The above copyright notice and this permission notice shall be        */
+/* included in all copies or substantial portions of the Software.       */
+/*                                                                       */
+/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,       */
+/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF    */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.*/
+/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  */
+/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  */
+/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
+/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
+/*************************************************************************/
+
 #include "gltf_node.h"
 
 
 
 
 void GLTFNode::_bind_methods() {
-
-	ClassDB::bind_method(D_METHOD("get_parent"),  &GLTFNode::get_parent);
-	ClassDB::bind_method(D_METHOD("set_parent", "parent"),  &GLTFNode::set_parent);
-	ClassDB::bind_method(D_METHOD("get_height"),  &GLTFNode::get_height);
-	ClassDB::bind_method(D_METHOD("set_height", "height"),  &GLTFNode::set_height);
-	ClassDB::bind_method(D_METHOD("get_xform"),  &GLTFNode::get_xform);
-	ClassDB::bind_method(D_METHOD("set_xform", "xform"),  &GLTFNode::set_xform);
+	ClassDB::bind_method(D_METHOD("get_parent"), &GLTFNode::get_parent);
+	ClassDB::bind_method(D_METHOD("set_parent", "parent"), &GLTFNode::set_parent);
+	ClassDB::bind_method(D_METHOD("get_height"), &GLTFNode::get_height);
+	ClassDB::bind_method(D_METHOD("set_height", "height"), &GLTFNode::set_height);
+	ClassDB::bind_method(D_METHOD("get_xform"), &GLTFNode::get_xform);
+	ClassDB::bind_method(D_METHOD("set_xform", "xform"), &GLTFNode::set_xform);
 	//ClassDB::bind_method(D_METHOD("get_name"),  &GLTFNode::get_name);
 	//ClassDB::bind_method(D_METHOD("set_name", "name"),  &GLTFNode::set_name);
 	ClassDB::bind_method(D_METHOD("get_mesh"),  &GLTFNode::get_mesh);
@@ -39,7 +68,6 @@ void GLTFNode::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "parent"), "set_parent", "get_parent"); // GLTFNodeIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "height"), "set_height", "get_height"); // int
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "xform"), "set_xform", "get_xform"); // Transform
-	//ADD_PROPERTY(PropertyInfo(Variant::STRING, "name"), "set_name", "get_name"); // String
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mesh"), "set_mesh", "get_mesh"); // GLTFMeshIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "camera"), "set_camera", "get_camera"); // GLTFCameraIndex
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skin"), "set_skin", "get_skin"); // GLTFSkinIndex
