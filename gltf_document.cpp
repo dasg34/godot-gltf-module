@@ -6419,18 +6419,22 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 				}
 			}
 		} else if (String(orig_track_path).find(":") == -1) {
-			const Node *node = ap->get_parent()->get_node_or_null(orig_track_path);
-			for (Map<GLTFNodeIndex, Node *>::Element *scene_node_i = state->scene_nodes.front(); scene_node_i; scene_node_i = scene_node_i->next()) {
-				if (scene_node_i->get() == node) {
-					GLTFNodeIndex node_index = scene_node_i->key();
-					Map<int, GLTFAnimation::Track>::Element *node_track_i = gltf_animation->get_tracks().find(node_index);
-					GLTFAnimation::Track track;
-					if (node_track_i) {
-						track = node_track_i->get();
+			ERR_CONTINUE(!ap->get_parent());
+			for (int32_t node_i = 0; node_i < ap->get_parent()->get_child_count(); node_i++) {
+				const Node *child = ap->get_parent()->get_child(node_i);
+				const Node *node = child->get_node_or_null(orig_track_path);
+				for (Map<GLTFNodeIndex, Node *>::Element *scene_node_i = state->scene_nodes.front(); scene_node_i; scene_node_i = scene_node_i->next()) {
+					if (scene_node_i->get() == node) {
+						GLTFNodeIndex node_index = scene_node_i->key();
+						Map<int, GLTFAnimation::Track>::Element *node_track_i = gltf_animation->get_tracks().find(node_index);
+						GLTFAnimation::Track track;
+						if (node_track_i) {
+							track = node_track_i->get();
+						}
+						track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
+						gltf_animation->get_tracks().insert(node_index, track);
+						break;
 					}
-					track = _convert_animation_track(state, track, animation, Transform(), track_i, node_index);
-					gltf_animation->get_tracks().insert(node_index, track);
-					break;
 				}
 			}
 		}
