@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,8 +29,6 @@
 /*************************************************************************/
 
 #include "gltf_spec_gloss.h"
-#include "gltf_spec_gloss.h"
-
 
 void GLTFSpecGloss::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_diffuse_img"), &GLTFSpecGloss::get_diffuse_img);
@@ -49,5 +47,44 @@ void GLTFSpecGloss::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "gloss_factor"), "set_gloss_factor", "get_gloss_factor"); // float
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "specular_factor"), "set_specular_factor", "get_specular_factor"); // Color
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spec_gloss_img"), "set_spec_gloss_img", "get_spec_gloss_img"); // Ref<Image>
+}
 
+Ref<Image> GLTFSpecGloss::get_diffuse_img() {
+	return diffuse_img;
+}
+
+void GLTFSpecGloss::set_diffuse_img(Ref<Image> p_diffuse_img) {
+	diffuse_img = p_diffuse_img;
+}
+
+Color GLTFSpecGloss::get_diffuse_factor() {
+	return diffuse_factor;
+}
+
+void GLTFSpecGloss::set_diffuse_factor(Color p_diffuse_factor) {
+	diffuse_factor = p_diffuse_factor;
+}
+
+float GLTFSpecGloss::get_gloss_factor() {
+	return gloss_factor;
+}
+
+void GLTFSpecGloss::set_gloss_factor(float p_gloss_factor) {
+	gloss_factor = p_gloss_factor;
+}
+
+Color GLTFSpecGloss::get_specular_factor() {
+	return specular_factor;
+}
+
+void GLTFSpecGloss::set_specular_factor(Color p_specular_factor) {
+	specular_factor = p_specular_factor;
+}
+
+Ref<Image> GLTFSpecGloss::get_spec_gloss_img() {
+	return spec_gloss_img;
+}
+
+void GLTFSpecGloss::set_spec_gloss_img(Ref<Image> p_spec_gloss_img) {
+	spec_gloss_img = p_spec_gloss_img;
 }

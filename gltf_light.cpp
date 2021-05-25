@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,10 +29,6 @@
 /*************************************************************************/
 
 #include "gltf_light.h"
-#include "gltf_light.h"
-
-
-
 
 void GLTFLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_color"), &GLTFLight::get_color);
@@ -54,5 +50,52 @@ void GLTFLight::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range"), "set_range", "get_range"); // float
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "inner_cone_angle"), "set_inner_cone_angle", "get_inner_cone_angle"); // float
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "outer_cone_angle"), "set_outer_cone_angle", "get_outer_cone_angle"); // float
+}
 
+Color GLTFLight::get_color() {
+	return color;
+}
+
+void GLTFLight::set_color(Color p_color) {
+	color = p_color;
+}
+
+float GLTFLight::get_intensity() {
+	return intensity;
+}
+
+void GLTFLight::set_intensity(float p_intensity) {
+	intensity = p_intensity;
+}
+
+String GLTFLight::get_type() {
+	return type;
+}
+
+void GLTFLight::set_type(String p_type) {
+	type = p_type;
+}
+
+float GLTFLight::get_range() {
+	return range;
+}
+
+void GLTFLight::set_range(float p_range) {
+	range = p_range;
+}
+
+float GLTFLight::get_inner_cone_angle() {
+	return inner_cone_angle;
+}
+
+void GLTFLight::set_inner_cone_angle(float p_inner_cone_angle) {
+	inner_cone_angle = p_inner_cone_angle;
+}
+
+float GLTFLight::get_outer_cone_angle() {
+	return outer_cone_angle;
+}
+
+void GLTFLight::set_outer_cone_angle(float p_outer_cone_angle) {
+	outer_cone_angle = p_outer_cone_angle;
 }

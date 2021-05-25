@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,16 +30,28 @@
 
 #include "gltf_mesh.h"
 
-
-
-
 void GLTFMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_mesh"), &GLTFMesh::get_mesh);
 	ClassDB::bind_method(D_METHOD("set_mesh", "mesh"), &GLTFMesh::set_mesh);
 	ClassDB::bind_method(D_METHOD("get_blend_weights"), &GLTFMesh::get_blend_weights);
 	ClassDB::bind_method(D_METHOD("set_blend_weights", "blend_weights"), &GLTFMesh::set_blend_weights);
 
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh"), "set_mesh", "get_mesh"); // Ref<Mesh>
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh"), "set_mesh", "get_mesh");
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_REAL_ARRAY, "blend_weights"), "set_blend_weights", "get_blend_weights"); // Vector<float>
+}
 
+Ref<ArrayMesh> GLTFMesh::get_mesh() {
+	return mesh;
+}
+
+void GLTFMesh::set_mesh(Ref<ArrayMesh> p_mesh) {
+	mesh = p_mesh;
+}
+
+Vector<float> GLTFMesh::get_blend_weights() {
+	return blend_weights;
+}
+
+void GLTFMesh::set_blend_weights(Vector<float> p_blend_weights) {
+	blend_weights = p_blend_weights;
 }

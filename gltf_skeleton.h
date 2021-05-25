@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -32,81 +32,70 @@
 #define GLTF_SKELETON_H
 
 #include "core/resource.h"
-#include "core/variant/variant_conversion.h"
 #include "gltf_document.h"
 
 class GLTFSkeleton : public Resource {
 	GDCLASS(GLTFSkeleton, Resource);
+	friend class GLTFDocument;
 
-protected:
-	static void _bind_methods();
-
-public:
+private:
 	// The *synthesized* skeletons joints
-	Vector<GLTFNodeIndex> joints;
+	PoolVector<GLTFNodeIndex> joints;
 
 	// The roots of the skeleton. If there are multiple, each root must have the
 	// same parent (ie roots are siblings)
-	Vector<GLTFNodeIndex> roots;
+	PoolVector<GLTFNodeIndex> roots;
 
 	// The created Skeleton for the scene
-	Skeleton *godot_skeleton;
+	Skeleton *godot_skeleton = nullptr;
 
 	// Set of unique bone names for the skeleton
 	Set<String> unique_names;
 
 	Map<int32_t, GLTFNodeIndex> godot_bone_node;
 
-	Vector<BoneAttachment *> bone_attachments;
+	PoolVector<BoneAttachment *> bone_attachments;
 
+protected:
+	static void _bind_methods();
 
-	Vector<GLTFNodeIndex> get_joints() {
-		return this->joints;
-	}
-	void set_joints(Vector<GLTFNodeIndex> p_joints) {
-		this->joints = p_joints;
-	}
+public:
+	PoolVector<GLTFNodeIndex> get_joints();
+	void set_joints(PoolVector<GLTFNodeIndex> p_joints);
 
+	PoolVector<GLTFNodeIndex> get_roots();
+	void set_roots(PoolVector<GLTFNodeIndex> p_roots);
 
-	Vector<GLTFNodeIndex> get_roots() {
-		return this->roots;
-	}
-	void set_roots(Vector<GLTFNodeIndex> p_roots) {
-		this->roots = p_roots;
-	}
+	Skeleton *get_godot_skeleton();
 
+	// Skeleton *get_godot_skeleton() {
+	// 	return this->godot_skeleton;
+	// }
+	// void set_godot_skeleton(Skeleton p_*godot_skeleton) {
+	// 	this->godot_skeleton = p_godot_skeleton;
+	// }
 
-	Skeleton *get_godot_skeleton() {
-	 	return this->godot_skeleton;
-	}
+	Array get_unique_names();
+	void set_unique_names(Array p_unique_names);
 
+	//Map<int32_t, GLTFNodeIndex> get_godot_bone_node() {
+	//	return this->godot_bone_node;
+	//}
+	//void set_godot_bone_node(Map<int32_t, GLTFNodeIndex> p_godot_bone_node) {
+	//	this->godot_bone_node = p_godot_bone_node;
+	//}
+	Dictionary get_godot_bone_node();
+	void set_godot_bone_node(Dictionary p_indict);
 
-	Array get_unique_names() {
-		return VariantConversion::to_array(this->unique_names);
-	}
-	void set_unique_names(Array p_unique_names) {
-		VariantConversion::set_from_array(this->unique_names, p_unique_names);
-	}
+	//Dictionary get_godot_bone_node() {
+	//	return VariantConversion::to_dict(this->godot_bone_node);
+	//}
+	//void set_godot_bone_node(Dictionary p_indict) {
+	//	VariantConversion::set_from_dict(this->godot_bone_node, p_indict);
+	//}
 
+	BoneAttachment *get_bone_attachment(int idx);
 
-	Dictionary get_godot_bone_node() {
-		return VariantConversion::to_dict(this->godot_bone_node);
-	}
-	void set_godot_bone_node(Dictionary p_indict) {
-		VariantConversion::set_from_dict(this->godot_bone_node, p_indict);
-	}
-
-
-	int get_bone_attachment_count() {
-		return this->bone_attachments.size();
-	}
-	BoneAttachment * get_bone_attachment(int idx) {
-		ERR_FAIL_INDEX_V(idx, this->bone_attachments.size(), nullptr);
-		return this->bone_attachments[idx];
-	}
-
-
-	GLTFSkeleton() :
-			godot_skeleton(nullptr) {}
+	int32_t get_bone_attachment_count();
 };
-#endif
+#endif // GLTF_SKELETON_H

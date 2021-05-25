@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -44,7 +44,7 @@ public:
 		INTERP_LINEAR,
 		INTERP_STEP,
 		INTERP_CATMULLROMSPLINE,
-		INTERP_CUBIC_SPLINE
+		INTERP_CUBIC_SPLINE,
 	};
 
 	template <class T>
@@ -58,18 +58,17 @@ public:
 		Channel<Vector3> translation_track;
 		Channel<Quat> rotation_track;
 		Channel<Vector3> scale_track;
-		Vector<Channel<float> > weight_tracks;
+		Vector<Channel<float>> weight_tracks;
 	};
 
 public:
-	bool get_loop() const { return loop; }
-	void set_loop(bool p_val) { loop = p_val; }
-	Map<int, GLTFAnimation::Track> &get_tracks() { return tracks; }
-	GLTFAnimation() {
-	}
+	bool get_loop() const;
+	void set_loop(bool p_val);
+	Map<int, GLTFAnimation::Track> &get_tracks();
+	GLTFAnimation();
 
 private:
 	bool loop = false;
 	Map<int, Track> tracks;
 };
-#endif
+#endif // GLTF_ANIMATION_H

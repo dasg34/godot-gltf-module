@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,59 +36,33 @@
 
 class GLTFBufferView : public Resource {
 	GDCLASS(GLTFBufferView, Resource);
+	friend class GLTFDocument;
+
+private:
+	GLTFBufferIndex buffer = -1;
+	int byte_offset = 0;
+	int byte_length = 0;
+	int byte_stride = -1;
+	bool indices = false;
 
 protected:
 	static void _bind_methods();
 
 public:
-	GLTFBufferIndex buffer;
-	int byte_offset;
-	int byte_length;
-	int byte_stride;
-	bool indices;
+	GLTFBufferIndex get_buffer();
+	void set_buffer(GLTFBufferIndex p_buffer);
 
+	int get_byte_offset();
+	void set_byte_offset(int p_byte_offset);
 
-	GLTFBufferIndex get_buffer() {
-		return this->buffer;
-	}
-	void set_buffer(GLTFBufferIndex p_buffer) {
-		this->buffer = p_buffer;
-	}
+	int get_byte_length();
+	void set_byte_length(int p_byte_length);
 
+	int get_byte_stride();
+	void set_byte_stride(int p_byte_stride);
 
-	int get_byte_offset() {
-		return this->byte_offset;
-	}
-	void set_byte_offset(int p_byte_offset) {
-		this->byte_offset = p_byte_offset;
-	}
-
-
-	int get_byte_length() {
-		return this->byte_length;
-	}
-	void set_byte_length(int p_byte_length) {
-		this->byte_length = p_byte_length;
-	}
-
-
-	int get_byte_stride() {
-		return this->byte_stride;
-	}
-	void set_byte_stride(int p_byte_stride) {
-		this->byte_stride = p_byte_stride;
-	}
-
-
-	bool get_indices() {
-		return this->indices;
-	}
-	void set_indices(bool p_indices) {
-		this->indices = p_indices;
-	}
+	bool get_indices();
+	void set_indices(bool p_indices);
 	// matrices need to be transformed to this
-
-	GLTFBufferView() :
-			buffer(-1), byte_offset(0), byte_length(0), byte_stride(-1), indices(false) {}
 };
-#endif
+#endif // GLTF_BUFFER_VIEW_H

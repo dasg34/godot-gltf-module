@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -28,7 +28,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "editor_scene_importer_gltf.h"
 #include "core/crypto/crypto_core.h"
 #include "core/io/json.h"
 #include "core/math/disjoint_set.h"
@@ -36,7 +35,7 @@
 #include "core/os/file_access.h"
 #include "core/os/os.h"
 #include "editor/import/resource_importer_scene.h"
-#include "gltf_state.h"
+#include "modules/gltf/gltf_state.h"
 #include "modules/regex/regex.h"
 #include "scene/3d/bone_attachment.h"
 #include "scene/3d/camera.h"
@@ -45,12 +44,12 @@
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/surface_tool.h"
 
+#include "modules/gltf/editor_scene_importer_gltf.h"
 
-#ifndef _3D_DISABLED
-#ifdef TOOLS_ENABLED
 uint32_t EditorSceneImporterGLTF::get_import_flags() const {
-	return IMPORT_SCENE | IMPORT_ANIMATION;
+	return ImportFlags::IMPORT_SCENE | ImportFlags::IMPORT_ANIMATION;
 }
+
 void EditorSceneImporterGLTF::get_extensions(List<String> *r_extensions) const {
 	r_extensions->push_back("gltf");
 	r_extensions->push_back("glb");
@@ -71,9 +70,6 @@ Ref<Animation> EditorSceneImporterGLTF::import_animation(const String &p_path,
 	return Ref<Animation>();
 }
 
-EditorSceneImporterGLTF::EditorSceneImporterGLTF() {}
-
-#endif
 void PackedSceneGLTF::_bind_methods() {
 	ClassDB::bind_method(
 			D_METHOD("export_gltf", "node", "path", "flags", "bake_fps"),
@@ -99,25 +95,24 @@ Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
 	}
 	r_state->use_named_skin_binds =
 			p_flags & EditorSceneImporter::IMPORT_USE_NAMED_SKIN_BINDS;
+	r_state->use_legacy_names =
+			p_flags & EditorSceneImporter::IMPORT_USE_LEGACY_NAMES;
 
 	Ref<GLTFDocument> gltf_document;
 	gltf_document.instance();
-	if (p_path.empty()) {
-		*r_err = Error::ERR_INVALID_PARAMETER;
-		ERR_FAIL_COND_V(r_state->nodes.empty(), NULL);
-		*r_err = Error::OK;
-	} else {
-		Error err = gltf_document->parse(r_state, p_path);
-		*r_err = err;
-		ERR_FAIL_COND_V(err != Error::OK, NULL);
-	}
+	Error err = gltf_document->parse(r_state, p_path);
+	*r_err = err;
+	ERR_FAIL_COND_V(err != Error::OK, nullptr);
 
 	Spatial *root = memnew(Spatial);
-
-	for (int i = 0; i < r_state->root_nodes.size(); ++i) {
-		gltf_document->_generate_scene_node(r_state, root, root, r_state->root_nodes[i]);
+	if (r_state->use_legacy_names) {
+		root->set_name(gltf_document->_legacy_validate_node_name(r_state->scene_name));
+	} else {
+		root->set_name(r_state->scene_name);
 	}
-
+	for (int32_t root_i = 0; root_i < r_state->root_nodes.size(); root_i++) {
+		gltf_document->_generate_scene_node(r_state, root, root, r_state->root_nodes[root_i]);
+	}
 	gltf_document->_process_mesh_instances(r_state, root);
 	if (r_state->animations.size()) {
 		AnimationPlayer *ap = memnew(AnimationPlayer);
@@ -128,7 +123,7 @@ Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
 		}
 	}
 
-	return Object::cast_to<Spatial>(root);
+	return cast_to<Spatial>(root);
 }
 
 void PackedSceneGLTF::pack_gltf(String p_path, int32_t p_flags,
@@ -140,11 +135,6 @@ void PackedSceneGLTF::pack_gltf(String p_path, int32_t p_flags,
 	pack(root);
 }
 
-PackedSceneGLTF::PackedSceneGLTF() {}
-
-#endif //_3D_DISABLED
-
-#ifndef _3D_DISABLED
 void PackedSceneGLTF::save_scene(Node *p_node, const String &p_path,
 		const String &p_src_path, uint32_t p_flags,
 		int p_bake_fps, List<String> *r_missing_deps,
@@ -157,16 +147,7 @@ void PackedSceneGLTF::save_scene(Node *p_node, const String &p_path,
 	gltf_document.instance();
 	Ref<GLTFState> state;
 	state.instance();
-	for (int node_i = 0; node_i < p_node->get_child_count(); node_i++) {
-		const GLTFNodeIndex scene_root = state->nodes.size();
-		state->root_nodes.push_back(scene_root);
-		gltf_document->_convert_scene_node(state, p_node->get_child(node_i), p_node, -1, scene_root);
-	}
-	if (!state->buffers.size()) {
-		state->buffers.push_back(Vector<uint8_t>());
-	}
-	gltf_document->_convert_mesh_instances(state);
-	err = gltf_document->serialize(state, p_path);
+	err = gltf_document->serialize(state, p_node, p_path);
 	if (r_err) {
 		*r_err = err;
 	}
@@ -204,5 +185,3 @@ Error PackedSceneGLTF::export_gltf(Node *p_root, String p_path,
 	}
 	return OK;
 }
-
-#endif

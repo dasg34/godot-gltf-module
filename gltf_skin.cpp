@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,9 +29,6 @@
 /*************************************************************************/
 
 #include "gltf_skin.h"
-
-
-
 
 void GLTFSkin::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_skin_root"), &GLTFSkin::get_skin_root);
@@ -65,5 +62,94 @@ void GLTFSkin::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_bone_i", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_bone_i", "get_joint_i_to_bone_i"); // Map<int,
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "joint_i_to_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL), "set_joint_i_to_name", "get_joint_i_to_name"); // Map<int,
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "godot_skin"), "set_godot_skin", "get_godot_skin"); // Ref<Skin>
+}
 
+GLTFNodeIndex GLTFSkin::get_skin_root() {
+	return skin_root;
+}
+
+void GLTFSkin::set_skin_root(GLTFNodeIndex p_skin_root) {
+	skin_root = p_skin_root;
+}
+
+Vector<GLTFNodeIndex> GLTFSkin::get_joints_original() {
+	return joints_original;
+}
+
+void GLTFSkin::set_joints_original(Vector<GLTFNodeIndex> p_joints_original) {
+	joints_original = p_joints_original;
+}
+
+Array GLTFSkin::get_inverse_binds() {
+	return GLTFDocument::to_array(inverse_binds);
+}
+
+void GLTFSkin::set_inverse_binds(Array p_inverse_binds) {
+	GLTFDocument::set_from_array(inverse_binds, p_inverse_binds);
+}
+
+Vector<GLTFNodeIndex> GLTFSkin::get_joints() {
+	return joints;
+}
+
+void GLTFSkin::set_joints(Vector<GLTFNodeIndex> p_joints) {
+	joints = p_joints;
+}
+
+Vector<GLTFNodeIndex> GLTFSkin::get_non_joints() {
+	return non_joints;
+}
+
+void GLTFSkin::set_non_joints(Vector<GLTFNodeIndex> p_non_joints) {
+	non_joints = p_non_joints;
+}
+
+Vector<GLTFNodeIndex> GLTFSkin::get_roots() {
+	return roots;
+}
+
+void GLTFSkin::set_roots(Vector<GLTFNodeIndex> p_roots) {
+	roots = p_roots;
+}
+
+int GLTFSkin::get_skeleton() {
+	return skeleton;
+}
+
+void GLTFSkin::set_skeleton(int p_skeleton) {
+	skeleton = p_skeleton;
+}
+
+Dictionary GLTFSkin::get_joint_i_to_bone_i() {
+	return GLTFDocument::to_dict(joint_i_to_bone_i);
+}
+
+void GLTFSkin::set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
+	GLTFDocument::set_from_dict(joint_i_to_bone_i, p_joint_i_to_bone_i);
+}
+
+Dictionary GLTFSkin::get_joint_i_to_name() {
+	Dictionary ret;
+	Map<int, StringName>::Element *elem = joint_i_to_name.front();
+	while (elem) {
+		ret[elem->key()] = String(elem->value());
+		elem = elem->next();
+	}
+	return ret;
+}
+
+void GLTFSkin::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
+	joint_i_to_name = Map<int, StringName>();
+	Array keys = p_joint_i_to_name.keys();
+	for (int i = 0; i < keys.size(); i++) {
+		joint_i_to_name[keys[i]] = p_joint_i_to_name[keys[i]];
+	}
+}
+
+Ref<Skin> GLTFSkin::get_godot_skin() {
+	return godot_skin;
+}
+
+void GLTFSkin::set_godot_skin(Ref<Skin> p_godot_skin) {
+	godot_skin = p_godot_skin;
 }

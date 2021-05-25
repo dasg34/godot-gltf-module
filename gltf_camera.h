@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -35,10 +35,12 @@
 
 class GLTFCamera : public Resource {
 	GDCLASS(GLTFCamera, Resource);
-	bool perspective;
-	float fov_size;
-	float zfar;
-	float znear;
+
+private:
+	bool perspective = true;
+	float fov_size = 75.0;
+	float zfar = 4000.0;
+	float znear = 0.05;
 
 protected:
 	static void _bind_methods();
@@ -52,12 +54,5 @@ public:
 	void set_zfar(float p_val) { zfar = p_val; }
 	float get_znear() const { return znear; }
 	void set_znear(float p_val) { znear = p_val; }
-	GLTFCamera() {
-		set_perspective(true);
-		set_fov_size(65);
-		set_zfar(500);
-		set_znear(0.1);
-	}
 };
-
-#endif
+#endif // GLTF_CAMERA_H

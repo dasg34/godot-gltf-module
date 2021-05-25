@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,28 +30,26 @@
 
 #ifndef EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
 #define EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H
-#include "editor_scene_importer_gltf.h"
-#include "editor/editor_plugin.h"
 
-#ifndef _3D_DISABLED
+#include "editor/editor_plugin.h"
+#include "editor_scene_importer_gltf.h"
+
 class SceneExporterGLTFPlugin : public EditorPlugin {
 	GDCLASS(SceneExporterGLTFPlugin, EditorPlugin);
 
-	Ref<PackedSceneGLTF> convert_gltf2 = nullptr;
+	Ref<PackedSceneGLTF> convert_gltf2;
 	EditorNode *editor = nullptr;
 	EditorFileDialog *file_export_lib = nullptr;
+	void _gltf2_dialog_action(String p_file);
+	void convert_scene_to_gltf2(Variant p_null);
 
 protected:
 	static void _bind_methods();
-	virtual void _notification(int notification);
 
 public:
 	virtual String get_name() const;
 	bool has_main_screen() const;
-	void _gltf2_dialog_action(String p_file);
-	void convert_scene_to_gltf2(Variant p_user_data);
 	SceneExporterGLTFPlugin(class EditorNode *p_node);
 };
 
-#endif
-#endif
+#endif // EDITOR_SCENE_EXPORTER_GLTF_PLUGIN_H

@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -29,10 +29,6 @@
 /*************************************************************************/
 
 #include "gltf_camera.h"
-#include "gltf_camera.h"
-
-
-
 
 void GLTFCamera::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_perspective"), &GLTFCamera::get_perspective);
@@ -48,5 +44,4 @@ void GLTFCamera::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "fov_size"), "set_fov_size", "get_fov_size"); // float
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "zfar"), "set_zfar", "get_zfar"); // float
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "znear"), "set_znear", "get_znear"); // float
-
 }

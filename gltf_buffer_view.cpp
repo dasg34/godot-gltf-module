@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -30,9 +30,6 @@
 
 #include "gltf_buffer_view.h"
 
-
-
-
 void GLTFBufferView::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_buffer"), &GLTFBufferView::get_buffer);
 	ClassDB::bind_method(D_METHOD("set_buffer", "buffer"), &GLTFBufferView::set_buffer);
@@ -50,5 +47,44 @@ void GLTFBufferView::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "byte_length"), "set_byte_length", "get_byte_length"); // int
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "byte_stride"), "set_byte_stride", "get_byte_stride"); // int
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "indices"), "set_indices", "get_indices"); // bool
+}
 
+GLTFBufferIndex GLTFBufferView::get_buffer() {
+	return buffer;
+}
+
+void GLTFBufferView::set_buffer(GLTFBufferIndex p_buffer) {
+	buffer = p_buffer;
+}
+
+int GLTFBufferView::get_byte_offset() {
+	return byte_offset;
+}
+
+void GLTFBufferView::set_byte_offset(int p_byte_offset) {
+	byte_offset = p_byte_offset;
+}
+
+int GLTFBufferView::get_byte_length() {
+	return byte_length;
+}
+
+void GLTFBufferView::set_byte_length(int p_byte_length) {
+	byte_length = p_byte_length;
+}
+
+int GLTFBufferView::get_byte_stride() {
+	return byte_stride;
+}
+
+void GLTFBufferView::set_byte_stride(int p_byte_stride) {
+	byte_stride = p_byte_stride;
+}
+
+bool GLTFBufferView::get_indices() {
+	return indices;
+}
+
+void GLTFBufferView::set_indices(bool p_indices) {
+	indices = p_indices;
 }

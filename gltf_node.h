@@ -5,8 +5,8 @@
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -36,11 +36,10 @@
 
 class GLTFNode : public Resource {
 	GDCLASS(GLTFNode, Resource);
+	friend class GLTFDocument;
+	friend class PackedSceneGLTF;
 
-protected:
-	static void _bind_methods();
-
-public:
+private:
 	// matrices need to be transformed to this
 	GLTFNodeIndex parent = -1;
 	int height = -1;
@@ -54,121 +53,49 @@ public:
 	Quat rotation;
 	Vector3 scale = Vector3(1, 1, 1);
 	Vector<int> children;
-	GLTFNodeIndex fake_joint_parent = -1;
 	GLTFLightIndex light = -1;
 
+protected:
+	static void _bind_methods();
 
-	GLTFNodeIndex get_parent() {
-		return this->parent;
-	}
-	void set_parent(GLTFNodeIndex p_parent) {
-		this->parent = p_parent;
-	}
+public:
+	GLTFNodeIndex get_parent();
+	void set_parent(GLTFNodeIndex p_parent);
 
+	int get_height();
+	void set_height(int p_height);
 
-	int get_height() {
-		return this->height;
-	}
-	void set_height(int p_height) {
-		this->height = p_height;
-	}
+	Transform get_xform();
+	void set_xform(Transform p_xform);
 
+	GLTFMeshIndex get_mesh();
+	void set_mesh(GLTFMeshIndex p_mesh);
 
-	Transform get_xform() {
-		return this->xform;
-	}
-	void set_xform(Transform p_xform) {
-		this->xform = p_xform;
-	}
+	GLTFCameraIndex get_camera();
+	void set_camera(GLTFCameraIndex p_camera);
 
+	GLTFSkinIndex get_skin();
+	void set_skin(GLTFSkinIndex p_skin);
 
-	GLTFMeshIndex get_mesh() {
-		return this->mesh;
-	}
-	void set_mesh(GLTFMeshIndex p_mesh) {
-		this->mesh = p_mesh;
-	}
+	GLTFSkeletonIndex get_skeleton();
+	void set_skeleton(GLTFSkeletonIndex p_skeleton);
 
+	bool get_joint();
+	void set_joint(bool p_joint);
 
-	GLTFCameraIndex get_camera() {
-		return this->camera;
-	}
-	void set_camera(GLTFCameraIndex p_camera) {
-		this->camera = p_camera;
-	}
+	Vector3 get_translation();
+	void set_translation(Vector3 p_translation);
 
+	Quat get_rotation();
+	void set_rotation(Quat p_rotation);
 
-	GLTFSkinIndex get_skin() {
-		return this->skin;
-	}
-	void set_skin(GLTFSkinIndex p_skin) {
-		this->skin = p_skin;
-	}
+	Vector3 get_scale();
+	void set_scale(Vector3 p_scale);
 
+	Vector<int> get_children();
+	void set_children(Vector<int> p_children);
 
-	GLTFSkeletonIndex get_skeleton() {
-		return this->skeleton;
-	}
-	void set_skeleton(GLTFSkeletonIndex p_skeleton) {
-		this->skeleton = p_skeleton;
-	}
-
-
-	bool get_joint() {
-		return this->joint;
-	}
-	void set_joint(bool p_joint) {
-		this->joint = p_joint;
-	}
-
-
-	Vector3 get_translation() {
-		return this->translation;
-	}
-	void set_translation(Vector3 p_translation) {
-		this->translation = p_translation;
-	}
-
-
-	Quat get_rotation() {
-		return this->rotation;
-	}
-	void set_rotation(Quat p_rotation) {
-		this->rotation = p_rotation;
-	}
-
-
-	Vector3 get_scale() {
-		return this->scale;
-	}
-	void set_scale(Vector3 p_scale) {
-		this->scale = p_scale;
-	}
-
-
-	Vector<int> get_children() {
-		return this->children;
-	}
-	void set_children(Vector<int> p_children) {
-		this->children = p_children;
-	}
-
-
-	GLTFNodeIndex get_fake_joint_parent() {
-		return this->fake_joint_parent;
-	}
-	void set_fake_joint_parent(GLTFNodeIndex p_fake_joint_parent) {
-		this->fake_joint_parent = p_fake_joint_parent;
-	}
-
-
-	GLTFLightIndex get_light() {
-		return this->light;
-	}
-	void set_light(GLTFLightIndex p_light) {
-		this->light = p_light;
-	}
-
-	GLTFNode() {}
+	GLTFLightIndex get_light();
+	void set_light(GLTFLightIndex p_light);
 };
-#endif
+#endif // GLTF_NODE_H
