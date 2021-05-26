@@ -31,11 +31,13 @@
 #ifndef GLTF_BUFFER_VIEW_H
 #define GLTF_BUFFER_VIEW_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 class GLTFBufferView : public Resource {
-	GDCLASS(GLTFBufferView, Resource);
+	GODOT_CLASS(GLTFBufferView, Resource);
 	friend class GLTFDocument;
 
 private:
@@ -45,8 +47,8 @@ private:
 	int byte_stride = -1;
 	bool indices = false;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	GLTFBufferIndex get_buffer();

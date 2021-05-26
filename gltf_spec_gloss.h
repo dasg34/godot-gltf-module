@@ -31,11 +31,13 @@
 #ifndef GLTF_SPEC_GLOSS_H
 #define GLTF_SPEC_GLOSS_H
 
-#include "core/image.h"
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Image.hpp>
+#include <Resource.hpp>
+using namespace godot;
 
 class GLTFSpecGloss : public Resource {
-	GDCLASS(GLTFSpecGloss, Resource);
+	GODOT_CLASS(GLTFSpecGloss, Resource);
 	friend class GLTFDocument;
 
 private:
@@ -45,8 +47,8 @@ private:
 	Color specular_factor = Color(1.0f, 1.0f, 1.0f);
 	Ref<Image> spec_gloss_img = nullptr;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	Ref<Image> get_diffuse_img();

@@ -31,11 +31,13 @@
 #ifndef GLTF_ACCESSOR_H
 #define GLTF_ACCESSOR_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 struct GLTFAccessor : public Resource {
-	GDCLASS(GLTFAccessor, Resource);
+	GODOT_CLASS(GLTFAccessor, Resource);
 	friend class GLTFDocument;
 
 private:
@@ -46,8 +48,8 @@ private:
 	int count = 0;
 	GLTFDocument::GLTFType
 			type = GLTFDocument::TYPE_SCALAR;
-	PoolVector<float> min;
-	PoolVector<float> max;
+	PoolRealArray min;
+	PoolRealArray max;
 	int sparse_count = 0;
 	int sparse_indices_buffer_view = 0;
 	int sparse_indices_byte_offset = 0;
@@ -55,8 +57,8 @@ private:
 	int sparse_values_buffer_view = 0;
 	int sparse_values_byte_offset = 0;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	GLTFBufferViewIndex get_buffer_view();
@@ -77,11 +79,11 @@ public:
 	int get_type();
 	void set_type(int p_type);
 
-	PoolVector<float> get_min();
-	void set_min(PoolVector<float> p_min);
+	PoolRealArray get_min();
+	void set_min(PoolRealArray p_min);
 
-	PoolVector<float> get_max();
-	void set_max(PoolVector<float> p_max);
+	PoolRealArray get_max();
+	void set_max(PoolRealArray p_max);
 
 	int get_sparse_count();
 	void set_sparse_count(int p_sparse_count);

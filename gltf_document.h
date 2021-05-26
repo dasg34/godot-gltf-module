@@ -31,17 +31,35 @@
 #ifndef GLTF_DOCUMENT_H
 #define GLTF_DOCUMENT_H
 
-#include "editor/import/resource_importer_scene.h"
+#include <Godot.hpp>
+#include <Defs.hpp>
 #include "gltf_animation.h"
-#include "scene/2d/node_2d.h"
-#include "scene/3d/bone_attachment.h"
-#include "scene/3d/light.h"
-#include "scene/3d/mesh_instance.h"
-#include "scene/3d/skeleton.h"
-#include "scene/3d/spatial.h"
-#include "scene/animation/animation_player.h"
-#include "scene/resources/material.h"
-#include "scene/resources/texture.h"
+#include <Node.hpp>
+#include <BoneAttachment.hpp>
+#include <Light.hpp>
+#include <MeshInstance.hpp>
+#include <Skeleton.hpp>
+#include <Spatial.hpp>
+#include <Animation.hpp>
+#include <AnimationPlayer.hpp>
+#include <Material.hpp>
+#include <SpatialMaterial.hpp>
+#include <Texture.hpp>
+#include <Camera.hpp>
+#include "vector.h"
+#include "map.h"
+using namespace godot;
+
+namespace godot{
+	template <class T>
+	String itos(const T &arg) {
+		return String("%d").format(Variant(arg));
+	}
+	template <class T>
+	String rtos(const T &arg) {
+		return String("%f").format(Variant(arg));
+	}
+}
 
 class GLTFState;
 class GLTFSkin;
@@ -63,8 +81,11 @@ using GLTFSkeletonIndex = int;
 using GLTFSkinIndex = int;
 using GLTFTextureIndex = int;
 
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
 class GLTFDocument : public Resource {
-	GDCLASS(GLTFDocument, Resource);
+	GODOT_CLASS(GLTFDocument, Resource);
 	friend class GLTFState;
 	friend class GLTFSkin;
 	friend class GLTFSkeleton;
@@ -163,7 +184,7 @@ private:
 	String _gen_unique_name(Ref<GLTFState> state, const String &p_name);
 	String _sanitize_animation_name(const String &name);
 	String _gen_unique_animation_name(Ref<GLTFState> state, const String &p_name);
-	String _sanitize_bone_name(Ref<GLTFState> state, const String &name);
+	String _sanitize_bone_name(const String &name);
 	String _gen_unique_bone_name(Ref<GLTFState> state,
 			const GLTFSkeletonIndex skel_i,
 			const String &p_name);
@@ -185,36 +206,51 @@ private:
 			const int component_type, const int component_size,
 			const bool normalized, const int byte_offset,
 			const bool for_vertex);
-	Vector<double> _decode_accessor(Ref<GLTFState> state,
+	void _decode_accessor(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<float> _decode_accessor_as_floats(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			Vector<double> &out_buffer);
+	void _decode_accessor_as_floats(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<int> _decode_accessor_as_ints(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			PoolRealArray &out_buffer);
+	void _decode_accessor_as_ints(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Vector2> _decode_accessor_as_vec2(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			PoolIntArray &out_buffer);
+	void _decode_accessor_as_vec2(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Vector3> _decode_accessor_as_vec3(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			PoolVector2Array &out_buffer);
+	void _decode_accessor_as_vec3(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Color> _decode_accessor_as_color(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			PoolVector3Array &out_buffer);
+	void _decode_accessor_as_vec3(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Quat> _decode_accessor_as_quat(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			Vector<Vector3> &out_buffer);
+	void _decode_accessor_as_color(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Transform2D> _decode_accessor_as_xform2d(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			PoolColorArray &out_buffer);
+	void _decode_accessor_as_quat(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Basis> _decode_accessor_as_basis(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			Vector<Quat> &out_buffer);
+	void _decode_accessor_as_xform2d(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
-	Vector<Transform> _decode_accessor_as_xform(Ref<GLTFState> state,
+			const bool p_for_vertex,
+			Vector<Transform2D> &out_buffer);
+	void _decode_accessor_as_basis(Ref<GLTFState> state,
 			const GLTFAccessorIndex p_accessor,
-			const bool p_for_vertex);
+			const bool p_for_vertex,
+			Vector<Basis> &out_buffer);
+	void _decode_accessor_as_xform(Ref<GLTFState> state,
+			const GLTFAccessorIndex p_accessor,
+			const bool p_for_vertex,
+			Vector<Transform> &out_buffer);
+
 	Error _parse_meshes(Ref<GLTFState> state);
 	Error _serialize_textures(Ref<GLTFState> state);
 	Error _serialize_images(Ref<GLTFState> state, const String &p_path);
@@ -272,19 +308,19 @@ private:
 			const float p_time,
 			const GLTFAnimation::Interpolation p_interp);
 	GLTFAccessorIndex _encode_accessor_as_quats(Ref<GLTFState> state,
-			const Vector<Quat> p_attribs,
+			const Vector<Quat> &p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState> state,
-			const Vector<Color> p_attribs,
+			PoolColorArray p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_joints(Ref<GLTFState> state,
-			const Vector<Color> p_attribs,
+			PoolColorArray p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_floats(Ref<GLTFState> state,
-			const Vector<real_t> p_attribs,
+			const Vector<float> &p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_vec2(Ref<GLTFState> state,
-			const Vector<Vector2> p_attribs,
+			PoolVector2Array p_attribs,
 			const bool p_for_vertex);
 
 	void _calc_accessor_vec2_min_max(int i, const int element_count, Vector<double> &type_max, Vector2 attribs, Vector<double> &type_min) {
@@ -303,19 +339,22 @@ private:
 	}
 
 	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState> state,
-			const Vector<Vector3> p_attribs,
+			const Vector<Vector3> &p_attribs,
+			const bool p_for_vertex);
+	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState> state,
+			PoolVector3Array p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_color(Ref<GLTFState> state,
-			const Vector<Color> p_attribs,
+			PoolColorArray p_attribs,
 			const bool p_for_vertex);
 
-	void _calc_accessor_min_max(int p_i, const int p_element_count, Vector<double> &p_type_max, Vector<double> p_attribs, Vector<double> &p_type_min);
+	void _calc_accessor_min_max(int p_i, const int p_element_count, Vector<double> &p_type_max, const Vector<double> &p_attribs, Vector<double> &p_type_min);
 
 	GLTFAccessorIndex _encode_accessor_as_ints(Ref<GLTFState> state,
-			const Vector<int32_t> p_attribs,
+			PoolIntArray p_attribs,
 			const bool p_for_vertex);
 	GLTFAccessorIndex _encode_accessor_as_xform(Ref<GLTFState> state,
-			const Vector<Transform> p_attribs,
+			const Vector<Transform> &p_attribs,
 			const bool p_for_vertex);
 	Error _encode_buffer_view(Ref<GLTFState> state, const double *src,
 			const int count, const GLTFType type,
@@ -329,8 +368,8 @@ private:
 	Error _serialize_nodes(Ref<GLTFState> state);
 	Error _serialize_scenes(Ref<GLTFState> state);
 	String interpolation_to_string(const GLTFAnimation::Interpolation p_interp);
-	GLTFAnimation::Track _convert_animation_track(Ref<GLTFState> state,
-			GLTFAnimation::Track p_track,
+	void _convert_animation_track(Ref<GLTFState> state,
+			GLTFAnimation::Track &p_track,
 			Ref<Animation> p_animation, Transform p_bone_rest,
 			int32_t p_track_i,
 			GLTFNodeIndex p_node_i);
@@ -360,9 +399,9 @@ private:
 	static float get_max_component(const Color &p_color);
 
 public:
-	String _sanitize_scene_name(Ref<GLTFState> state, const String &p_name);
-	String _legacy_validate_node_name(const String &p_name);
+	static void _register_methods() {}
 
+public:
 	void _process_mesh_instances(Ref<GLTFState> state, Node *scene_root);
 	void _generate_scene_node(Ref<GLTFState> state, Node *scene_parent,
 			Spatial *scene_root,

@@ -1,12 +1,12 @@
 /*************************************************************************/
-/*  gltf_camera.h                                                        */
+/*  gltf_texture_bleed.cpp                                               */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
 /*                      https://godotengine.org                          */
 /*************************************************************************/
-/* Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.                 */
-/* Copyright (c) 2014-2021 Godot Engine contributors (cf. AUTHORS.md).   */
+/* Copyright (c) 2007-2020 Juan Linietsky, Ariel Manzur.                 */
+/* Copyright (c) 2014-2020 Godot Engine contributors (cf. AUTHORS.md).   */
 /*                                                                       */
 /* Permission is hereby granted, free of charge, to any person obtaining */
 /* a copy of this software and associated documentation files (the       */
@@ -28,33 +28,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef GLTF_CAMERA_H
-#define GLTF_CAMERA_H
+#include <stdio.h>
+#include <stdlib.h>
 
-#include <Godot.hpp>
-#include <Resource.hpp>
-using namespace godot;
-
-class GLTFCamera : public Resource {
-	GODOT_CLASS(GLTFCamera, Resource);
-
-private:
-	bool perspective = true;
-	float fov_size = 75.0;
-	float zfar = 4000.0;
-	float znear = 0.05;
-
-public:
-	static void _register_methods();
-
-public:
-	bool get_perspective() const { return perspective; }
-	void set_perspective(bool p_val) { perspective = p_val; }
-	float get_fov_size() const { return fov_size; }
-	void set_fov_size(float p_val) { fov_size = p_val; }
-	float get_zfar() const { return zfar; }
-	void set_zfar(float p_val) { zfar = p_val; }
-	float get_znear() const { return znear; }
-	void set_znear(float p_val) { znear = p_val; }
-};
-#endif // GLTF_CAMERA_H
+#define TEXBLEED_IMPLEMENTATION 1
+#include "thirdparty/misc/rjm_texbleed.h"

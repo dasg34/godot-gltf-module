@@ -31,15 +31,17 @@
 #ifndef GLTF_LIGHT_H
 #define GLTF_LIGHT_H
 
-#include "core/engine.h"
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Engine.hpp>
+#include <Resource.hpp>
+using namespace godot;
 
 class GLTFLight : public Resource {
-	GDCLASS(GLTFLight, Resource)
+	GODOT_CLASS(GLTFLight, Resource)
 	friend class GLTFDocument;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 private:
 	Color color;

@@ -31,17 +31,19 @@
 #ifndef GLTF_TEXTURE_H
 #define GLTF_TEXTURE_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 class GLTFTexture : public Resource {
-	GDCLASS(GLTFTexture, Resource);
+	GODOT_CLASS(GLTFTexture, Resource);
 
 private:
 	GLTFImageIndex src_image = 0;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	GLTFImageIndex get_src_image() const;

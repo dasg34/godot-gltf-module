@@ -31,8 +31,9 @@
 #ifndef GLTF_STATE_H
 #define GLTF_STATE_H
 
-#include "core/resource.h"
-#include "core/vector.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
+#include "vector.h"
 #include "editor_scene_importer_gltf.h"
 #include "gltf_accessor.h"
 #include "gltf_animation.h"
@@ -45,11 +46,13 @@
 #include "gltf_skeleton.h"
 #include "gltf_skin.h"
 #include "gltf_texture.h"
-#include "scene/animation/animation_player.h"
-#include "scene/resources/texture.h"
+#include <AnimationPlayer.hpp>
+#include <Animation.hpp>
+#include <Texture.hpp>
+using namespace godot;
 
 class GLTFState : public Resource {
-	GDCLASS(GLTFState, Resource);
+	GODOT_CLASS(GLTFState, Resource);
 	friend class GLTFDocument;
 	friend class PackedSceneGLTF;
 
@@ -57,13 +60,12 @@ class GLTFState : public Resource {
 	Dictionary json;
 	int major_version = 0;
 	int minor_version = 0;
-	Vector<uint8_t> glb_data;
+	PoolByteArray glb_data;
 
 	bool use_named_skin_binds = false;
-	bool use_legacy_names = false;
 
 	Vector<Ref<GLTFNode>> nodes;
-	Vector<Vector<uint8_t>> buffers;
+	Vector<PoolByteArray> buffers;
 	Vector<Ref<GLTFBufferView>> buffer_views;
 	Vector<Ref<GLTFAccessor>> accessors;
 
@@ -89,8 +91,8 @@ class GLTFState : public Resource {
 	Vector<Ref<GLTFAnimation>> animations;
 	Map<GLTFNodeIndex, Node *> scene_nodes;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	Dictionary get_json();
@@ -102,8 +104,8 @@ public:
 	int get_minor_version();
 	void set_minor_version(int p_minor_version);
 
-	Vector<uint8_t> get_glb_data();
-	void set_glb_data(Vector<uint8_t> p_glb_data);
+	PoolByteArray get_glb_data();
+	void set_glb_data(PoolByteArray p_glb_data);
 
 	bool get_use_named_skin_binds();
 	void set_use_named_skin_binds(bool p_use_named_skin_binds);

@@ -31,20 +31,22 @@
 #ifndef GLTF_SKELETON_H
 #define GLTF_SKELETON_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 class GLTFSkeleton : public Resource {
-	GDCLASS(GLTFSkeleton, Resource);
+	GODOT_CLASS(GLTFSkeleton, Resource);
 	friend class GLTFDocument;
 
 private:
 	// The *synthesized* skeletons joints
-	PoolVector<GLTFNodeIndex> joints;
+	PoolIntArray joints;
 
 	// The roots of the skeleton. If there are multiple, each root must have the
 	// same parent (ie roots are siblings)
-	PoolVector<GLTFNodeIndex> roots;
+	PoolIntArray roots;
 
 	// The created Skeleton for the scene
 	Skeleton *godot_skeleton = nullptr;
@@ -54,17 +56,17 @@ private:
 
 	Map<int32_t, GLTFNodeIndex> godot_bone_node;
 
-	PoolVector<BoneAttachment *> bone_attachments;
-
-protected:
-	static void _bind_methods();
+	Vector<BoneAttachment *> bone_attachments;
 
 public:
-	PoolVector<GLTFNodeIndex> get_joints();
-	void set_joints(PoolVector<GLTFNodeIndex> p_joints);
+	static void _register_methods();
 
-	PoolVector<GLTFNodeIndex> get_roots();
-	void set_roots(PoolVector<GLTFNodeIndex> p_roots);
+public:
+	PoolIntArray get_joints();
+	void set_joints(PoolIntArray p_joints);
+
+	PoolIntArray get_roots();
+	void set_roots(PoolIntArray p_roots);
 
 	Skeleton *get_godot_skeleton();
 

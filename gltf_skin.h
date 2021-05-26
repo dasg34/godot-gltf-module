@@ -31,18 +31,21 @@
 #ifndef GLTF_SKIN_H
 #define GLTF_SKIN_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
+#include <Skin.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 class GLTFSkin : public Resource {
-	GDCLASS(GLTFSkin, Resource);
+	GODOT_CLASS(GLTFSkin, Resource);
 	friend class GLTFDocument;
 
 private:
 	// The "skeleton" property defined in the gltf spec. -1 = Scene Root
 	GLTFNodeIndex skin_root = -1;
 
-	Vector<GLTFNodeIndex> joints_original;
+	PoolIntArray joints_original;
 	Vector<Transform> inverse_binds;
 
 	// Note: joints + non_joints should form a complete subtree, or subtrees
@@ -58,7 +61,7 @@ private:
 
 	// The roots of the skin. In the case of multiple roots, their parent *must*
 	// be the same (the roots must be siblings)
-	Vector<GLTFNodeIndex> roots;
+	PoolIntArray roots;
 
 	// The GLTF Skeleton this Skin points to (after we determine skeletons)
 	GLTFSkeletonIndex skeleton = -1;
@@ -66,33 +69,33 @@ private:
 	// A mapping from the joint indices (in the order of joints_original) to the
 	// Godot Skeleton's bone_indices
 	Map<int, int> joint_i_to_bone_i;
-	Map<int, StringName> joint_i_to_name;
+	Map<int, String> joint_i_to_name;
 
 	// The Actual Skin that will be created as a mapping between the IBM's of
 	// this skin to the generated skeleton for the mesh instances.
 	Ref<Skin> godot_skin;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	GLTFNodeIndex get_skin_root();
 	void set_skin_root(GLTFNodeIndex p_skin_root);
 
-	Vector<GLTFNodeIndex> get_joints_original();
-	void set_joints_original(Vector<GLTFNodeIndex> p_joints_original);
+	PoolIntArray get_joints_original();
+	void set_joints_original(PoolIntArray p_joints_original);
 
 	Array get_inverse_binds();
 	void set_inverse_binds(Array p_inverse_binds);
 
-	Vector<GLTFNodeIndex> get_joints();
-	void set_joints(Vector<GLTFNodeIndex> p_joints);
+	PoolIntArray get_joints();
+	void set_joints(PoolIntArray p_joints);
 
-	Vector<GLTFNodeIndex> get_non_joints();
-	void set_non_joints(Vector<GLTFNodeIndex> p_non_joints);
+	PoolIntArray get_non_joints();
+	void set_non_joints(PoolIntArray p_non_joints);
 
-	Vector<GLTFNodeIndex> get_roots();
-	void set_roots(Vector<GLTFNodeIndex> p_roots);
+	PoolIntArray get_roots();
+	void set_roots(PoolIntArray p_roots);
 
 	int get_skeleton();
 	void set_skeleton(int p_skeleton);

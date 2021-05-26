@@ -30,38 +30,30 @@
 
 #include "gltf_skeleton.h"
 
-void GLTFSkeleton::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_joints"), &GLTFSkeleton::get_joints);
-	ClassDB::bind_method(D_METHOD("set_joints", "joints"), &GLTFSkeleton::set_joints);
-	ClassDB::bind_method(D_METHOD("get_roots"), &GLTFSkeleton::get_roots);
-	ClassDB::bind_method(D_METHOD("set_roots", "roots"), &GLTFSkeleton::set_roots);
-	ClassDB::bind_method(D_METHOD("get_godot_skeleton"), &GLTFSkeleton::get_godot_skeleton);
-	ClassDB::bind_method(D_METHOD("get_unique_names"), &GLTFSkeleton::get_unique_names);
-	ClassDB::bind_method(D_METHOD("set_unique_names", "unique_names"), &GLTFSkeleton::set_unique_names);
-	ClassDB::bind_method(D_METHOD("get_godot_bone_node"), &GLTFSkeleton::get_godot_bone_node);
-	ClassDB::bind_method(D_METHOD("set_godot_bone_node", "godot_bone_node"), &GLTFSkeleton::set_godot_bone_node);
-	ClassDB::bind_method(D_METHOD("get_bone_attachment_count"), &GLTFSkeleton::get_bone_attachment_count);
-	ClassDB::bind_method(D_METHOD("get_bone_attachment", "idx"), &GLTFSkeleton::get_bone_attachment);
+void GLTFSkeleton::_register_methods() {
+	register_method("get_godot_skeleton", &GLTFSkeleton::get_godot_skeleton);
+	register_method("get_bone_attachment_count", &GLTFSkeleton::get_bone_attachment_count);
+	register_method("get_bone_attachment", &GLTFSkeleton::get_bone_attachment);
 
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "joints"), "set_joints", "get_joints"); // PoolVector<GLTFNodeIndex>
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "roots"), "set_roots", "get_roots"); // PoolVector<GLTFNodeIndex>
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "unique_names", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_unique_names", "get_unique_names"); // Set<String>
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "godot_bone_node", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_EDITOR), "set_godot_bone_node", "get_godot_bone_node"); // Map<int32_t,
+	register_property<GLTFSkeleton, PoolIntArray>("joints", &GLTFSkeleton::set_joints, &GLTFSkeleton::get_joints, PoolIntArray()); // PoolVector<GLTFNodeIndex>
+	register_property<GLTFSkeleton, PoolIntArray>("roots", &GLTFSkeleton::set_roots, &GLTFSkeleton::get_roots, PoolIntArray()); // PoolVector<GLTFNodeIndex>
+	register_property<GLTFSkeleton, Array>("unique_names", &GLTFSkeleton::set_unique_names, &GLTFSkeleton::get_unique_names, Array()); // Set<String>
+	register_property<GLTFSkeleton, Dictionary>("godot_bone_node", &GLTFSkeleton::set_godot_bone_node, &GLTFSkeleton::get_godot_bone_node, Dictionary()); // Map<int32_t,
 }
 
-PoolVector<GLTFNodeIndex> GLTFSkeleton::get_joints() {
+PoolIntArray GLTFSkeleton::get_joints() {
 	return joints;
 }
 
-void GLTFSkeleton::set_joints(PoolVector<GLTFNodeIndex> p_joints) {
+void GLTFSkeleton::set_joints(PoolIntArray p_joints) {
 	joints = p_joints;
 }
 
-PoolVector<GLTFNodeIndex> GLTFSkeleton::get_roots() {
+PoolIntArray GLTFSkeleton::get_roots() {
 	return roots;
 }
 
-void GLTFSkeleton::set_roots(PoolVector<GLTFNodeIndex> p_roots) {
+void GLTFSkeleton::set_roots(PoolIntArray p_roots) {
 	roots = p_roots;
 }
 

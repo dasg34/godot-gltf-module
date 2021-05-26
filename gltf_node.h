@@ -31,11 +31,13 @@
 #ifndef GLTF_NODE_H
 #define GLTF_NODE_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
 #include "gltf_document.h"
+using namespace godot;
 
 class GLTFNode : public Resource {
-	GDCLASS(GLTFNode, Resource);
+	GODOT_CLASS(GLTFNode, Resource);
 	friend class GLTFDocument;
 	friend class PackedSceneGLTF;
 
@@ -52,11 +54,11 @@ private:
 	Vector3 translation;
 	Quat rotation;
 	Vector3 scale = Vector3(1, 1, 1);
-	Vector<int> children;
+	PoolIntArray children;
 	GLTFLightIndex light = -1;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	GLTFNodeIndex get_parent();
@@ -92,8 +94,8 @@ public:
 	Vector3 get_scale();
 	void set_scale(Vector3 p_scale);
 
-	Vector<int> get_children();
-	void set_children(Vector<int> p_children);
+	PoolIntArray get_children();
+	void set_children(PoolIntArray p_children);
 
 	GLTFLightIndex get_light();
 	void set_light(GLTFLightIndex p_light);

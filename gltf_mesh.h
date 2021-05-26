@@ -31,24 +31,25 @@
 #ifndef GLTF_MESH_H
 #define GLTF_MESH_H
 
-#include "core/resource.h"
-#include "editor/import/resource_importer_scene.h"
-#include "scene/resources/mesh.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
+#include <ArrayMesh.hpp>
+using namespace godot;
 
 class GLTFMesh : public Resource {
-	GDCLASS(GLTFMesh, Resource);
+	GODOT_CLASS(GLTFMesh, Resource);
 
 private:
 	Ref<ArrayMesh> mesh;
-	Vector<float> blend_weights;
+	PoolRealArray blend_weights;
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	Ref<ArrayMesh> get_mesh();
 	void set_mesh(Ref<ArrayMesh> p_mesh);
-	Vector<float> get_blend_weights();
-	void set_blend_weights(Vector<float> p_blend_weights);
+	PoolRealArray get_blend_weights();
+	void set_blend_weights(PoolRealArray p_blend_weights);
 };
 #endif // GLTF_MESH_H

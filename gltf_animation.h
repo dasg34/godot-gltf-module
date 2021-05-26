@@ -31,13 +31,17 @@
 #ifndef GLTF_ANIMATION_H
 #define GLTF_ANIMATION_H
 
-#include "core/resource.h"
+#include <Godot.hpp>
+#include <Resource.hpp>
+#include "vector.h"
+#include "map.h"
+using namespace godot;
 
 class GLTFAnimation : public Resource {
-	GDCLASS(GLTFAnimation, Resource);
+	GODOT_CLASS(GLTFAnimation, Resource);
 
-protected:
-	static void _bind_methods();
+public:
+	static void _register_methods();
 
 public:
 	enum Interpolation {
