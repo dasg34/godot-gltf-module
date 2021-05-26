@@ -60,6 +60,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	PoolIntArray get_joints();

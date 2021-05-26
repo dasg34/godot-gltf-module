@@ -31,6 +31,7 @@
 #include "gltf_node.h"
 
 void GLTFNode::_register_methods() {
+	register_method("_init", &GLTFNode::_init);
 
 	register_property<GLTFNode, int>("parent", &GLTFNode::set_parent, &GLTFNode::get_parent, -1); // GLTFNodeIndex
 	register_property<GLTFNode, int>("height", &GLTFNode::set_height, &GLTFNode::get_height, 0); // int

@@ -93,6 +93,7 @@ class GLTFState : public Resource {
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	Dictionary get_json();

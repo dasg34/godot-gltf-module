@@ -32,6 +32,8 @@
 #include <Skin.hpp>
 
 void GLTFSkin::_register_methods() {
+	register_method("_init", &GLTFSkin::_init);
+
 	register_property<GLTFSkin, int>("skin_root", &GLTFSkin::set_skin_root, &GLTFSkin::get_skin_root, -1); // GLTFNodeIndex
 	register_property<GLTFSkin, PoolIntArray>("joints_original", &GLTFSkin::set_joints_original, &GLTFSkin::get_joints_original, PoolIntArray()); // Vector<GLTFNodeIndex>
 	register_property<GLTFSkin, Array>("inverse_binds", &GLTFSkin::set_inverse_binds, &GLTFSkin::get_inverse_binds, Array()); // Vector<Transform>

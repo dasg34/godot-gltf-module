@@ -42,6 +42,7 @@ class GLTFAnimation : public Resource {
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	enum Interpolation {

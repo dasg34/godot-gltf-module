@@ -31,6 +31,8 @@
 #include "gltf_accessor.h"
 
 void GLTFAccessor::_register_methods() {
+	register_method("_init", &GLTFAccessor::_init);
+
 	register_property<GLTFAccessor, int>("buffer_view", &GLTFAccessor::set_buffer_view, &GLTFAccessor::get_buffer_view, 0); // GLTFBufferViewIndex
 	register_property<GLTFAccessor, int>("byte_offset", &GLTFAccessor::set_byte_offset, &GLTFAccessor::get_byte_offset, 0); // int
 	register_property<GLTFAccessor, int>("component_type", &GLTFAccessor::set_component_type, &GLTFAccessor::get_component_type, 0); // int

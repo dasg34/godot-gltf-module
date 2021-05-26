@@ -44,6 +44,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	GLTFImageIndex get_src_image() const;

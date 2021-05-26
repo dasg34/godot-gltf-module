@@ -59,6 +59,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	GLTFBufferViewIndex get_buffer_view();

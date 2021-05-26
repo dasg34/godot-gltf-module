@@ -31,6 +31,8 @@
 #include "gltf_animation.h"
 
 void GLTFAnimation::_register_methods() {
+	register_method("_init", &GLTFAnimation::_init);
+
 	register_property<GLTFAnimation, bool>("loop", &GLTFAnimation::set_loop, &GLTFAnimation::get_loop, false); // bool
 }
 

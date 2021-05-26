@@ -31,6 +31,8 @@
 #include "gltf_buffer_view.h"
 
 void GLTFBufferView::_register_methods() {
+	register_method("_init", &GLTFBufferView::_init);
+
 	register_property<GLTFBufferView, int>("buffer", &GLTFBufferView::set_buffer, &GLTFBufferView::get_buffer, -1); // GLTFBufferIndex
 	register_property<GLTFBufferView, int>("byte_offset", &GLTFBufferView::set_byte_offset, &GLTFBufferView::get_byte_offset, 0); // int
 	register_property<GLTFBufferView, int>("byte_length", &GLTFBufferView::set_byte_length, &GLTFBufferView::get_byte_length, 0); // int

@@ -46,6 +46,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	bool get_perspective() const { return perspective; }

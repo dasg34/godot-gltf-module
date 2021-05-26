@@ -31,6 +31,8 @@
 #include "gltf_spec_gloss.h"
 
 void GLTFSpecGloss::_register_methods() {
+	register_method("_init", &GLTFSpecGloss::_init);
+
 	register_property<GLTFSpecGloss, Ref<Image>>("diffuse_img", &GLTFSpecGloss::set_diffuse_img, &GLTFSpecGloss::get_diffuse_img, Ref<Image>()); // Ref<Image>
 	register_property<GLTFSpecGloss, Color>("diffuse_factor", &GLTFSpecGloss::set_diffuse_factor, &GLTFSpecGloss::get_diffuse_factor, Color(1.0f, 1.0f, 1.0f)); // Color
 	register_property<GLTFSpecGloss, float>("gloss_factor", &GLTFSpecGloss::set_gloss_factor, &GLTFSpecGloss::get_gloss_factor, 1.0); // float

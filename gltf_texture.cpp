@@ -31,6 +31,8 @@
 #include "gltf_texture.h"
 
 void GLTFTexture::_register_methods() {
+	register_method("_init", &GLTFTexture::_init);
+
 	register_property<GLTFTexture, int>("src_image", &GLTFTexture::set_src_image, &GLTFTexture::get_src_image, 0); // int
 }
 

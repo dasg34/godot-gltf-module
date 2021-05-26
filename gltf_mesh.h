@@ -45,6 +45,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	Ref<ArrayMesh> get_mesh();

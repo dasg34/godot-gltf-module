@@ -43,6 +43,8 @@
 #include <Animation.hpp>
 #include <AnimationPlayer.hpp>
 #include <Material.hpp>
+#include <ResourceLoader.hpp>
+#include <NativeScript.hpp>
 #include <SpatialMaterial.hpp>
 #include <Texture.hpp>
 #include <Camera.hpp>
@@ -53,13 +55,15 @@ using namespace godot;
 namespace godot{
 	template <class T>
 	String itos(const T &arg) {
-		return String("%d").format(Variant(arg));
+		return String("{0}").format(Array::make(Variant(arg)));
 	}
 	template <class T>
 	String rtos(const T &arg) {
-		return String("%f").format(Variant(arg));
+		return String("{0}").format(Array::make(Variant(arg)));
 	}
 }
+
+Ref<NativeScript> class_by_name(const char* type_name);
 
 class GLTFState;
 class GLTFSkin;
@@ -84,8 +88,8 @@ using GLTFTextureIndex = int;
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-class GLTFDocument : public Resource {
-	GODOT_CLASS(GLTFDocument, Resource);
+class GLTFDocument : public Reference {
+	GODOT_CLASS(GLTFDocument, Reference);
 	friend class GLTFState;
 	friend class GLTFSkin;
 	friend class GLTFSkeleton;
@@ -398,8 +402,22 @@ private:
 	static float get_perceived_brightness(const Color p_color);
 	static float get_max_component(const Color &p_color);
 
+	static bool class_references_leaked;
+	static Ref<NativeScript> GLTFAccessor_class;
+	static Ref<NativeScript> GLTFAnimation_class;
+	static Ref<NativeScript> GLTFBufferView_class;
+	static Ref<NativeScript> GLTFCamera_class;
+	static Ref<NativeScript> GLTFLight_class;
+	static Ref<NativeScript> GLTFMesh_class;
+	static Ref<NativeScript> GLTFNode_class;
+	static Ref<NativeScript> GLTFSkeleton_class;
+	static Ref<NativeScript> GLTFSkin_class;
+	static Ref<NativeScript> GLTFSpecGloss_class;
+	static Ref<NativeScript> GLTFTexture_class;
+
 public:
-	static void _register_methods() {}
+	static void _register_methods();
+	void _init();
 
 public:
 	void _process_mesh_instances(Ref<GLTFState> state, Node *scene_root);

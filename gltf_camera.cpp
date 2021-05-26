@@ -31,6 +31,7 @@
 #include "gltf_camera.h"
 
 void GLTFCamera::_register_methods() {
+	register_method("_init", &GLTFCamera::_init);
 
 	register_property<GLTFCamera, bool>("perspective", &GLTFCamera::set_perspective, &GLTFCamera::get_perspective, true); // bool
 	register_property<GLTFCamera, float>("fov_size", &GLTFCamera::set_fov_size, &GLTFCamera::get_fov_size, 75.0f); // float

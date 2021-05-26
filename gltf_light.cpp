@@ -31,6 +31,8 @@
 #include "gltf_light.h"
 
 void GLTFLight::_register_methods() {
+	register_method("_init", &GLTFLight::_init);
+
 	register_property<GLTFLight, Color>("color", &GLTFLight::set_color, &GLTFLight::get_color, Color()); // Color
 	register_property<GLTFLight, float>("intensity", &GLTFLight::set_intensity, &GLTFLight::get_intensity, 0); // float
 	register_property<GLTFLight, String>("type", &GLTFLight::set_type, &GLTFLight::get_type, String()); // String

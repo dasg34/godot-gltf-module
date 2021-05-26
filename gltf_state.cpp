@@ -32,7 +32,10 @@
 #include "gltf_state.h"
 
 void GLTFState::_register_methods() {
+	register_method("_init", &GLTFState::_init);
 	register_method("get_scene_node", &GLTFState::get_scene_node);
+	register_method("get_animation_players_count", &GLTFState::get_animation_players_count);
+	register_method("get_animation_player", &GLTFState::get_animation_player);
 
 	register_property<GLTFState, Dictionary>("json", &GLTFState::set_json, &GLTFState::get_json, Dictionary()); // Dictionary
 	register_property<GLTFState, int>("major_version", &GLTFState::set_major_version, &GLTFState::get_major_version, 0); // int

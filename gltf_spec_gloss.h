@@ -49,6 +49,7 @@ private:
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	Ref<Image> get_diffuse_img();

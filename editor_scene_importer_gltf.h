@@ -54,6 +54,7 @@ class EditorSceneImporterGLTF : public EditorSceneImporter {
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	int64_t _get_import_flags() const;
@@ -69,6 +70,7 @@ class PackedSceneGLTF : public PackedScene {
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 public:
 	void save_scene(Node *p_node, const String &p_path, const String &p_src_path,

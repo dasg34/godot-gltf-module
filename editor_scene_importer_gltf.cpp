@@ -42,6 +42,7 @@ const static int IMPORT_USE_NAMED_SKIN_BINDS = 4096; // missing in enum
 
 
 void EditorSceneImporterGLTF::_register_methods() {
+	register_method("_init", &EditorSceneImporterGLTF::_init);
 	register_method("_get_import_flags", &EditorSceneImporterGLTF::_get_import_flags);
 	register_method("_get_extensions", &EditorSceneImporterGLTF::_get_extensions);
 	register_method("_import_scene", &EditorSceneImporterGLTF::_import_scene);
@@ -61,8 +62,7 @@ Array EditorSceneImporterGLTF::_get_extensions() const {
 
 Node *EditorSceneImporterGLTF::_import_scene(String p_path,
 		uint32_t p_flags, int p_bake_fps) {
-	Ref<PackedSceneGLTF> importer;
-	importer.instance();
+	Ref<PackedSceneGLTF> importer = class_by_name("PackedSceneGLTF")->new_();
 	return importer->import_gltf_scene(p_path, p_flags, p_bake_fps, Ref<GLTFState>());
 }
 
@@ -73,10 +73,12 @@ Ref<Animation> EditorSceneImporterGLTF::_import_animation(String p_path,
 }
 
 void PackedSceneGLTF::_register_methods() {
+	register_method("_init", &PackedSceneGLTF::_init);
 	register_method("export_gltf", &PackedSceneGLTF::export_gltf);
 	register_method("pack_gltf", &PackedSceneGLTF::pack_gltf);
 	register_method("import_gltf_scene", &PackedSceneGLTF::import_gltf_scene);
 }
+
 Node *PackedSceneGLTF::import_gltf_scene(String p_path, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state) {
 	Error err = Error::FAILED;
 	PoolStringArray deps;
@@ -89,13 +91,13 @@ Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
 		Error *r_err,
 		Ref<GLTFState> r_state) {
 	if (r_state == Ref<GLTFState>()) {
-		r_state.instance();
+		r_state = class_by_name("GLTFState")->new_();
 	}
 	r_state->use_named_skin_binds =
 			p_flags & IMPORT_USE_NAMED_SKIN_BINDS;
 
 	Ref<GLTFDocument> gltf_document;
-	gltf_document.instance();
+	gltf_document = class_by_name("GLTFDocument")->new_();
 	Error err = gltf_document->parse(r_state, p_path);
 	*r_err = err;
 	ERR_FAIL_COND_V(err != Error::OK, nullptr);
@@ -135,9 +137,9 @@ void PackedSceneGLTF::save_scene(Node *p_node, const String &p_path,
 		*r_err = err;
 	}
 	Ref<GLTFDocument> gltf_document;
-	gltf_document.instance();
+	gltf_document = class_by_name("GLTFDocument")->new_();
 	Ref<GLTFState> state;
-	state.instance();
+	state = class_by_name("GLTFState")->new_();
 	err = gltf_document->serialize(state, p_node, p_path);
 	if (r_err) {
 		*r_err = err;
@@ -168,7 +170,7 @@ int32_t PackedSceneGLTF::export_gltf(Node *p_root, String p_path,
 	int32_t flags = p_flags;
 	real_t baked_fps = p_bake_fps;
 	Ref<PackedSceneGLTF> exporter;
-	exporter.instance();
+	exporter = class_by_name("PackedSceneGLTF")->new_();
 	exporter->save_scene(p_root, path, "", flags, baked_fps, &deps, &err);
 	if (err != Error::OK) {
 		return (int32_t)err;

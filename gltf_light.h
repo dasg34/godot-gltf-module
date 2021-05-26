@@ -42,6 +42,7 @@ class GLTFLight : public Resource {
 
 public:
 	static void _register_methods();
+	void _init() {}
 
 private:
 	Color color;

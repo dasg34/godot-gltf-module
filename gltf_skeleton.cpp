@@ -31,6 +31,7 @@
 #include "gltf_skeleton.h"
 
 void GLTFSkeleton::_register_methods() {
+	register_method("_init", &GLTFSkeleton::_init);
 	register_method("get_godot_skeleton", &GLTFSkeleton::get_godot_skeleton);
 	register_method("get_bone_attachment_count", &GLTFSkeleton::get_bone_attachment_count);
 	register_method("get_bone_attachment", &GLTFSkeleton::get_bone_attachment);

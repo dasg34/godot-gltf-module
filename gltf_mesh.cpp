@@ -31,6 +31,8 @@
 #include "gltf_mesh.h"
 
 void GLTFMesh::_register_methods() {
+	register_method("_init", &GLTFMesh::_init);
+
 	register_property<GLTFMesh, Ref<ArrayMesh>>("mesh", &GLTFMesh::set_mesh, &GLTFMesh::get_mesh, Ref<ArrayMesh>());
 	register_property<GLTFMesh, PoolRealArray>("blend_weights", &GLTFMesh::set_blend_weights, &GLTFMesh::get_blend_weights, PoolRealArray()); // Vector<float>
 }
