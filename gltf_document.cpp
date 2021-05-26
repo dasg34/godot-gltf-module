@@ -5941,8 +5941,9 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 
 		Node *root = ap->get_parent();
 		ERR_FAIL_COND(root == nullptr);
-		Node *godot_node = state->scene_nodes.find(node_index)->get();
-		node_path = root->get_path_to(godot_node);
+		Map<GLTFNodeIndex, Node *>::Element *node_element = state->scene_nodes.find(node_index);
+		ERR_CONTINUE_MSG(node_element == nullptr, str_format("Unable to find node {0} for animation", node_index));
+		node_path = root->get_path_to(node_element->get());
 
 		if (gltf_node->skeleton >= 0) {
 			const Skeleton *sk = state->skeletons[gltf_node->skeleton]->godot_skeleton;
