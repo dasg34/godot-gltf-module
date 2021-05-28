@@ -682,6 +682,7 @@ public:
 template <class K, class C = MapComparator<K>>
 class Set : public Map<K, bool, C> {
 public:
+	typedef typename Map<K, bool, C>::Element Element;
 	Element *insert(const K &p_key) {
 		return Map<K, bool, C>::insert(p_key, true);
 	}

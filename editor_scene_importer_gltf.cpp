@@ -63,7 +63,8 @@ Array EditorSceneImporterGLTF::_get_extensions() const {
 Node *EditorSceneImporterGLTF::_import_scene(String p_path,
 		uint32_t p_flags, int p_bake_fps) {
 	Ref<PackedSceneGLTF> importer = class_by_name("PackedSceneGLTF")->new_();
-	return importer->import_gltf_scene(p_path, p_flags, p_bake_fps, Ref<GLTFState>());
+	Ref<GLTFState> null_gltfref;
+	return importer->import_gltf_scene(p_path, p_flags, p_bake_fps, null_gltfref);
 }
 
 Ref<Animation> EditorSceneImporterGLTF::_import_animation(String p_path,

@@ -48,6 +48,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cmath>
+#include <cfloat>
 #include <limits>
 
 #include <AnimationPlayer.hpp>
@@ -58,7 +59,7 @@
 #include <DirectionalLight.hpp>
 #include <Directory.hpp>
 #include <File.hpp>
-#include <Gridmap.hpp>
+#include <GridMap.hpp>
 #include <Image.hpp>
 #include <ImageTexture.hpp>
 #include <JSON.hpp>
@@ -69,7 +70,7 @@
 #include <MultiMesh.hpp>
 #include <MultiMeshInstance.hpp>
 #include <Node.hpp>
-#include <Node2d.hpp>
+#include <Node2D.hpp>
 #include <OmniLight.hpp>
 #include <OS.hpp>
 #include <ResourceLoader.hpp>
@@ -684,7 +685,7 @@ Error GLTFDocument::_parse_scenes(Ref<GLTFState> state) {
 			state->root_nodes.push_back(nodes[j]);
 		}
 
-		if (s.has("name") && !String(s["name"]).empty() && !((String)s["name"]).begins_with(String("Scene"))) {
+		if (s.has("name") && !((String&&)(s["name"])).empty() && !((String&&)(s["name"])).begins_with_char_array("Scene")) {
 			state->scene_name = _gen_unique_name(state, s["name"]);
 		} else {
 			state->scene_name = _gen_unique_name(state, state->filename);
@@ -891,10 +892,10 @@ Error GLTFDocument::_parse_buffers(Ref<GLTFState> state, const String &p_base_pa
 				PoolByteArray buffer_data;
 				String uri = buffer["uri"];
 
-				if (uri.begins_with((String)"data:")) { // Embedded data using base64.
+				if (uri.begins_with_char_array("data:")) { // Embedded data using base64.
 					// Validate data MIME types and throw an error if it's one we don't know/support.
-					if (!uri.begins_with((String)"data:application/octet-stream;base64") &&
-							!uri.begins_with((String)"data:application/gltf-buffer;base64")) {
+					if (!uri.begins_with_char_array("data:application/octet-stream;base64") &&
+							!uri.begins_with_char_array("data:application/gltf-buffer;base64")) {
 						ERR_PRINT("glTF: Got buffer with an unknown URI data type: " + uri);
 					}
 					buffer_data = _parse_base64_uri(uri);
@@ -2801,7 +2802,7 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 		Ref<ArrayMesh> import_mesh;
 		import_mesh.instance();
 		String mesh_name = "mesh";
-		if (d.has("name") && !String(d["name"]).empty()) {
+		if (d.has("name") && !((String&&)(d["name"])).empty()) {
 			mesh_name = d["name"];
 		}
 		import_mesh->set_name(_gen_unique_name(state, str_format("{0}_{1}", state->scene_name, mesh_name)));
@@ -2958,9 +2959,9 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 				import_mesh->set_blend_shape_mode(Mesh::BLEND_SHAPE_MODE_NORMALIZED);
 
 				if (j == 0) {
-					const Array &target_names = extras.has("targetNames") ? (Array)extras["targetNames"] : Array();
+					const Array &target_names = extras.has("targetNames") ? (Array&&)(extras["targetNames"]) : Array();
 					for (int k = 0; k < targets.size(); k++) {
-						const String name = k < target_names.size() ? (String)target_names[k] : String("morph_") + itos(k);
+						const String name = k < target_names.size() ? (String&&)(target_names[k]) : String("morph_") + itos(k);
 						import_mesh->add_blend_shape(name);
 					}
 				}
@@ -3131,7 +3132,8 @@ Error GLTFDocument::_serialize_images(Ref<GLTFState> state, const String &p_path
 		Ref<Image> image = state->images[i]->get_data();
 		ERR_CONTINUE(image.is_null());
 
-		if (p_path.to_lower().ends_with((String)"glb")) {
+		String tmp_glb = "glb";
+		if (p_path.to_lower().ends_with(tmp_glb)) {
 			GLTFBufferViewIndex bvi;
 
 			Ref<GLTFBufferView> bv;
@@ -3230,12 +3232,12 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 			// Handles the first two bullet points from the spec (embedded data, or external file).
 			String uri = d["uri"];
 
-			if (uri.begins_with((String)"data:")) { // Embedded data using base64.
+			if (uri.begins_with_char_array("data:")) { // Embedded data using base64.
 				// Validate data MIME types and throw a warning if it's one we don't know/support.
-				if (!uri.begins_with((String)"data:application/octet-stream;base64") &&
-						!uri.begins_with((String)"data:application/gltf-buffer;base64") &&
-						!uri.begins_with((String)"data:image/png;base64") &&
-						!uri.begins_with((String)"data:image/jpeg;base64")) {
+				if (!uri.begins_with_char_array("data:application/octet-stream;base64") &&
+						!uri.begins_with_char_array("data:application/gltf-buffer;base64") &&
+						!uri.begins_with_char_array("data:image/png;base64") &&
+						!uri.begins_with_char_array("data:image/jpeg;base64")) {
 					WARN_PRINT(str_format("glTF: Image index '{0}' uses an unsupported URI data type: {1}. Skipping it.", i, uri));
 					state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
 					continue;
@@ -3244,9 +3246,9 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 				data_size = data_tmp.size();
 				// mimeType is optional, but if we have it defined in the URI, let's use it.
 				if (mimetype.empty()) {
-					if (uri.begins_with((String)"data:image/png;base64")) {
+					if (uri.begins_with_char_array("data:image/png;base64")) {
 						mimetype = "image/png";
-					} else if (uri.begins_with((String)"data:image/jpeg;base64")) {
+					} else if (uri.begins_with_char_array("data:image/jpeg;base64")) {
 						mimetype = "image/jpeg";
 					}
 				}
@@ -3686,7 +3688,7 @@ Error GLTFDocument::_parse_materials(Ref<GLTFState> state) {
 
 		Ref<SpatialMaterial> material;
 		material.instance();
-		if (d.has("name") && !String(d["name"]).empty()) {
+		if (d.has("name") && !((String&&)(d["name"])).empty()) {
 			material->set_name(d["name"]);
 		} else {
 			material->set_name(str_format("material_{0}", i));
@@ -4234,7 +4236,7 @@ Error GLTFDocument::_parse_skins(Ref<GLTFState> state) {
 			state->nodes.write[node]->joint = true;
 		}
 
-		if (d.has("name") && !String(d["name"]).empty()) {
+		if (d.has("name") && !((String&&)(d["name"])).empty()) {
 			skin->set_name(d["name"]);
 		} else {
 			skin->set_name(str_format("skin_{0}", i));
@@ -5030,7 +5032,9 @@ Error GLTFDocument::_parse_animations(Ref<GLTFState> state) {
 
 		if (d.has("name")) {
 			const String name = d["name"];
-			if (name.begins_with((String)"loop") || name.ends_with((String)"loop") || name.begins_with((String)"cycle") || name.ends_with((String)"cycle")) {
+			String tmp_loop = "loop";
+			String tmp_cycle = "cycle";
+			if (name.begins_with(tmp_loop) || name.ends_with(tmp_loop) || name.begins_with(tmp_cycle) || name.ends_with(tmp_cycle)) {
 				animation->set_loop(true);
 			}
 			animation->set_name(_gen_unique_animation_name(state, name));
@@ -6560,7 +6564,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 		String orig_track_path = animation->track_get_path(track_i);
 		if (String(orig_track_path).find(":translation") != -1) {
 			PoolStringArray node_suffix = String(orig_track_path).split(":translation");
-			const NodePath path = node_suffix[0];
+			const NodePath path (node_suffix[0]);
 			const Node *node = ap->get_parent()->get_node_or_null(path);
 			for (Map<GLTFNodeIndex, Node *>::Element *translation_scene_node_i = state->scene_nodes.front(); translation_scene_node_i; translation_scene_node_i = translation_scene_node_i->next()) {
 				if (translation_scene_node_i->get() == node) {
@@ -6576,7 +6580,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			}
 		} else if (String(orig_track_path).find(":rotation_degrees") != -1) {
 			PoolStringArray node_suffix = String(orig_track_path).split(":rotation_degrees");
-			const NodePath path = node_suffix[0];
+			const NodePath path (node_suffix[0]);
 			const Node *node = ap->get_parent()->get_node_or_null(path);
 			for (Map<GLTFNodeIndex, Node *>::Element *rotation_degree_scene_node_i = state->scene_nodes.front(); rotation_degree_scene_node_i; rotation_degree_scene_node_i = rotation_degree_scene_node_i->next()) {
 				if (rotation_degree_scene_node_i->get() == node) {
@@ -6592,7 +6596,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			}
 		} else if (String(orig_track_path).find(":scale") != -1) {
 			PoolStringArray node_suffix = String(orig_track_path).split(":scale");
-			const NodePath path = node_suffix[0];
+			const NodePath path (node_suffix[0]);
 			const Node *node = ap->get_parent()->get_node_or_null(path);
 			for (Map<GLTFNodeIndex, Node *>::Element *scale_scene_node_i = state->scene_nodes.front(); scale_scene_node_i; scale_scene_node_i = scale_scene_node_i->next()) {
 				if (scale_scene_node_i->get() == node) {
@@ -6608,7 +6612,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			}
 		} else if (String(orig_track_path).find(":transform") != -1) {
 			PoolStringArray node_suffix = String(orig_track_path).split(":transform");
-			const NodePath path = node_suffix[0];
+			const NodePath path (node_suffix[0]);
 			const Node *node = ap->get_parent()->get_node_or_null(path);
 			for (Map<GLTFNodeIndex, Node *>::Element *transform_track_i = state->scene_nodes.front(); transform_track_i; transform_track_i = transform_track_i->next()) {
 				if (transform_track_i->get() == node) {
@@ -6619,7 +6623,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			}
 		} else if (String(orig_track_path).find(":blend_shapes/") != -1) {
 			PoolStringArray node_suffix = String(orig_track_path).split(":blend_shapes/");
-			const NodePath path = node_suffix[0];
+			const NodePath path (node_suffix[0]);
 			const String suffix = node_suffix[1];
 			const Node *node = ap->get_parent()->get_node_or_null(path);
 			for (Map<GLTFNodeIndex, Node *>::Element *transform_track_i = state->scene_nodes.front(); transform_track_i; transform_track_i = transform_track_i->next()) {
@@ -6689,7 +6693,7 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 			//Process skeleton
 			PoolStringArray node_suffix = String(orig_track_path).split(":");
 			const String node = node_suffix[0];
-			const NodePath node_path = node;
+			const NodePath node_path (node);
 			const String suffix = node_suffix[1];
 			Node *godot_node = ap->get_parent()->get_node_or_null(node_path);
 			Skeleton *skeleton = nullptr;
@@ -6940,7 +6944,8 @@ Error GLTFDocument::_serialize_version(Ref<GLTFState> state) {
 
 Error GLTFDocument::_serialize_file(Ref<GLTFState> state, const String p_path) {
 	Error err = FAILED;
-	if (p_path.to_lower().ends_with((String)"glb")) {
+	String tmp_glb = "glb";
+	if (p_path.to_lower().ends_with(tmp_glb)) {
 		err = _encode_buffer_glb(state, p_path);
 		ERR_FAIL_COND_V(err != OK, err);
 		Ref<File> f;
