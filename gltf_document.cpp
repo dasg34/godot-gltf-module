@@ -3110,9 +3110,7 @@ Error GLTFDocument::_parse_meshes(Ref<GLTFState> state) {
 				blend_weights_ptr[j] = weights[j];
 			}
 		}
-		if (blend_weights.size() != 0) {
-			mesh->set_blend_weights(blend_weights);
-		}
+		mesh->set_blend_weights(blend_weights);
 		mesh->set_mesh(import_mesh);
 
 		state->meshes.push_back(mesh);
@@ -5276,7 +5274,7 @@ Spatial *GLTFDocument::_generate_mesh_instance(Ref<GLTFState> state, Node *scene
 	return mi;
 }
 
-Light *GLTFDocument::_generate_light(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index) {
+Spatial *GLTFDocument::_generate_light(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index) {
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 
 	ERR_FAIL_INDEX_V(gltf_node->light, state->lights.size(), nullptr);
@@ -5325,7 +5323,7 @@ Light *GLTFDocument::_generate_light(Ref<GLTFState> state, Node *scene_parent, c
 		light->set_param(SpotLight::PARAM_SPOT_ATTENUATION, angle_attenuation);
 		return light;
 	}
-	return nullptr;
+	return Spatial::_new();
 }
 
 Camera *GLTFDocument::_generate_camera(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index) {
@@ -5698,44 +5696,21 @@ void GLTFDocument::_convert_mesh_to_gltf(Node *p_scene_parent, Ref<GLTFState> st
 void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index) {
 	Ref<GLTFNode> gltf_node = state->nodes[node_index];
 
+	if (gltf_node->skeleton >= 0) {
+		_generate_skeleton_bone_node(state, scene_parent, scene_root, node_index);
+		return;
+	}
+
 	Spatial *current_node = nullptr;
 
 	// Is our parent a skeleton
 	Skeleton *active_skeleton = Object::cast_to<Skeleton>(scene_parent);
 
-	if (gltf_node->skeleton >= 0) {
-		Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+	const bool non_bone_parented_to_skeleton = active_skeleton;
 
-		if (active_skeleton != skeleton) {
-			if (active_skeleton != nullptr) {
-				BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
-
-				scene_parent->add_child(bone_attachment);
-				bone_attachment->set_owner(scene_root);
-
-				// There is no gltf_node that represent this, so just directly create a unique name
-				bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
-
-				// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
-				// and attach it to the bone_attachment
-				scene_parent = bone_attachment;
-				WARN_PRINT(str_format("glTF: Generating scene detected direct parented Skeletons at node {0}", node_index));
-			}
-
-			// Add it to the scene if it has not already been added
-			if (skeleton->get_parent() == nullptr) {
-				scene_parent->add_child(skeleton);
-				skeleton->set_owner(scene_root);
-			}
-		}
-
-		active_skeleton = skeleton;
-		current_node = skeleton;
-	}
-
-	bool use_xform = true;
 	// If we have an active skeleton, and the node is node skinned, we need to create a bone attachment
-	if (current_node == nullptr && active_skeleton != nullptr && gltf_node->skin < 0) {
+	if (non_bone_parented_to_skeleton && gltf_node->skin < 0) {
+		// Bone Attachment - Parent Case
 		BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
 
 		scene_parent->add_child(bone_attachment);
@@ -5747,25 +5722,89 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 		// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
 		// and attach it to the bone_attachment
 		scene_parent = bone_attachment;
-	} else if (current_node != nullptr && active_skeleton != nullptr &&
-			   ((gltf_node->skin < 0 && gltf_node->mesh >= 0) || gltf_node->camera >= 0 || gltf_node->light >= 0)) {
-		BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, node_index);
-
-		scene_parent->add_child(bone_attachment);
-		bone_attachment->set_owner(scene_root);
-
-		// There is no gltf_node that represent this, so just directly create a unique name
-		bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
-
-		// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
-		// and attach it to the bone_attachment
-		scene_parent = bone_attachment;
-		current_node = nullptr;
-		use_xform = false;
 	}
 
 	// We still have not managed to make a node
-	if (current_node == nullptr || (gltf_node->skin >= 0 && gltf_node->mesh >= 0)) {
+	if (gltf_node->mesh >= 0) {
+		current_node = _generate_mesh_instance(state, scene_parent, node_index);
+	} else if (gltf_node->camera >= 0) {
+		current_node = _generate_camera(state, scene_parent, node_index);
+	} else if (gltf_node->light >= 0) {
+		current_node = _generate_light(state, scene_parent, node_index);
+	} else {
+		current_node = _generate_spatial(state, scene_parent, node_index);
+	}
+
+	scene_parent->add_child(current_node);
+	if (current_node != scene_root) {
+		current_node->set_owner(scene_root);
+	}
+	current_node->set_transform(gltf_node->xform);
+	current_node->set_name(gltf_node->get_name());
+
+	state->scene_nodes.insert(node_index, current_node);
+
+	for (int i = 0; i < gltf_node->children.size(); ++i) {
+		_generate_scene_node(state, current_node, scene_root, gltf_node->children[i]);
+	}
+}
+
+void GLTFDocument::_generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index) {
+	Ref<GLTFNode> gltf_node = state->nodes[node_index];
+
+	Spatial *current_node = nullptr;
+
+	Skeleton *skeleton = state->skeletons[gltf_node->skeleton]->godot_skeleton;
+	// In this case, this node is already a bone in skeleton.
+	const bool is_skinned_mesh = (gltf_node->skin >= 0 && gltf_node->mesh >= 0);
+	const bool requires_extra_node = (gltf_node->mesh >= 0 || gltf_node->camera >= 0 || gltf_node->light >= 0);
+
+	Skeleton *active_skeleton = Object::cast_to<Skeleton>(scene_parent);
+	if (active_skeleton != skeleton) {
+		if (active_skeleton) {
+			// Bone Attachment - Direct Parented Skeleton Case
+			BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, gltf_node->parent);
+
+			scene_parent->add_child(bone_attachment);
+			bone_attachment->set_owner(scene_root);
+
+			// There is no gltf_node that represent this, so just directly create a unique name
+			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
+
+			// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
+			// and attach it to the bone_attachment
+			scene_parent = bone_attachment;
+			WARN_PRINT(str_format("glTF: Generating scene detected direct parented Skeletons at node {0}", node_index));
+		}
+
+		// Add it to the scene if it has not already been added
+		if (skeleton->get_parent() == nullptr) {
+			scene_parent->add_child(skeleton);
+			skeleton->set_owner(scene_root);
+		}
+	}
+
+	active_skeleton = skeleton;
+	current_node = skeleton;
+
+	if (requires_extra_node) {
+		// skinned meshes must not be placed in a bone attachment.
+		if (!is_skinned_mesh) {
+			// Bone Attachment - Same Node Case
+			BoneAttachment *bone_attachment = _generate_bone_attachment(state, active_skeleton, node_index, node_index);
+
+			scene_parent->add_child(bone_attachment);
+			bone_attachment->set_owner(scene_root);
+
+			// There is no gltf_node that represent this, so just directly create a unique name
+			bone_attachment->set_name(_gen_unique_name(state, "BoneAttachment"));
+
+			// We change the scene_parent to our bone attachment now. We do not set current_node because we want to make the node
+			// and attach it to the bone_attachment
+			scene_parent = bone_attachment;
+		}
+
+		// We still have not managed to make a node
 		if (gltf_node->mesh >= 0) {
 			current_node = _generate_mesh_instance(state, scene_parent, node_index);
 		} else if (gltf_node->camera >= 0) {
@@ -5774,22 +5813,18 @@ void GLTFDocument::_generate_scene_node(Ref<GLTFState> state, Node *scene_parent
 			current_node = _generate_light(state, scene_parent, node_index);
 		}
 
-		if (!current_node) {
-			current_node = _generate_spatial(state, scene_parent, node_index);
-		}
-
 		scene_parent->add_child(current_node);
 		if (current_node != scene_root) {
 			current_node->set_owner(scene_root);
 		}
-		current_node->set_transform(gltf_node->xform);
+		// Do not set transform here. Transform is already applied to our bone.
 		current_node->set_name(gltf_node->get_name());
 	}
 
 	state->scene_nodes.insert(node_index, current_node);
 
 	for (int i = 0; i < gltf_node->children.size(); ++i) {
-		_generate_scene_node(state, gltf_node->skeleton >= 0 ? active_skeleton : current_node, scene_root, gltf_node->children[i]);
+		_generate_scene_node(state, active_skeleton, scene_root, gltf_node->children[i]);
 	}
 }
 
@@ -5955,7 +5990,6 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 		} else {
 			transform_node_path = node_path;
 		}
-		bool transform_affects_skinned_mesh_instance = gltf_node->skeleton < 0 && gltf_node->skin >= 0;
 
 		for (int i = 0; i < track.rotation_track.times.size(); i++) {
 			length = MAX(length, track.rotation_track.times[i]);
@@ -5973,6 +6007,8 @@ void GLTFDocument::_import_animation(Ref<GLTFState> state, AnimationPlayer *ap, 
 			}
 		}
 
+		// Animated TRS properties will not affect a skinned mesh.
+		const bool transform_affects_skinned_mesh_instance = gltf_node->skeleton < 0 && gltf_node->skin >= 0;
 		if ((track.rotation_track.values.size() || track.translation_track.values.size() || track.scale_track.values.size()) && !transform_affects_skinned_mesh_instance) {
 			//make transform track
 			int track_idx = animation->get_track_count();
