@@ -31,7 +31,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <malloc.h>
+#include <cstdlib>
 
 // based on the very nice implementation of rb-trees by:
 // https://web.archive.org/web/20120507164830/http://web.mit.edu/~emin/www/source_code/red_black_tree/index.html
@@ -119,7 +119,7 @@ private:
 		}
 
 		void _create_root() {
-			_root = (Element*)malloc(sizeof(Element));
+			_root = (Element*)std::malloc(sizeof(Element));
 			new(_root) Element;
 			_root->parent = _root->left = _root->right = _nil;
 			_root->color = BLACK;
@@ -128,7 +128,7 @@ private:
 		void _free_root() {
 			if (_root) {
 				_root->~Element();
-				free(_root);
+				std::free(_root);
 				_root = nullptr;
 			}
 		}
@@ -332,7 +332,7 @@ private:
 			}
 		}
 
-		Element *new_node = (Element*)malloc(sizeof(Element));
+		Element *new_node = (Element*)std::malloc(sizeof(Element));
 		new(new_node) Element;
 		new_node->parent = new_parent;
 		new_node->right = _data._nil;
@@ -471,7 +471,7 @@ private:
 		}
 
 		p_node->~Element();
-		free(p_node);
+		std::free(p_node);
 		_data.size_cache--;
 		ERR_FAIL_COND(_data._nil->color == RED);
 	}
@@ -497,7 +497,7 @@ private:
 		_cleanup_tree(p_element->left);
 		_cleanup_tree(p_element->right);
 		p_element->~Element();
-		free(p_element);
+		std::free(p_element);
 	}
 
 	void _copy_from(const Map &p_map) {

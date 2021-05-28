@@ -31,7 +31,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <malloc.h>
+#include <cstdlib>
 #include <algorithm>
 
 /**
@@ -49,7 +49,7 @@ public:
 	T *write;
 
 	Vector() {
-		write = (T*)malloc(sizeof(T) * 1);
+		write = (T*)std::malloc(sizeof(T) * 1);
 		size_ = 0;
         capacity_ = 1;
 	}
@@ -57,7 +57,7 @@ public:
         for (size_t i = 0; i < size_; i++) {
             write[i].~T();
         }
-        free(write);
+	std::free(write);
     }
 	Vector<T> &operator=(const Vector<T> &other) {
         resize(0);
@@ -85,12 +85,12 @@ public:
         }
         ERR_FAIL_COND(sz == 0);
         ERR_FAIL_COND(sz < size_);
-		T *new_data = (T*)malloc(sizeof(T) * sz);
+		T *new_data = (T*)std::malloc(sizeof(T) * sz);
         for (size_t i = 0; i < size_; i++) {
             new(&(new_data[i])) T (static_cast<T&&>(write[i]));
             write[i].~T();
         }
-        free(write);
+	std::free(write);
         write = new_data;
         capacity_ = sz;
 	}

@@ -111,7 +111,7 @@ template <typename T, class C>
 DisjointSet<T, C>::~DisjointSet() {
 	for (typename MapT::Element *itr = elements.front(); itr != nullptr; itr = itr->next()) {
 		itr->value()->~Element();
-		free(itr->value());
+		std::free(itr->value());
 	}
 }
 
@@ -131,7 +131,7 @@ typename DisjointSet<T, C>::Element *DisjointSet<T, C>::insert_or_get(T object) 
 		return itr->value();
 	}
 
-	Element *new_element = (Element*)malloc(sizeof(Element));
+	Element *new_element = (Element*)std::malloc(sizeof(Element));
 	new(new_element) Element;
 	new_element->object = object;
 	new_element->parent = new_element;

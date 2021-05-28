@@ -31,7 +31,7 @@
 #ifndef GLOBALS_LIST_H
 #define GLOBALS_LIST_H
 
-//#include "core/sort_array.h"
+#include <cstdlib>
 
 /**
  * Generic Templatized Linked List Implementation.
@@ -169,7 +169,7 @@ private:
 			}
 
 			const_cast<Element *>(p_I)->~Element();
-			free(const_cast<Element *>(p_I));
+			std::free(const_cast<Element *>(p_I));
 			size_cache--;
 
 			return true;
@@ -212,14 +212,14 @@ public:
 	 */
 	Element *push_back(const T &value) {
 		if (!_data) {
-			_data = (_Data*)malloc(sizeof(_Data));
+			_data = (_Data*)std::malloc(sizeof(_Data));
 			new (_data) _Data;
 			_data->first = nullptr;
 			_data->last = nullptr;
 			_data->size_cache = 0;
 		}
 
-		Element *n = (Element*)malloc(sizeof(Element));
+		Element *n = (Element*)std::malloc(sizeof(Element));
 		new (n) Element;
 		n->value = (T &)value;
 
@@ -253,14 +253,14 @@ public:
 	 */
 	Element *push_front(const T &value) {
 		if (!_data) {
-			_data = (_Data*)malloc(sizeof(_Data));
+			_data = (_Data*)std::malloc(sizeof(_Data));
 			new (_data) _Data;
 			_data->first = nullptr;
 			_data->last = nullptr;
 			_data->size_cache = 0;
 		}
 
-		Element *n = (Element*)malloc(sizeof(Element));
+		Element *n = (Element*)std::malloc(sizeof(Element));
 		new (n) Element;
 		n->value = (T &)value;
 		n->prev_ptr = nullptr;
@@ -295,7 +295,7 @@ public:
 			return push_back(p_value);
 		}
 
-		Element *n = (Element*)malloc(sizeof(Element));
+		Element *n = (Element*)std::malloc(sizeof(Element));
 		new (n) Element;
 		n->value = (T &)p_value;
 		n->prev_ptr = p_element;
@@ -322,7 +322,7 @@ public:
 			return push_back(p_value);
 		}
 
-		Element *n = (Element*)malloc(sizeof(Element));
+		Element *n = (Element*)std::malloc(sizeof(Element));
 		new (n) Element;
 		n->value = (T &)p_value;
 		n->prev_ptr = p_element->prev_ptr;
@@ -367,7 +367,7 @@ public:
 
 			if (_data->size_cache == 0) {
 				_data->~_Data();
-				free(_data);
+				std::free(_data);
 				_data = nullptr;
 			}
 
@@ -706,7 +706,7 @@ public:
 		if (_data) {
 			ERR_FAIL_COND(_data->size_cache);
 			_data->~_Data();
-			free(_data);
+			std::free(_data);
 		}
 	};
 };
