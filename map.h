@@ -585,9 +585,9 @@ public:
 	}
 
 	const V &operator[](const K &p_key) const {
-		CRASH_COND(!_data._root);
+		ERR_FAIL_COND_V(!_data._root, nullptr);
 		const Element *e = find(p_key);
-		CRASH_COND(!e);
+		ERR_FAIL_COND_V(!e, nullptr);
 		return e->_value;
 	}
 

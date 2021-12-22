@@ -289,7 +289,7 @@ public:
 	}
 
 	Element *insert_after(Element *p_element, const T &p_value) {
-		CRASH_COND(p_element && (!_data || p_element->data != _data));
+		ERR_FAIL_COND_V(p_element && (!_data || p_element->data != _data), nullptr);
 
 		if (!p_element) {
 			return push_back(p_value);
@@ -316,7 +316,7 @@ public:
 	}
 
 	Element *insert_before(Element *p_element, const T &p_value) {
-		CRASH_COND(p_element && (!_data || p_element->data != _data));
+		ERR_FAIL_COND_V(p_element && (!_data || p_element->data != _data), nullptr);
 
 		if (!p_element) {
 			return push_back(p_value);

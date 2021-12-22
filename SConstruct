@@ -182,7 +182,7 @@ if env['platform'] == 'linux':
         env['CC'] = 'clang'
         env['CXX'] = 'clang++'
 
-    env.Append(CCFLAGS=['-fPIC', '-g', '-Wwrite-strings'])
+    env.Append(CCFLAGS=['-fPIC', '-Wwrite-strings'])
     env.Append(CFLAGS=['-std=c11'])
     env.Append(CXXFLAGS=['-std=c++14'])
     env.Append(LINKFLAGS=["-Wl,-R,'$$ORIGIN'"])

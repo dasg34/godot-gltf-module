@@ -44,6 +44,7 @@
 #include "list.h"
 #include "map.h"
 #include "disjoint_set.h"
+#include "web_request.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -361,22 +362,21 @@ Error GLTFDocument::_serialize_scenes(Ref<GLTFState> state) {
 	return OK;
 }
 
-Error GLTFDocument::_parse_json(const String &p_path, Ref<GLTFState> state) {
-	Error err;
-	Ref<File> f;
-	f.instance();
-	err = f->open(p_path, File::READ);
-	if (err != OK) {
-		return err;
-	}
+uint32_t get_32(const uint8_t *data, int &pos)
+{
+	uint32_t ret = data[4 * pos + 3] << 24 | data[4 * pos + 2] << 16 | data[4 * pos + 1] << 8 | data[4 * pos + 0];
+	pos++;
+	return ret;
+}
 
-	PoolByteArray array = f->get_buffer(f->get_len());
-	array.push_back(0); // guarantee nul terminator. necessary?
-	String text = ((const char *)(array.read().ptr()));
+Error GLTFDocument::_parse_json(PoolByteArray bytes, Ref<GLTFState> state) {
+	Error err;
+	bytes.append(0);
+	String text = ((const char *)(bytes.read().ptr()));
 
 	Ref<JSONParseResult> res = JSON::get_singleton()->parse(text);
 	if (res->get_error() != OK){
-		ERR_PRINT(str_format("{0} {1} {2}", p_path, res->get_error_line(), res->get_error_string()));
+		ERR_PRINT(str_format("{0} {1}", res->get_error_line(), res->get_error_string()));
 		return ERR_FILE_CORRUPT;
 	}
 	state->json = res->get_result();
@@ -408,34 +408,35 @@ Error GLTFDocument::_serialize_bone_attachment(Ref<GLTFState> state) {
 	return OK;
 }
 
-Error GLTFDocument::_parse_glb(const String &p_path, Ref<GLTFState> state) {
+Error GLTFDocument::_parse_glb(PoolByteArray bytes, Ref<GLTFState> state) {
 	Error err;
-	Ref<File> f;
-	f.instance();
-	err = f->open(p_path, File::READ);
-	if (err != OK) {
-		return err;
-	}
 
-	uint32_t magic = f->get_32();
+	int pos = 0;
+	const uint8_t *data = bytes.read().ptr();
+	uint32_t magic = get_32(data, pos);
 	ERR_FAIL_COND_V(magic != 0x46546C67, ERR_FILE_UNRECOGNIZED); //glTF
-	f->get_32(); // version
-	f->get_32(); // length
+	get_32(data, pos); // version
+	get_32(data, pos); // length
 
-	uint32_t chunk_length = f->get_32();
-	uint32_t chunk_type = f->get_32();
+	uint32_t chunk_length = get_32(data, pos);
+	uint32_t chunk_type = get_32(data, pos);
 
 	ERR_FAIL_COND_V(chunk_type != 0x4E4F534A, ERR_PARSE_ERROR); //JSON
 
-	PoolByteArray json_data = f->get_buffer(chunk_length);
-	ERR_FAIL_COND_V(json_data.size() != chunk_length, ERR_FILE_CORRUPT);
-	json_data.push_back(0);
-
-	String text = ((const char*)json_data.read().ptr());
+	PoolByteArray json_data_array;
+	json_data_array.resize(chunk_length + 1);
+	uint8_t *json_data = json_data_array.write().ptr();
+	for (int i = 0; i < chunk_length; i++)
+	{
+		json_data[i] = data[i + pos * 4];
+	}
+	json_data[chunk_length] = 0;
+	String text = ((const char*)json_data);
+	pos += chunk_length / 4;
 
 	Ref<JSONParseResult> res = JSON::get_singleton()->parse(text);
 	if (res->get_error() != OK){
-		ERR_PRINT(str_format("{0} {1} {2}", p_path, res->get_error_line(), res->get_error_string()));
+		ERR_PRINT(str_format("{0} {1}", res->get_error_line(), res->get_error_string()));
 		return ERR_FILE_CORRUPT;
 	}
 
@@ -443,18 +444,23 @@ Error GLTFDocument::_parse_glb(const String &p_path, Ref<GLTFState> state) {
 
 	//data?
 
-	chunk_length = f->get_32();
-	chunk_type = f->get_32();
+	chunk_length = get_32(data, pos);
+	chunk_type = get_32(data, pos);
 
-	if (f->eof_reached()) {
+	if (bytes.size() == pos - 1) {
 		return OK; //all good
 	}
 
 	ERR_FAIL_COND_V(chunk_type != 0x004E4942, ERR_PARSE_ERROR); //BIN
 
-	state->glb_data = f->get_buffer(chunk_length);
-	ERR_FAIL_COND_V(state->glb_data.size() != chunk_length, ERR_FILE_CORRUPT);
+	state->glb_data.resize(chunk_length);
+	uint8_t * glb_data = state->glb_data.write().ptr();
 
+	for (int i = 0; i < chunk_length; i++) {
+		glb_data[i] = data[i + pos * 4];
+	}
+
+	ERR_FAIL_COND_V(state->glb_data.size() != chunk_length, ERR_FILE_CORRUPT);
 	return OK;
 }
 
@@ -901,12 +907,7 @@ Error GLTFDocument::_parse_buffers(Ref<GLTFState> state, const String &p_base_pa
 					buffer_data = _parse_base64_uri(uri);
 				} else { // Relative path to an external image file.
 					uri = p_base_path.plus_file(uri).replace("\\", "/"); // Fix for Windows.
-					Ref<File> f;
-					f.instance();
-					Error err = f->open(uri, File::READ);
-					if (err == OK) {
-						buffer_data = f->get_buffer(f->get_len());
-					}
+					buffer_data = WebRequest::get_singleton()->load_bytes(uri);
 					ERR_FAIL_COND_V_MSG(buffer_data.size() == 0, ERR_PARSE_ERROR, "glTF: Couldn't load binary file as an array: " + uri);
 				}
 
@@ -955,7 +956,7 @@ Error GLTFDocument::_parse_buffer_views(Ref<GLTFState> state) {
 	if (!state->json.has("bufferViews")) {
 		return OK;
 	}
-	
+
 	Ref<NativeScript> GLTFBufferView_class = class_by_name("GLTFBufferView");
 	const Array &buffers = state->json["bufferViews"];
 	for (GLTFBufferViewIndex i = 0; i < buffers.size(); i++) {
@@ -3254,33 +3255,11 @@ Error GLTFDocument::_parse_images(Ref<GLTFState> state, const String &p_base_pat
 				}
 			} else { // Relative path to an external image file.
 				uri = p_base_path.plus_file(uri).replace("\\", "/"); // Fix for Windows.
-				// ResourceLoader will rely on the file extension to use the relevant loader.
-				// The spec says that if mimeType is defined, it should take precedence (e.g.
-				// there could be a `.png` image which is actually JPEG), but there's no easy
-				// API for that in Godot, so we'd have to load as a buffer (i.e. embedded in
-				// the material), so we do this only as fallback.
-				Ref<Texture> texture = ResourceLoader::get_singleton()->load(uri);
-				if (texture.is_valid()) {
-					state->images.push_back(texture);
-					continue;
-				} else if (mimetype == "image/png" || mimetype == "image/jpeg") {
-					// Fallback to loading as byte array.
-					// This enables us to support the spec's requirement that we honor mimetype
-					// regardless of file URI.
-					Ref<File> f;
-					f.instance();
-					Error err = f->open(uri, File::READ);
-					if (err == OK) {
-						data_tmp = f->get_buffer(f->get_len());
-						data_size = data_tmp.size();
-					}
-					if (data_tmp.size() == 0) {
-						WARN_PRINT(str_format("glTF: Image index '{0}' couldn't be loaded as a buffer of MIME type '{1}' from URI: {2}. Skipping it.", i, mimetype, uri));
-						state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
-						continue;
-					}
-				} else {
-					WARN_PRINT(str_format("glTF: Image index '{0}' couldn't be loaded from URI: {1}. Skipping it.", i, uri));
+				data_tmp = WebRequest::get_singleton()->load_bytes(uri);
+				data_size = data_tmp.size();
+
+				if (data_tmp.size() == 0) {
+					WARN_PRINT(str_format("glTF: Image index '{0}' couldn't be loaded as a buffer of MIME type '{1}' from URI: {2}. Skipping it.", i, mimetype, uri));
 					state->images.push_back(Ref<Texture>()); // Placeholder to keep count.
 					continue;
 				}
@@ -6746,33 +6725,37 @@ void GLTFDocument::_convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
 	}
 }
 
-Error GLTFDocument::parse(Ref<GLTFState> state, String p_path, bool p_read_binary) {
+Error GLTFDocument::parse(Ref<GLTFState> state, String p_path, const PoolByteArray bytes, bool p_read_binary) {
 	Error err;
-	Ref<File> f;
-	f.instance();
-	err = f->open(p_path, File::READ);
-	if (err != OK) {
-		return err;
+
+	PoolByteArray gltf_bytes;
+	if (bytes.size() == 0)
+	{
+		gltf_bytes = WebRequest::get_singleton()->load_bytes(p_path);
 	}
-	uint32_t magic = f->get_32();
+	else
+	{
+		gltf_bytes = bytes;
+	}
+
+	const uint8_t *data = gltf_bytes.read().ptr();
+	uint32_t magic = data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0];
 	if (magic == 0x46546C67) {
 		//binary file
-		//text file
-		err = _parse_glb(p_path, state);
+		err = _parse_glb(gltf_bytes, state);
 		if (err != OK) {
 			return FAILED;
 		}
 	} else {
 		//text file
-		err = _parse_json(p_path, state);
+		err = _parse_json(gltf_bytes, state);
 		if (err != OK) {
 			return FAILED;
 		}
 	}
-	f->close();
 
-	// get file's name, use for scene name if none
-	state->filename = p_path.get_file().split(".")[0];
+	// "root", use for scene name if none
+	state->filename = "root";
 
 	ERR_FAIL_COND_V(!state->json.has("asset"), Error::FAILED);
 

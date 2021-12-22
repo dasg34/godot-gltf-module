@@ -30,12 +30,14 @@
 
 #include "gltf_state.h"
 #include "editor_scene_importer_gltf.h"
+#include "web_request.h"
 
 #include <EditorSceneImporter.hpp>
 #include <PackedScene.hpp>
 #include <Spatial.hpp>
 #include <AnimationPlayer.hpp>
-
+#include <PoolArrays.hpp>
+#include <FuncRef.hpp>
 
 const static int IMPORT_USE_NAMED_SKIN_BINDS = 4096; // missing in enum
 
@@ -64,7 +66,8 @@ Node *EditorSceneImporterGLTF::_import_scene(String p_path,
 		uint32_t p_flags, int p_bake_fps) {
 	Ref<PackedSceneGLTF> importer = class_by_name("PackedSceneGLTF")->new_();
 	Ref<GLTFState> null_gltfref;
-	return importer->import_gltf_scene(p_path, p_flags, p_bake_fps, null_gltfref);
+	PoolByteArray bytes;
+	return importer->import_gltf_scene(p_path, bytes, p_flags, p_bake_fps, null_gltfref);
 }
 
 Ref<Animation> EditorSceneImporterGLTF::_import_animation(String p_path,
@@ -80,13 +83,13 @@ void PackedSceneGLTF::_register_methods() {
 	register_method("import_gltf_scene", &PackedSceneGLTF::import_gltf_scene);
 }
 
-Node *PackedSceneGLTF::import_gltf_scene(String p_path, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state) {
+Node *PackedSceneGLTF::import_gltf_scene(String p_path, const PoolByteArray bytes, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state) {
 	Error err = Error::FAILED;
 	PoolStringArray deps;
-	return import_scene(p_path, p_flags, p_bake_fps, &deps, &err, r_state);
+	return import_scene(p_path, bytes, p_flags, p_bake_fps, &deps, &err, r_state);
 }
 
-Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
+Node *PackedSceneGLTF::import_scene(const String &p_path, const PoolByteArray bytes, uint32_t p_flags,
 		int p_bake_fps,
 		PoolStringArray *r_missing_deps,
 		Error *r_err,
@@ -99,7 +102,7 @@ Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
 
 	Ref<GLTFDocument> gltf_document;
 	gltf_document = class_by_name("GLTFDocument")->new_();
-	Error err = gltf_document->parse(r_state, p_path);
+	Error err = gltf_document->parse(r_state, p_path, bytes);
 	*r_err = err;
 	ERR_FAIL_COND_V(err != Error::OK, nullptr);
 
@@ -117,6 +120,8 @@ Node *PackedSceneGLTF::import_scene(const String &p_path, uint32_t p_flags,
 		}
 	}
 
+	WebRequest::get_singleton()->close(p_path);
+
 	return root;
 }
 
@@ -124,7 +129,8 @@ void PackedSceneGLTF::pack_gltf(String p_path, int32_t p_flags,
 		real_t p_bake_fps, Ref<GLTFState> r_state) {
 	Error err = Error::FAILED;
 	PoolStringArray deps;
-	Node *root = import_scene(p_path, p_flags, p_bake_fps, &deps, &err, r_state);
+	PoolByteArray bytes;
+	Node *root = import_scene(p_path, bytes, p_flags, p_bake_fps, &deps, &err, r_state);
 	ERR_FAIL_COND(err != Error::OK);
 	pack(root);
 }

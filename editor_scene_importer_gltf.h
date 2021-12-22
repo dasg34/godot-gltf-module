@@ -79,12 +79,12 @@ public:
 	void _build_parent_hierachy(Ref<GLTFState> state);
 	int32_t export_gltf(Node *p_root, String p_path, int32_t p_flags = 0,
 			real_t p_bake_fps = 1000.0f);
-	Node *import_scene(const String &p_path, uint32_t p_flags,
+	Node *import_scene(const String &p_path, const PoolByteArray bytes, uint32_t p_flags,
 			int p_bake_fps,
 			PoolStringArray *r_missing_deps,
 			Error *r_err,
 			Ref<GLTFState> r_state);
-	Node *import_gltf_scene(String p_path, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state = Ref<GLTFState>());
+	Node *import_gltf_scene(String p_path, const PoolByteArray bytes, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state = Ref<GLTFState>());
 	void pack_gltf(String p_path, int32_t p_flags = 0,
 			real_t p_bake_fps = 1000.0f, Ref<GLTFState> r_state = Ref<GLTFState>());
 };
