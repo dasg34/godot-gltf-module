@@ -101,7 +101,7 @@ opts.Add(EnumVariable(
 opts.Add(PathVariable(
     'headers_dir',
     'Path to the directory containing Godot headers',
-    'godot-cpp/godot-headers',
+    'libs/godot-cpp/godot-headers',
     PathVariable.PathIsDir
 ))
 opts.Add(PathVariable(
@@ -405,8 +405,8 @@ elif env['platform'] == 'android':
 
 Export("env")
 
-godot_headers_path = ARGUMENTS.get("headers", os.getenv("GODOT_HEADERS", "godot-cpp/godot-headers"))
-godot_bindings_path = ARGUMENTS.get("cpp_bindings", os.getenv("CPP_BINDINGS", "godot-cpp"))
+godot_headers_path = ARGUMENTS.get("headers", os.getenv("GODOT_HEADERS", "libs/godot-cpp/godot-headers"))
+godot_bindings_path = ARGUMENTS.get("cpp_bindings", os.getenv("CPP_BINDINGS", "libs/godot-cpp"))
 
 
 # default to debug build, must be same setting as used for cpp_bindings
@@ -439,7 +439,7 @@ env.Append(LIBS=[add_suffix(['libgodot-cpp'])])
 env.Append(LIBPATH=[godot_bindings_path + '/bin/'])
 
 sources = []
-add_sources(sources, ".")
+add_sources(sources, "src")
 
 dll_extension = ""
 if env['platform'] == "windows":
