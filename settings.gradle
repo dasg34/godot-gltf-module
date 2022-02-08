@@ -1,0 +1,4 @@
+rootProject.name = "Godot GLTF Plugin"
+
+include ":GLTFLoader"
+project(":GLTFLoader").projectDir = file("plugin")

@@ -1,0 +1,6 @@
+[config]
+
+name="GodotGLTFLoader"
+binary_type="local"
+binary="godot_gltf_loader.1.0.0-debug.aar"
+

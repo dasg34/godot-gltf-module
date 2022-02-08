@@ -1,0 +1,39 @@
+apply from: 'config.gradle'
+
+buildscript {
+    apply from: 'config.gradle'
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$versions.gradlePluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlinVersion"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+def outputDir = "build/outputs"
+
+task clean(type: Delete) {
+    dependsOn(":GLTFLoader:clean")
+    delete rootProject.buildDir
+    delete outputDir
+}
+
+/**
+ * Generate the plugin binaries.
+ */
+task generatePluginBinary(type: Copy) {
+    dependsOn(":GLTFLoader:assembleDebug")
+    dependsOn(":GLTFLoader:assembleRelease")
+    from("plugin/build/outputs/aar")
+    into("$outputDir/pluginBin")
+}
