@@ -36,9 +36,9 @@
 #include <Resource.hpp>
 using namespace godot;
 
-class GLTFLight : public Resource {
-	GODOT_CLASS(GLTFLight, Resource)
-	friend class GLTFDocument;
+class GLTFLight_ : public Resource {
+	GODOT_CLASS(GLTFLight_, Resource)
+	friend class GLTFDocument_;
 
 public:
 	static void _register_methods();

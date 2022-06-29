@@ -31,46 +31,46 @@
 #include "gltf_skin.h"
 #include <Skin.hpp>
 
-void GLTFSkin::_register_methods() {
-	register_method("_init", &GLTFSkin::_init);
+void GLTFSkin_::_register_methods() {
+	register_method("_init", &GLTFSkin_::_init);
 
-	register_property<GLTFSkin, int>("skin_root", &GLTFSkin::set_skin_root, &GLTFSkin::get_skin_root, -1); // GLTFNodeIndex
-	register_property<GLTFSkin, PoolIntArray>("joints_original", &GLTFSkin::set_joints_original, &GLTFSkin::get_joints_original, PoolIntArray()); // Vector<GLTFNodeIndex>
-	register_property<GLTFSkin, Array>("inverse_binds", &GLTFSkin::set_inverse_binds, &GLTFSkin::get_inverse_binds, Array()); // Vector<Transform>
-	register_property<GLTFSkin, PoolIntArray>("joints", &GLTFSkin::set_joints, &GLTFSkin::get_joints, PoolIntArray()); // Vector<GLTFNodeIndex>
-	register_property<GLTFSkin, PoolIntArray>("non_joints", &GLTFSkin::set_non_joints, &GLTFSkin::get_non_joints, PoolIntArray()); // Vector<GLTFNodeIndex>
-	register_property<GLTFSkin, PoolIntArray>("roots", &GLTFSkin::set_roots, &GLTFSkin::get_roots, PoolIntArray()); // Vector<GLTFNodeIndex>
-	register_property<GLTFSkin, int>("skeleton", &GLTFSkin::set_skeleton, &GLTFSkin::get_skeleton, -1); // int
-	register_property<GLTFSkin, Dictionary>("joint_i_to_bone_i", &GLTFSkin::set_joint_i_to_bone_i, &GLTFSkin::get_joint_i_to_bone_i, Dictionary()); // Map<int,
-	register_property<GLTFSkin, Dictionary>("joint_i_to_name", &GLTFSkin::set_joint_i_to_name, &GLTFSkin::get_joint_i_to_name, Dictionary()); // Map<int,
-	register_property<GLTFSkin, Ref<Skin>>("godot_skin", &GLTFSkin::set_godot_skin, &GLTFSkin::get_godot_skin, Ref<Skin>()); // Ref<Skin>
+	register_property<GLTFSkin_, int>("skin_root", &GLTFSkin_::set_skin_root, &GLTFSkin_::get_skin_root, -1); // GLTFNodeIndex
+	register_property<GLTFSkin_, PoolIntArray>("joints_original", &GLTFSkin_::set_joints_original, &GLTFSkin_::get_joints_original, PoolIntArray()); // Vector<GLTFNodeIndex>
+	register_property<GLTFSkin_, Array>("inverse_binds", &GLTFSkin_::set_inverse_binds, &GLTFSkin_::get_inverse_binds, Array()); // Vector<Transform>
+	register_property<GLTFSkin_, PoolIntArray>("joints", &GLTFSkin_::set_joints, &GLTFSkin_::get_joints, PoolIntArray()); // Vector<GLTFNodeIndex>
+	register_property<GLTFSkin_, PoolIntArray>("non_joints", &GLTFSkin_::set_non_joints, &GLTFSkin_::get_non_joints, PoolIntArray()); // Vector<GLTFNodeIndex>
+	register_property<GLTFSkin_, PoolIntArray>("roots", &GLTFSkin_::set_roots, &GLTFSkin_::get_roots, PoolIntArray()); // Vector<GLTFNodeIndex>
+	register_property<GLTFSkin_, int>("skeleton", &GLTFSkin_::set_skeleton, &GLTFSkin_::get_skeleton, -1); // int
+	register_property<GLTFSkin_, Dictionary>("joint_i_to_bone_i", &GLTFSkin_::set_joint_i_to_bone_i, &GLTFSkin_::get_joint_i_to_bone_i, Dictionary()); // Map<int,
+	register_property<GLTFSkin_, Dictionary>("joint_i_to_name", &GLTFSkin_::set_joint_i_to_name, &GLTFSkin_::get_joint_i_to_name, Dictionary()); // Map<int,
+	register_property<GLTFSkin_, Ref<Skin>>("godot_skin", &GLTFSkin_::set_godot_skin, &GLTFSkin_::get_godot_skin, Ref<Skin>()); // Ref<Skin>
 }
 
-GLTFNodeIndex GLTFSkin::get_skin_root() {
+GLTFNodeIndex GLTFSkin_::get_skin_root() {
 	return skin_root;
 }
 
-void GLTFSkin::set_skin_root(GLTFNodeIndex p_skin_root) {
+void GLTFSkin_::set_skin_root(GLTFNodeIndex p_skin_root) {
 	skin_root = p_skin_root;
 }
 
-PoolIntArray GLTFSkin::get_joints_original() {
+PoolIntArray GLTFSkin_::get_joints_original() {
 	return joints_original;
 }
 
-void GLTFSkin::set_joints_original(PoolIntArray p_joints_original) {
+void GLTFSkin_::set_joints_original(PoolIntArray p_joints_original) {
 	joints_original = p_joints_original;
 }
 
-Array GLTFSkin::get_inverse_binds() {
-	return GLTFDocument::to_array(inverse_binds);
+Array GLTFSkin_::get_inverse_binds() {
+	return GLTFDocument_::to_array(inverse_binds);
 }
 
-void GLTFSkin::set_inverse_binds(Array p_inverse_binds) {
-	GLTFDocument::set_from_array(inverse_binds, p_inverse_binds);
+void GLTFSkin_::set_inverse_binds(Array p_inverse_binds) {
+	GLTFDocument_::set_from_array(inverse_binds, p_inverse_binds);
 }
 
-PoolIntArray GLTFSkin::get_joints() {
+PoolIntArray GLTFSkin_::get_joints() {
 	PoolIntArray ret;
 	ret.resize(joints.size());
 	PoolIntArray::Write wr = ret.write();
@@ -81,12 +81,12 @@ PoolIntArray GLTFSkin::get_joints() {
 	return ret;
 }
 
-void GLTFSkin::set_joints(PoolIntArray p_joints) {
+void GLTFSkin_::set_joints(PoolIntArray p_joints) {
 	joints.resize(0);
 	joints.append_array(p_joints);
 }
 
-PoolIntArray GLTFSkin::get_non_joints() {
+PoolIntArray GLTFSkin_::get_non_joints() {
 	PoolIntArray ret;
 	ret.resize(non_joints.size());
 	PoolIntArray::Write wr = ret.write();
@@ -97,36 +97,36 @@ PoolIntArray GLTFSkin::get_non_joints() {
 	return ret;
 }
 
-void GLTFSkin::set_non_joints(PoolIntArray p_non_joints) {
+void GLTFSkin_::set_non_joints(PoolIntArray p_non_joints) {
 	non_joints.resize(0);
 	non_joints.append_array(p_non_joints);
 }
 
-PoolIntArray GLTFSkin::get_roots() {
+PoolIntArray GLTFSkin_::get_roots() {
 	return roots;
 }
 
-void GLTFSkin::set_roots(PoolIntArray p_roots) {
+void GLTFSkin_::set_roots(PoolIntArray p_roots) {
 	roots = p_roots;
 }
 
-int GLTFSkin::get_skeleton() {
+int GLTFSkin_::get_skeleton() {
 	return skeleton;
 }
 
-void GLTFSkin::set_skeleton(int p_skeleton) {
+void GLTFSkin_::set_skeleton(int p_skeleton) {
 	skeleton = p_skeleton;
 }
 
-Dictionary GLTFSkin::get_joint_i_to_bone_i() {
-	return GLTFDocument::to_dict(joint_i_to_bone_i);
+Dictionary GLTFSkin_::get_joint_i_to_bone_i() {
+	return GLTFDocument_::to_dict(joint_i_to_bone_i);
 }
 
-void GLTFSkin::set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
-	GLTFDocument::set_from_dict(joint_i_to_bone_i, p_joint_i_to_bone_i);
+void GLTFSkin_::set_joint_i_to_bone_i(Dictionary p_joint_i_to_bone_i) {
+	GLTFDocument_::set_from_dict(joint_i_to_bone_i, p_joint_i_to_bone_i);
 }
 
-Dictionary GLTFSkin::get_joint_i_to_name() {
+Dictionary GLTFSkin_::get_joint_i_to_name() {
 	Dictionary ret;
 	Map<int, String>::Element *elem = joint_i_to_name.front();
 	while (elem) {
@@ -136,7 +136,7 @@ Dictionary GLTFSkin::get_joint_i_to_name() {
 	return ret;
 }
 
-void GLTFSkin::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
+void GLTFSkin_::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
 	joint_i_to_name = Map<int, String>();
 	Array keys = p_joint_i_to_name.keys();
 	for (int i = 0; i < keys.size(); i++) {
@@ -144,10 +144,10 @@ void GLTFSkin::set_joint_i_to_name(Dictionary p_joint_i_to_name) {
 	}
 }
 
-Ref<Skin> GLTFSkin::get_godot_skin() {
+Ref<Skin> GLTFSkin_::get_godot_skin() {
 	return godot_skin;
 }
 
-void GLTFSkin::set_godot_skin(Ref<Skin> p_godot_skin) {
+void GLTFSkin_::set_godot_skin(Ref<Skin> p_godot_skin) {
 	godot_skin = p_godot_skin;
 }

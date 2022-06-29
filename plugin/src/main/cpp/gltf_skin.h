@@ -37,9 +37,9 @@
 #include "gltf_document.h"
 using namespace godot;
 
-class GLTFSkin : public Resource {
-	GODOT_CLASS(GLTFSkin, Resource);
-	friend class GLTFDocument;
+class GLTFSkin_ : public Resource {
+	GODOT_CLASS(GLTFSkin_, Resource);
+	friend class GLTFDocument_;
 
 private:
 	// The "skeleton" property defined in the gltf spec. -1 = Scene Root

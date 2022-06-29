@@ -49,8 +49,8 @@
 #include "list.h"
 using namespace godot;
 
-class EditorSceneImporterGLTF : public EditorSceneImporter {
-	GODOT_CLASS(EditorSceneImporterGLTF, EditorSceneImporter);
+class EditorSceneImporterGLTF_ : public EditorSceneImporter {
+	GODOT_CLASS(EditorSceneImporterGLTF_, EditorSceneImporter);
 
 public:
 	static void _register_methods();
@@ -65,8 +65,8 @@ public:
 			uint32_t p_flags, int p_bake_fps);
 };
 
-class PackedSceneGLTF : public PackedScene {
-	GODOT_CLASS(PackedSceneGLTF, PackedScene);
+class PackedSceneGLTF_ : public PackedScene {
+	GODOT_CLASS(PackedSceneGLTF_, PackedScene);
 
 public:
 	static void _register_methods();
@@ -76,16 +76,16 @@ public:
 	void save_scene(Node *p_node, const String &p_path, const String &p_src_path,
 			uint32_t p_flags, int p_bake_fps,
 			PoolStringArray *r_missing_deps, Error *r_err = NULL);
-	void _build_parent_hierachy(Ref<GLTFState> state);
+	void _build_parent_hierachy(Ref<GLTFState_> state);
 	int32_t export_gltf(Node *p_root, String p_path, int32_t p_flags = 0,
 			real_t p_bake_fps = 1000.0f);
 	Node *import_scene(const String &p_path, const PoolByteArray bytes, uint32_t p_flags,
 			int p_bake_fps,
 			PoolStringArray *r_missing_deps,
 			Error *r_err,
-			Ref<GLTFState> r_state);
-	Node *import_gltf_scene(String p_path, const PoolByteArray bytes, uint32_t p_flags, float p_bake_fps, Ref<GLTFState> r_state = Ref<GLTFState>());
+			Ref<GLTFState_> r_state);
+	Node *import_gltf_scene(String p_path, const PoolByteArray bytes, uint32_t p_flags, float p_bake_fps, Ref<GLTFState_> r_state = Ref<GLTFState_>());
 	void pack_gltf(String p_path, int32_t p_flags = 0,
-			real_t p_bake_fps = 1000.0f, Ref<GLTFState> r_state = Ref<GLTFState>());
+			real_t p_bake_fps = 1000.0f, Ref<GLTFState_> r_state = Ref<GLTFState_>());
 };
 #endif // EDITOR_SCENE_IMPORTER_GLTF_H

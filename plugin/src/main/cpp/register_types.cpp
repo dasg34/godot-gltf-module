@@ -56,23 +56,23 @@ extern "C" void GDN_EXPORT godot_gltf_gdnative_terminate(godot_gdnative_terminat
 extern "C" void GDN_EXPORT godot_gltf_nativescript_init(void *handle) {
     godot::Godot::nativescript_init(handle);
 
-	register_tool_class<EditorSceneImporterGLTF>();
-	register_tool_class<GLTFMesh>();
-	register_tool_class<GLTFSpecGloss>();
-	register_tool_class<GLTFNode>();
-	register_tool_class<GLTFAnimation>();
-	register_tool_class<GLTFBufferView>();
-	register_tool_class<GLTFAccessor>();
-	register_tool_class<GLTFTexture>();
-	register_tool_class<GLTFSkeleton>();
-	register_tool_class<GLTFSkin>();
-	register_tool_class<GLTFCamera>();
-	register_tool_class<GLTFLight>();
-	register_tool_class<GLTFState>();
-	register_tool_class<GLTFDocument>();
-	register_tool_class<PackedSceneGLTF>();
+	register_tool_class<EditorSceneImporterGLTF_>();
+	register_tool_class<GLTFMesh_>();
+	register_tool_class<GLTFSpecGloss_>();
+	register_tool_class<GLTFNode_>();
+	register_tool_class<GLTFAnimation_>();
+	register_tool_class<GLTFBufferView_>();
+	register_tool_class<GLTFAccessor_>();
+	register_tool_class<GLTFTexture_>();
+	register_tool_class<GLTFSkeleton_>();
+	register_tool_class<GLTFSkin_>();
+	register_tool_class<GLTFCamera_>();
+	register_tool_class<GLTFLight_>();
+	register_tool_class<GLTFState_>();
+	register_tool_class<GLTFDocument_>();
+	register_tool_class<PackedSceneGLTF_>();
 
-	// Ref<EditorSceneImporterGLTF> import_gltf;
+	// Ref<EditorSceneImporterGLTF_> import_gltf;
 	// import_gltf.instance();
 	// ResourceImporterScene::get_singleton()->add_importer(import_gltf);
 }

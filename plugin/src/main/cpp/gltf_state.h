@@ -51,10 +51,10 @@
 #include <Texture.hpp>
 using namespace godot;
 
-class GLTFState : public Resource {
-	GODOT_CLASS(GLTFState, Resource);
-	friend class GLTFDocument;
-	friend class PackedSceneGLTF;
+class GLTFState_ : public Resource {
+	GODOT_CLASS(GLTFState_, Resource);
+	friend class GLTFDocument_;
+	friend class PackedSceneGLTF_;
 
 	String filename;
 	Dictionary json;
@@ -64,12 +64,12 @@ class GLTFState : public Resource {
 
 	bool use_named_skin_binds = false;
 
-	Vector<Ref<GLTFNode>> nodes;
+	Vector<Ref<GLTFNode_>> nodes;
 	Vector<PoolByteArray> buffers;
-	Vector<Ref<GLTFBufferView>> buffer_views;
-	Vector<Ref<GLTFAccessor>> accessors;
+	Vector<Ref<GLTFBufferView_>> buffer_views;
+	Vector<Ref<GLTFAccessor_>> accessors;
 
-	Vector<Ref<GLTFMesh>> meshes; // meshes are loaded directly, no reason not to.
+	Vector<Ref<GLTFMesh_>> meshes; // meshes are loaded directly, no reason not to.
 
 	Vector<AnimationPlayer *> animation_players;
 	Map<Ref<Material>, GLTFMaterialIndex> material_cache;
@@ -77,18 +77,18 @@ class GLTFState : public Resource {
 
 	String scene_name;
 	Vector<int> root_nodes;
-	Vector<Ref<GLTFTexture>> textures;
+	Vector<Ref<GLTFTexture_>> textures;
 	Vector<Ref<Texture>> images;
 
-	Vector<Ref<GLTFSkin>> skins;
-	Vector<Ref<GLTFCamera>> cameras;
-	Vector<Ref<GLTFLight>> lights;
+	Vector<Ref<GLTFSkin_>> skins;
+	Vector<Ref<GLTFCamera_>> cameras;
+	Vector<Ref<GLTFLight_>> lights;
 	Set<String> unique_names;
 	Set<String> unique_animation_names;
 
-	Vector<Ref<GLTFSkeleton>> skeletons;
+	Vector<Ref<GLTFSkeleton_>> skeletons;
 	Map<GLTFSkeletonIndex, GLTFNodeIndex> skeleton_to_node;
-	Vector<Ref<GLTFAnimation>> animations;
+	Vector<Ref<GLTFAnimation_>> animations;
 	Map<GLTFNodeIndex, Node *> scene_nodes;
 
 public:

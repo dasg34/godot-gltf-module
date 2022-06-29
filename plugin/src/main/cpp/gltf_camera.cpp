@@ -30,11 +30,11 @@
 
 #include "gltf_camera.h"
 
-void GLTFCamera::_register_methods() {
-	register_method("_init", &GLTFCamera::_init);
+void GLTFCamera_::_register_methods() {
+	register_method("_init", &GLTFCamera_::_init);
 
-	register_property<GLTFCamera, bool>("perspective", &GLTFCamera::set_perspective, &GLTFCamera::get_perspective, true); // bool
-	register_property<GLTFCamera, float>("fov_size", &GLTFCamera::set_fov_size, &GLTFCamera::get_fov_size, 75.0f); // float
-	register_property<GLTFCamera, float>("zfar", &GLTFCamera::set_zfar, &GLTFCamera::get_zfar, 4000.0f); // float
-	register_property<GLTFCamera, float>("znear", &GLTFCamera::set_znear, &GLTFCamera::get_znear, 0.05f); // float
+	register_property<GLTFCamera_, bool>("perspective", &GLTFCamera_::set_perspective, &GLTFCamera_::get_perspective, true); // bool
+	register_property<GLTFCamera_, float>("fov_size", &GLTFCamera_::set_fov_size, &GLTFCamera_::get_fov_size, 75.0f); // float
+	register_property<GLTFCamera_, float>("zfar", &GLTFCamera_::set_zfar, &GLTFCamera_::get_zfar, 4000.0f); // float
+	register_property<GLTFCamera_, float>("znear", &GLTFCamera_::set_znear, &GLTFCamera_::get_znear, 0.05f); // float
 }

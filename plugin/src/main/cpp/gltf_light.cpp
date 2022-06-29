@@ -30,61 +30,61 @@
 
 #include "gltf_light.h"
 
-void GLTFLight::_register_methods() {
-	register_method("_init", &GLTFLight::_init);
+void GLTFLight_::_register_methods() {
+	register_method("_init", &GLTFLight_::_init);
 
-	register_property<GLTFLight, Color>("color", &GLTFLight::set_color, &GLTFLight::get_color, Color()); // Color
-	register_property<GLTFLight, float>("intensity", &GLTFLight::set_intensity, &GLTFLight::get_intensity, 0); // float
-	register_property<GLTFLight, String>("type", &GLTFLight::set_type, &GLTFLight::get_type, String()); // String
-	register_property<GLTFLight, float>("range", &GLTFLight::set_range, &GLTFLight::get_range, 0); // float
-	register_property<GLTFLight, float>("inner_cone_angle", &GLTFLight::set_inner_cone_angle, &GLTFLight::get_inner_cone_angle, 0); // float
-	register_property<GLTFLight, float>("outer_cone_angle", &GLTFLight::set_outer_cone_angle, &GLTFLight::get_outer_cone_angle, 0); // float
+	register_property<GLTFLight_, Color>("color", &GLTFLight_::set_color, &GLTFLight_::get_color, Color()); // Color
+	register_property<GLTFLight_, float>("intensity", &GLTFLight_::set_intensity, &GLTFLight_::get_intensity, 0); // float
+	register_property<GLTFLight_, String>("type", &GLTFLight_::set_type, &GLTFLight_::get_type, String()); // String
+	register_property<GLTFLight_, float>("range", &GLTFLight_::set_range, &GLTFLight_::get_range, 0); // float
+	register_property<GLTFLight_, float>("inner_cone_angle", &GLTFLight_::set_inner_cone_angle, &GLTFLight_::get_inner_cone_angle, 0); // float
+	register_property<GLTFLight_, float>("outer_cone_angle", &GLTFLight_::set_outer_cone_angle, &GLTFLight_::get_outer_cone_angle, 0); // float
 }
 
-Color GLTFLight::get_color() {
+Color GLTFLight_::get_color() {
 	return color;
 }
 
-void GLTFLight::set_color(Color p_color) {
+void GLTFLight_::set_color(Color p_color) {
 	color = p_color;
 }
 
-float GLTFLight::get_intensity() {
+float GLTFLight_::get_intensity() {
 	return intensity;
 }
 
-void GLTFLight::set_intensity(float p_intensity) {
+void GLTFLight_::set_intensity(float p_intensity) {
 	intensity = p_intensity;
 }
 
-String GLTFLight::get_type() {
+String GLTFLight_::get_type() {
 	return type;
 }
 
-void GLTFLight::set_type(String p_type) {
+void GLTFLight_::set_type(String p_type) {
 	type = p_type;
 }
 
-float GLTFLight::get_range() {
+float GLTFLight_::get_range() {
 	return range;
 }
 
-void GLTFLight::set_range(float p_range) {
+void GLTFLight_::set_range(float p_range) {
 	range = p_range;
 }
 
-float GLTFLight::get_inner_cone_angle() {
+float GLTFLight_::get_inner_cone_angle() {
 	return inner_cone_angle;
 }
 
-void GLTFLight::set_inner_cone_angle(float p_inner_cone_angle) {
+void GLTFLight_::set_inner_cone_angle(float p_inner_cone_angle) {
 	inner_cone_angle = p_inner_cone_angle;
 }
 
-float GLTFLight::get_outer_cone_angle() {
+float GLTFLight_::get_outer_cone_angle() {
 	return outer_cone_angle;
 }
 
-void GLTFLight::set_outer_cone_angle(float p_outer_cone_angle) {
+void GLTFLight_::set_outer_cone_angle(float p_outer_cone_angle) {
 	outer_cone_angle = p_outer_cone_angle;
 }

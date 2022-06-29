@@ -31,233 +31,233 @@
 #include <Array.hpp>
 #include "gltf_state.h"
 
-void GLTFState::_register_methods() {
-	register_method("_init", &GLTFState::_init);
-	register_method("get_scene_node", &GLTFState::get_scene_node);
-	register_method("get_animation_players_count", &GLTFState::get_animation_players_count);
-	register_method("get_animation_player", &GLTFState::get_animation_player);
+void GLTFState_::_register_methods() {
+	register_method("_init", &GLTFState_::_init);
+	register_method("get_scene_node", &GLTFState_::get_scene_node);
+	register_method("get_animation_players_count", &GLTFState_::get_animation_players_count);
+	register_method("get_animation_player", &GLTFState_::get_animation_player);
 
-	register_property<GLTFState, Dictionary>("json", &GLTFState::set_json, &GLTFState::get_json, Dictionary()); // Dictionary
-	register_property<GLTFState, int>("major_version", &GLTFState::set_major_version, &GLTFState::get_major_version, 0); // int
-	register_property<GLTFState, int>("minor_version", &GLTFState::set_minor_version, &GLTFState::get_minor_version, 0); // int
-	register_property<GLTFState, PoolByteArray>("glb_data", &GLTFState::set_glb_data, &GLTFState::get_glb_data, PoolByteArray()); // Vector<uint8_t>
-	register_property<GLTFState, bool>("use_named_skin_binds", &GLTFState::set_use_named_skin_binds, &GLTFState::get_use_named_skin_binds, false); // bool
-	register_property<GLTFState, Array>("nodes", &GLTFState::set_nodes, &GLTFState::get_nodes, Array()); // Vector<Ref<GLTFNode>>
-	register_property<GLTFState, Array>("buffers", &GLTFState::set_buffers, &GLTFState::get_buffers, Array()); // Vector<Vector<uint8_t>
-	register_property<GLTFState, Array>("buffer_views", &GLTFState::set_buffer_views, &GLTFState::get_buffer_views, Array()); // Vector<Ref<GLTFBufferView>>
-	register_property<GLTFState, Array>("accessors", &GLTFState::set_accessors, &GLTFState::get_accessors, Array()); // Vector<Ref<GLTFAccessor>>
-	register_property<GLTFState, Array>("meshes", &GLTFState::set_meshes, &GLTFState::get_meshes, Array()); // Vector<Ref<GLTFMesh>>
-	register_property<GLTFState, Array>("materials", &GLTFState::set_materials, &GLTFState::get_materials, Array()); // Vector<Ref<Material>
-	register_property<GLTFState, String>("scene_name", &GLTFState::set_scene_name, &GLTFState::get_scene_name, String()); // String
-	register_property<GLTFState, Array>("root_nodes", &GLTFState::set_root_nodes, &GLTFState::get_root_nodes, Array()); // Vector<int>
-	register_property<GLTFState, Array>("textures", &GLTFState::set_textures, &GLTFState::get_textures, Array()); // Vector<Ref<GLTFTexture>>
-	register_property<GLTFState, Array>("images", &GLTFState::set_images, &GLTFState::get_images, Array()); // Vector<Ref<Texture>
-	register_property<GLTFState, Array>("skins", &GLTFState::set_skins, &GLTFState::get_skins, Array()); // Vector<Ref<GLTFSkin>>
-	register_property<GLTFState, Array>("cameras", &GLTFState::set_cameras, &GLTFState::get_cameras, Array()); // Vector<Ref<GLTFCamera>>
-	register_property<GLTFState, Array>("lights", &GLTFState::set_lights, &GLTFState::get_lights, Array()); // Vector<Ref<GLTFLight>>
-	register_property<GLTFState, Array>("unique_names", &GLTFState::set_unique_names, &GLTFState::get_unique_names, Array()); // Set<String>
-	register_property<GLTFState, Array>("unique_animation_names", &GLTFState::set_unique_animation_names, &GLTFState::get_unique_animation_names, Array()); // Set<String>
-	register_property<GLTFState, Array>("skeletons", &GLTFState::set_skeletons, &GLTFState::get_skeletons, Array()); // Vector<Ref<GLTFSkeleton>>
-	register_property<GLTFState, Dictionary>("skeleton_to_node", &GLTFState::set_skeleton_to_node, &GLTFState::get_skeleton_to_node, Dictionary()); // Map<GLTFSkeletonIndex,
-	register_property<GLTFState, Array>("animations", &GLTFState::set_animations, &GLTFState::get_animations, Array()); // Vector<Ref<GLTFAnimation>>
+	register_property<GLTFState_, Dictionary>("json", &GLTFState_::set_json, &GLTFState_::get_json, Dictionary()); // Dictionary
+	register_property<GLTFState_, int>("major_version", &GLTFState_::set_major_version, &GLTFState_::get_major_version, 0); // int
+	register_property<GLTFState_, int>("minor_version", &GLTFState_::set_minor_version, &GLTFState_::get_minor_version, 0); // int
+	register_property<GLTFState_, PoolByteArray>("glb_data", &GLTFState_::set_glb_data, &GLTFState_::get_glb_data, PoolByteArray()); // Vector<uint8_t>
+	register_property<GLTFState_, bool>("use_named_skin_binds", &GLTFState_::set_use_named_skin_binds, &GLTFState_::get_use_named_skin_binds, false); // bool
+	register_property<GLTFState_, Array>("nodes", &GLTFState_::set_nodes, &GLTFState_::get_nodes, Array()); // Vector<Ref<GLTFNode_>>
+	register_property<GLTFState_, Array>("buffers", &GLTFState_::set_buffers, &GLTFState_::get_buffers, Array()); // Vector<Vector<uint8_t>
+	register_property<GLTFState_, Array>("buffer_views", &GLTFState_::set_buffer_views, &GLTFState_::get_buffer_views, Array()); // Vector<Ref<GLTFBufferView_>>
+	register_property<GLTFState_, Array>("accessors", &GLTFState_::set_accessors, &GLTFState_::get_accessors, Array()); // Vector<Ref<GLTFAccessor_>>
+	register_property<GLTFState_, Array>("meshes", &GLTFState_::set_meshes, &GLTFState_::get_meshes, Array()); // Vector<Ref<GLTFMesh_>>
+	register_property<GLTFState_, Array>("materials", &GLTFState_::set_materials, &GLTFState_::get_materials, Array()); // Vector<Ref<Material>
+	register_property<GLTFState_, String>("scene_name", &GLTFState_::set_scene_name, &GLTFState_::get_scene_name, String()); // String
+	register_property<GLTFState_, Array>("root_nodes", &GLTFState_::set_root_nodes, &GLTFState_::get_root_nodes, Array()); // Vector<int>
+	register_property<GLTFState_, Array>("textures", &GLTFState_::set_textures, &GLTFState_::get_textures, Array()); // Vector<Ref<GLTFTexture_>>
+	register_property<GLTFState_, Array>("images", &GLTFState_::set_images, &GLTFState_::get_images, Array()); // Vector<Ref<Texture>
+	register_property<GLTFState_, Array>("skins", &GLTFState_::set_skins, &GLTFState_::get_skins, Array()); // Vector<Ref<GLTFSkin_>>
+	register_property<GLTFState_, Array>("cameras", &GLTFState_::set_cameras, &GLTFState_::get_cameras, Array()); // Vector<Ref<GLTFCamera_>>
+	register_property<GLTFState_, Array>("lights", &GLTFState_::set_lights, &GLTFState_::get_lights, Array()); // Vector<Ref<GLTFLight_>>
+	register_property<GLTFState_, Array>("unique_names", &GLTFState_::set_unique_names, &GLTFState_::get_unique_names, Array()); // Set<String>
+	register_property<GLTFState_, Array>("unique_animation_names", &GLTFState_::set_unique_animation_names, &GLTFState_::get_unique_animation_names, Array()); // Set<String>
+	register_property<GLTFState_, Array>("skeletons", &GLTFState_::set_skeletons, &GLTFState_::get_skeletons, Array()); // Vector<Ref<GLTFSkeleton_>>
+	register_property<GLTFState_, Dictionary>("skeleton_to_node", &GLTFState_::set_skeleton_to_node, &GLTFState_::get_skeleton_to_node, Dictionary()); // Map<GLTFSkeletonIndex,
+	register_property<GLTFState_, Array>("animations", &GLTFState_::set_animations, &GLTFState_::get_animations, Array()); // Vector<Ref<GLTFAnimation_>>
 }
 
-Dictionary GLTFState::get_json() {
+Dictionary GLTFState_::get_json() {
 	return json;
 }
 
-void GLTFState::set_json(Dictionary p_json) {
+void GLTFState_::set_json(Dictionary p_json) {
 	json = p_json;
 }
 
-int GLTFState::get_major_version() {
+int GLTFState_::get_major_version() {
 	return major_version;
 }
 
-void GLTFState::set_major_version(int p_major_version) {
+void GLTFState_::set_major_version(int p_major_version) {
 	major_version = p_major_version;
 }
 
-int GLTFState::get_minor_version() {
+int GLTFState_::get_minor_version() {
 	return minor_version;
 }
 
-void GLTFState::set_minor_version(int p_minor_version) {
+void GLTFState_::set_minor_version(int p_minor_version) {
 	minor_version = p_minor_version;
 }
 
-PoolByteArray GLTFState::get_glb_data() {
+PoolByteArray GLTFState_::get_glb_data() {
 	return glb_data;
 }
 
-void GLTFState::set_glb_data(PoolByteArray p_glb_data) {
+void GLTFState_::set_glb_data(PoolByteArray p_glb_data) {
 	glb_data = p_glb_data;
 }
 
-bool GLTFState::get_use_named_skin_binds() {
+bool GLTFState_::get_use_named_skin_binds() {
 	return use_named_skin_binds;
 }
 
-void GLTFState::set_use_named_skin_binds(bool p_use_named_skin_binds) {
+void GLTFState_::set_use_named_skin_binds(bool p_use_named_skin_binds) {
 	use_named_skin_binds = p_use_named_skin_binds;
 }
 
-Array GLTFState::get_nodes() {
-	return GLTFDocument::to_array(nodes);
+Array GLTFState_::get_nodes() {
+	return GLTFDocument_::to_array(nodes);
 }
 
-void GLTFState::set_nodes(Array p_nodes) {
-	GLTFDocument::set_from_array(nodes, p_nodes);
+void GLTFState_::set_nodes(Array p_nodes) {
+	GLTFDocument_::set_from_array(nodes, p_nodes);
 }
 
-Array GLTFState::get_buffers() {
-	return GLTFDocument::to_array(buffers);
+Array GLTFState_::get_buffers() {
+	return GLTFDocument_::to_array(buffers);
 }
 
-void GLTFState::set_buffers(Array p_buffers) {
-	GLTFDocument::set_from_array(buffers, p_buffers);
+void GLTFState_::set_buffers(Array p_buffers) {
+	GLTFDocument_::set_from_array(buffers, p_buffers);
 }
 
-Array GLTFState::get_buffer_views() {
-	return GLTFDocument::to_array(buffer_views);
+Array GLTFState_::get_buffer_views() {
+	return GLTFDocument_::to_array(buffer_views);
 }
 
-void GLTFState::set_buffer_views(Array p_buffer_views) {
-	GLTFDocument::set_from_array(buffer_views, p_buffer_views);
+void GLTFState_::set_buffer_views(Array p_buffer_views) {
+	GLTFDocument_::set_from_array(buffer_views, p_buffer_views);
 }
 
-Array GLTFState::get_accessors() {
-	return GLTFDocument::to_array(accessors);
+Array GLTFState_::get_accessors() {
+	return GLTFDocument_::to_array(accessors);
 }
 
-void GLTFState::set_accessors(Array p_accessors) {
-	GLTFDocument::set_from_array(accessors, p_accessors);
+void GLTFState_::set_accessors(Array p_accessors) {
+	GLTFDocument_::set_from_array(accessors, p_accessors);
 }
 
-Array GLTFState::get_meshes() {
-	return GLTFDocument::to_array(meshes);
+Array GLTFState_::get_meshes() {
+	return GLTFDocument_::to_array(meshes);
 }
 
-void GLTFState::set_meshes(Array p_meshes) {
-	GLTFDocument::set_from_array(meshes, p_meshes);
+void GLTFState_::set_meshes(Array p_meshes) {
+	GLTFDocument_::set_from_array(meshes, p_meshes);
 }
 
-Array GLTFState::get_materials() {
-	return GLTFDocument::to_array(materials);
+Array GLTFState_::get_materials() {
+	return GLTFDocument_::to_array(materials);
 }
 
-void GLTFState::set_materials(Array p_materials) {
-	GLTFDocument::set_from_array(materials, p_materials);
+void GLTFState_::set_materials(Array p_materials) {
+	GLTFDocument_::set_from_array(materials, p_materials);
 }
 
-String GLTFState::get_scene_name() {
+String GLTFState_::get_scene_name() {
 	return scene_name;
 }
 
-void GLTFState::set_scene_name(String p_scene_name) {
+void GLTFState_::set_scene_name(String p_scene_name) {
 	scene_name = p_scene_name;
 }
 
-Array GLTFState::get_root_nodes() {
-	return GLTFDocument::to_array(root_nodes);
+Array GLTFState_::get_root_nodes() {
+	return GLTFDocument_::to_array(root_nodes);
 }
 
-void GLTFState::set_root_nodes(Array p_root_nodes) {
-	GLTFDocument::set_from_array(root_nodes, p_root_nodes);
+void GLTFState_::set_root_nodes(Array p_root_nodes) {
+	GLTFDocument_::set_from_array(root_nodes, p_root_nodes);
 }
 
-Array GLTFState::get_textures() {
-	return GLTFDocument::to_array(textures);
+Array GLTFState_::get_textures() {
+	return GLTFDocument_::to_array(textures);
 }
 
-void GLTFState::set_textures(Array p_textures) {
-	GLTFDocument::set_from_array(textures, p_textures);
+void GLTFState_::set_textures(Array p_textures) {
+	GLTFDocument_::set_from_array(textures, p_textures);
 }
 
-Array GLTFState::get_images() {
-	return GLTFDocument::to_array(images);
+Array GLTFState_::get_images() {
+	return GLTFDocument_::to_array(images);
 }
 
-void GLTFState::set_images(Array p_images) {
-	GLTFDocument::set_from_array(images, p_images);
+void GLTFState_::set_images(Array p_images) {
+	GLTFDocument_::set_from_array(images, p_images);
 }
 
-Array GLTFState::get_skins() {
-	return GLTFDocument::to_array(skins);
+Array GLTFState_::get_skins() {
+	return GLTFDocument_::to_array(skins);
 }
 
-void GLTFState::set_skins(Array p_skins) {
-	GLTFDocument::set_from_array(skins, p_skins);
+void GLTFState_::set_skins(Array p_skins) {
+	GLTFDocument_::set_from_array(skins, p_skins);
 }
 
-Array GLTFState::get_cameras() {
-	return GLTFDocument::to_array(cameras);
+Array GLTFState_::get_cameras() {
+	return GLTFDocument_::to_array(cameras);
 }
 
-void GLTFState::set_cameras(Array p_cameras) {
-	GLTFDocument::set_from_array(cameras, p_cameras);
+void GLTFState_::set_cameras(Array p_cameras) {
+	GLTFDocument_::set_from_array(cameras, p_cameras);
 }
 
-Array GLTFState::get_lights() {
-	return GLTFDocument::to_array(lights);
+Array GLTFState_::get_lights() {
+	return GLTFDocument_::to_array(lights);
 }
 
-void GLTFState::set_lights(Array p_lights) {
-	GLTFDocument::set_from_array(lights, p_lights);
+void GLTFState_::set_lights(Array p_lights) {
+	GLTFDocument_::set_from_array(lights, p_lights);
 }
 
-Array GLTFState::get_unique_names() {
-	return GLTFDocument::to_array(unique_names);
+Array GLTFState_::get_unique_names() {
+	return GLTFDocument_::to_array(unique_names);
 }
 
-void GLTFState::set_unique_names(Array p_unique_names) {
-	GLTFDocument::set_from_array(unique_names, p_unique_names);
+void GLTFState_::set_unique_names(Array p_unique_names) {
+	GLTFDocument_::set_from_array(unique_names, p_unique_names);
 }
 
-Array GLTFState::get_unique_animation_names() {
-	return GLTFDocument::to_array(unique_animation_names);
+Array GLTFState_::get_unique_animation_names() {
+	return GLTFDocument_::to_array(unique_animation_names);
 }
 
-void GLTFState::set_unique_animation_names(Array p_unique_animation_names) {
-	GLTFDocument::set_from_array(unique_animation_names, p_unique_animation_names);
+void GLTFState_::set_unique_animation_names(Array p_unique_animation_names) {
+	GLTFDocument_::set_from_array(unique_animation_names, p_unique_animation_names);
 }
 
-Array GLTFState::get_skeletons() {
-	return GLTFDocument::to_array(skeletons);
+Array GLTFState_::get_skeletons() {
+	return GLTFDocument_::to_array(skeletons);
 }
 
-void GLTFState::set_skeletons(Array p_skeletons) {
-	GLTFDocument::set_from_array(skeletons, p_skeletons);
+void GLTFState_::set_skeletons(Array p_skeletons) {
+	GLTFDocument_::set_from_array(skeletons, p_skeletons);
 }
 
-Dictionary GLTFState::get_skeleton_to_node() {
-	return GLTFDocument::to_dict(skeleton_to_node);
+Dictionary GLTFState_::get_skeleton_to_node() {
+	return GLTFDocument_::to_dict(skeleton_to_node);
 }
 
-void GLTFState::set_skeleton_to_node(Dictionary p_skeleton_to_node) {
-	GLTFDocument::set_from_dict(skeleton_to_node, p_skeleton_to_node);
+void GLTFState_::set_skeleton_to_node(Dictionary p_skeleton_to_node) {
+	GLTFDocument_::set_from_dict(skeleton_to_node, p_skeleton_to_node);
 }
 
-Array GLTFState::get_animations() {
-	return GLTFDocument::to_array(animations);
+Array GLTFState_::get_animations() {
+	return GLTFDocument_::to_array(animations);
 }
 
-void GLTFState::set_animations(Array p_animations) {
-	GLTFDocument::set_from_array(animations, p_animations);
+void GLTFState_::set_animations(Array p_animations) {
+	GLTFDocument_::set_from_array(animations, p_animations);
 }
 
-Node *GLTFState::get_scene_node(GLTFNodeIndex idx) {
+Node *GLTFState_::get_scene_node(GLTFNodeIndex idx) {
 	if (!scene_nodes.has(idx)) {
 		return nullptr;
 	}
 	return scene_nodes[idx];
 }
 
-int GLTFState::get_animation_players_count(int idx) {
+int GLTFState_::get_animation_players_count(int idx) {
 	return animation_players.size();
 }
 
-AnimationPlayer *GLTFState::get_animation_player(int idx) {
+AnimationPlayer *GLTFState_::get_animation_player(int idx) {
 	ERR_FAIL_INDEX_V(idx, animation_players.size(), nullptr);
 	return animation_players[idx];
 }

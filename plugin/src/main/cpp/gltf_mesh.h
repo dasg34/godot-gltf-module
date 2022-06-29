@@ -36,8 +36,8 @@
 #include <ArrayMesh.hpp>
 using namespace godot;
 
-class GLTFMesh : public Resource {
-	GODOT_CLASS(GLTFMesh, Resource);
+class GLTFMesh_ : public Resource {
+	GODOT_CLASS(GLTFMesh_, Resource);
 
 private:
 	Ref<ArrayMesh> mesh;

@@ -36,9 +36,9 @@
 #include "gltf_document.h"
 using namespace godot;
 
-struct GLTFAccessor : public Resource {
-	GODOT_CLASS(GLTFAccessor, Resource);
-	friend class GLTFDocument;
+struct GLTFAccessor_ : public Resource {
+	GODOT_CLASS(GLTFAccessor_, Resource);
+	friend class GLTFDocument_;
 
 private:
 	GLTFBufferViewIndex buffer_view = 0;
@@ -46,8 +46,8 @@ private:
 	int component_type = 0;
 	bool normalized = false;
 	int count = 0;
-	GLTFDocument::GLTFType
-			type = GLTFDocument::TYPE_SCALAR;
+	GLTFDocument_::GLTFType
+			type = GLTFDocument_::TYPE_SCALAR;
 	PoolRealArray min;
 	PoolRealArray max;
 	int sparse_count = 0;

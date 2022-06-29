@@ -37,8 +37,8 @@
 #include "map.h"
 using namespace godot;
 
-class GLTFAnimation : public Resource {
-	GODOT_CLASS(GLTFAnimation, Resource);
+class GLTFAnimation_ : public Resource {
+	GODOT_CLASS(GLTFAnimation_, Resource);
 
 public:
 	static void _register_methods();
@@ -69,8 +69,8 @@ public:
 public:
 	bool get_loop() const;
 	void set_loop(bool p_val);
-	Map<int, GLTFAnimation::Track> &get_tracks();
-	GLTFAnimation();
+	Map<int, GLTFAnimation_::Track> &get_tracks();
+	GLTFAnimation_();
 
 private:
 	bool loop = false;

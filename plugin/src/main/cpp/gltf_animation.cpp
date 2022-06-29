@@ -30,23 +30,23 @@
 
 #include "gltf_animation.h"
 
-void GLTFAnimation::_register_methods() {
-	register_method("_init", &GLTFAnimation::_init);
+void GLTFAnimation_::_register_methods() {
+	register_method("_init", &GLTFAnimation_::_init);
 
-	register_property<GLTFAnimation, bool>("loop", &GLTFAnimation::set_loop, &GLTFAnimation::get_loop, false); // bool
+	register_property<GLTFAnimation_, bool>("loop", &GLTFAnimation_::set_loop, &GLTFAnimation_::get_loop, false); // bool
 }
 
-bool GLTFAnimation::get_loop() const {
+bool GLTFAnimation_::get_loop() const {
 	return loop;
 }
 
-void GLTFAnimation::set_loop(bool p_val) {
+void GLTFAnimation_::set_loop(bool p_val) {
 	loop = p_val;
 }
 
-Map<int, GLTFAnimation::Track> &GLTFAnimation::get_tracks() {
+Map<int, GLTFAnimation_::Track> &GLTFAnimation_::get_tracks() {
 	return tracks;
 }
 
-GLTFAnimation::GLTFAnimation() {
+GLTFAnimation_::GLTFAnimation_() {
 }

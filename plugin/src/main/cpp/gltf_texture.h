@@ -36,8 +36,8 @@
 #include "gltf_document.h"
 using namespace godot;
 
-class GLTFTexture : public Resource {
-	GODOT_CLASS(GLTFTexture, Resource);
+class GLTFTexture_ : public Resource {
+	GODOT_CLASS(GLTFTexture_, Resource);
 
 private:
 	GLTFImageIndex src_image = 0;

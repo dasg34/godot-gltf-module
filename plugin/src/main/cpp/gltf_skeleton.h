@@ -36,9 +36,9 @@
 #include "gltf_document.h"
 using namespace godot;
 
-class GLTFSkeleton : public Resource {
-	GODOT_CLASS(GLTFSkeleton, Resource);
-	friend class GLTFDocument;
+class GLTFSkeleton_ : public Resource {
+	GODOT_CLASS(GLTFSkeleton_, Resource);
+	friend class GLTFDocument_;
 
 private:
 	// The *synthesized* skeletons joints

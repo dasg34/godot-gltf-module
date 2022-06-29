@@ -30,124 +30,124 @@
 
 #include "gltf_node.h"
 
-void GLTFNode::_register_methods() {
-	register_method("_init", &GLTFNode::_init);
+void GLTFNode_::_register_methods() {
+	register_method("_init", &GLTFNode_::_init);
 
-	register_property<GLTFNode, int>("parent", &GLTFNode::set_parent, &GLTFNode::get_parent, -1); // GLTFNodeIndex
-	register_property<GLTFNode, int>("height", &GLTFNode::set_height, &GLTFNode::get_height, 0); // int
-	register_property<GLTFNode, Transform>("xform", &GLTFNode::set_xform, &GLTFNode::get_xform, Transform()); // Transform
-	register_property<GLTFNode, int>("mesh", &GLTFNode::set_mesh, &GLTFNode::get_mesh, -1); // GLTFMeshIndex
-	register_property<GLTFNode, int>("camera", &GLTFNode::set_camera, &GLTFNode::get_camera, -1); // GLTFCameraIndex
-	register_property<GLTFNode, int>("skin", &GLTFNode::set_skin, &GLTFNode::get_skin, -1); // GLTFSkinIndex
-	register_property<GLTFNode, int>("skeleton", &GLTFNode::set_skeleton, &GLTFNode::get_skeleton, -1); // GLTFSkeletonIndex
-	register_property<GLTFNode, bool>("joint", &GLTFNode::set_joint, &GLTFNode::get_joint, false); // bool
-	register_property<GLTFNode, Vector3>("translation", &GLTFNode::set_translation, &GLTFNode::get_translation, Vector3(0,0,0)); // Vector3
-	register_property<GLTFNode, Quat>("rotation", &GLTFNode::set_rotation, &GLTFNode::get_rotation, Quat()); // Quat
-	register_property<GLTFNode, Vector3>("scale", &GLTFNode::set_scale, &GLTFNode::get_scale, Vector3(1,1,1)); // Vector3
-	register_property<GLTFNode, PoolIntArray>("children", &GLTFNode::set_children, &GLTFNode::get_children, PoolIntArray()); // Vector<int>
-	register_property<GLTFNode, int>("light", &GLTFNode::set_light, &GLTFNode::get_light, -1); // GLTFLightIndex
+	register_property<GLTFNode_, int>("parent", &GLTFNode_::set_parent, &GLTFNode_::get_parent, -1); // GLTFNodeIndex
+	register_property<GLTFNode_, int>("height", &GLTFNode_::set_height, &GLTFNode_::get_height, 0); // int
+	register_property<GLTFNode_, Transform>("xform", &GLTFNode_::set_xform, &GLTFNode_::get_xform, Transform()); // Transform
+	register_property<GLTFNode_, int>("mesh", &GLTFNode_::set_mesh, &GLTFNode_::get_mesh, -1); // GLTFMeshIndex
+	register_property<GLTFNode_, int>("camera", &GLTFNode_::set_camera, &GLTFNode_::get_camera, -1); // GLTFCameraIndex
+	register_property<GLTFNode_, int>("skin", &GLTFNode_::set_skin, &GLTFNode_::get_skin, -1); // GLTFSkinIndex
+	register_property<GLTFNode_, int>("skeleton", &GLTFNode_::set_skeleton, &GLTFNode_::get_skeleton, -1); // GLTFSkeletonIndex
+	register_property<GLTFNode_, bool>("joint", &GLTFNode_::set_joint, &GLTFNode_::get_joint, false); // bool
+	register_property<GLTFNode_, Vector3>("translation", &GLTFNode_::set_translation, &GLTFNode_::get_translation, Vector3(0,0,0)); // Vector3
+	register_property<GLTFNode_, Quat>("rotation", &GLTFNode_::set_rotation, &GLTFNode_::get_rotation, Quat()); // Quat
+	register_property<GLTFNode_, Vector3>("scale", &GLTFNode_::set_scale, &GLTFNode_::get_scale, Vector3(1,1,1)); // Vector3
+	register_property<GLTFNode_, PoolIntArray>("children", &GLTFNode_::set_children, &GLTFNode_::get_children, PoolIntArray()); // Vector<int>
+	register_property<GLTFNode_, int>("light", &GLTFNode_::set_light, &GLTFNode_::get_light, -1); // GLTFLightIndex
 }
 
-GLTFNodeIndex GLTFNode::get_parent() {
+GLTFNodeIndex GLTFNode_::get_parent() {
 	return parent;
 }
 
-void GLTFNode::set_parent(GLTFNodeIndex p_parent) {
+void GLTFNode_::set_parent(GLTFNodeIndex p_parent) {
 	parent = p_parent;
 }
 
-int GLTFNode::get_height() {
+int GLTFNode_::get_height() {
 	return height;
 }
 
-void GLTFNode::set_height(int p_height) {
+void GLTFNode_::set_height(int p_height) {
 	height = p_height;
 }
 
-Transform GLTFNode::get_xform() {
+Transform GLTFNode_::get_xform() {
 	return xform;
 }
 
-void GLTFNode::set_xform(Transform p_xform) {
+void GLTFNode_::set_xform(Transform p_xform) {
 	xform = p_xform;
 }
 
-GLTFMeshIndex GLTFNode::get_mesh() {
+GLTFMeshIndex GLTFNode_::get_mesh() {
 	return mesh;
 }
 
-void GLTFNode::set_mesh(GLTFMeshIndex p_mesh) {
+void GLTFNode_::set_mesh(GLTFMeshIndex p_mesh) {
 	mesh = p_mesh;
 }
 
-GLTFCameraIndex GLTFNode::get_camera() {
+GLTFCameraIndex GLTFNode_::get_camera() {
 	return camera;
 }
 
-void GLTFNode::set_camera(GLTFCameraIndex p_camera) {
+void GLTFNode_::set_camera(GLTFCameraIndex p_camera) {
 	camera = p_camera;
 }
 
-GLTFSkinIndex GLTFNode::get_skin() {
+GLTFSkinIndex GLTFNode_::get_skin() {
 	return skin;
 }
 
-void GLTFNode::set_skin(GLTFSkinIndex p_skin) {
+void GLTFNode_::set_skin(GLTFSkinIndex p_skin) {
 	skin = p_skin;
 }
 
-GLTFSkeletonIndex GLTFNode::get_skeleton() {
+GLTFSkeletonIndex GLTFNode_::get_skeleton() {
 	return skeleton;
 }
 
-void GLTFNode::set_skeleton(GLTFSkeletonIndex p_skeleton) {
+void GLTFNode_::set_skeleton(GLTFSkeletonIndex p_skeleton) {
 	skeleton = p_skeleton;
 }
 
-bool GLTFNode::get_joint() {
+bool GLTFNode_::get_joint() {
 	return joint;
 }
 
-void GLTFNode::set_joint(bool p_joint) {
+void GLTFNode_::set_joint(bool p_joint) {
 	joint = p_joint;
 }
 
-Vector3 GLTFNode::get_translation() {
+Vector3 GLTFNode_::get_translation() {
 	return translation;
 }
 
-void GLTFNode::set_translation(Vector3 p_translation) {
+void GLTFNode_::set_translation(Vector3 p_translation) {
 	translation = p_translation;
 }
 
-Quat GLTFNode::get_rotation() {
+Quat GLTFNode_::get_rotation() {
 	return rotation;
 }
 
-void GLTFNode::set_rotation(Quat p_rotation) {
+void GLTFNode_::set_rotation(Quat p_rotation) {
 	rotation = p_rotation;
 }
 
-Vector3 GLTFNode::get_scale() {
+Vector3 GLTFNode_::get_scale() {
 	return scale;
 }
 
-void GLTFNode::set_scale(Vector3 p_scale) {
+void GLTFNode_::set_scale(Vector3 p_scale) {
 	scale = p_scale;
 }
 
-PoolIntArray GLTFNode::get_children() {
+PoolIntArray GLTFNode_::get_children() {
 	return children;
 }
 
-void GLTFNode::set_children(PoolIntArray p_children) {
+void GLTFNode_::set_children(PoolIntArray p_children) {
 	children = p_children;
 }
 
-GLTFLightIndex GLTFNode::get_light() {
+GLTFLightIndex GLTFNode_::get_light() {
 	return light;
 }
 
-void GLTFNode::set_light(GLTFLightIndex p_light) {
+void GLTFNode_::set_light(GLTFLightIndex p_light) {
 	light = p_light;
 }

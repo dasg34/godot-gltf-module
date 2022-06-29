@@ -36,10 +36,10 @@
 #include "gltf_document.h"
 using namespace godot;
 
-class GLTFNode : public Resource {
-	GODOT_CLASS(GLTFNode, Resource);
-	friend class GLTFDocument;
-	friend class PackedSceneGLTF;
+class GLTFNode_ : public Resource {
+	GODOT_CLASS(GLTFNode_, Resource);
+	friend class GLTFDocument_;
+	friend class PackedSceneGLTF_;
 
 private:
 	// matrices need to be transformed to this

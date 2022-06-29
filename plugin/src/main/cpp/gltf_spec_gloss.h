@@ -36,9 +36,9 @@
 #include <Resource.hpp>
 using namespace godot;
 
-class GLTFSpecGloss : public Resource {
-	GODOT_CLASS(GLTFSpecGloss, Resource);
-	friend class GLTFDocument;
+class GLTFSpecGloss_ : public Resource {
+	GODOT_CLASS(GLTFSpecGloss_, Resource);
+	friend class GLTFDocument_;
 
 private:
 	Ref<Image> diffuse_img = nullptr;

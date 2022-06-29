@@ -30,52 +30,52 @@
 
 #include "gltf_spec_gloss.h"
 
-void GLTFSpecGloss::_register_methods() {
-	register_method("_init", &GLTFSpecGloss::_init);
+void GLTFSpecGloss_::_register_methods() {
+	register_method("_init", &GLTFSpecGloss_::_init);
 
-	register_property<GLTFSpecGloss, Ref<Image>>("diffuse_img", &GLTFSpecGloss::set_diffuse_img, &GLTFSpecGloss::get_diffuse_img, Ref<Image>()); // Ref<Image>
-	register_property<GLTFSpecGloss, Color>("diffuse_factor", &GLTFSpecGloss::set_diffuse_factor, &GLTFSpecGloss::get_diffuse_factor, Color(1.0f, 1.0f, 1.0f)); // Color
-	register_property<GLTFSpecGloss, float>("gloss_factor", &GLTFSpecGloss::set_gloss_factor, &GLTFSpecGloss::get_gloss_factor, 1.0); // float
-	register_property<GLTFSpecGloss, Color>("specular_factor", &GLTFSpecGloss::set_specular_factor, &GLTFSpecGloss::get_specular_factor, Color(1.0f, 1.0f, 1.0f)); // Color
-	register_property<GLTFSpecGloss, Ref<Image>>("spec_gloss_img", &GLTFSpecGloss::set_spec_gloss_img, &GLTFSpecGloss::get_spec_gloss_img, Ref<Image>()); // Ref<Image>
+	register_property<GLTFSpecGloss_, Ref<Image>>("diffuse_img", &GLTFSpecGloss_::set_diffuse_img, &GLTFSpecGloss_::get_diffuse_img, Ref<Image>()); // Ref<Image>
+	register_property<GLTFSpecGloss_, Color>("diffuse_factor", &GLTFSpecGloss_::set_diffuse_factor, &GLTFSpecGloss_::get_diffuse_factor, Color(1.0f, 1.0f, 1.0f)); // Color
+	register_property<GLTFSpecGloss_, float>("gloss_factor", &GLTFSpecGloss_::set_gloss_factor, &GLTFSpecGloss_::get_gloss_factor, 1.0); // float
+	register_property<GLTFSpecGloss_, Color>("specular_factor", &GLTFSpecGloss_::set_specular_factor, &GLTFSpecGloss_::get_specular_factor, Color(1.0f, 1.0f, 1.0f)); // Color
+	register_property<GLTFSpecGloss_, Ref<Image>>("spec_gloss_img", &GLTFSpecGloss_::set_spec_gloss_img, &GLTFSpecGloss_::get_spec_gloss_img, Ref<Image>()); // Ref<Image>
 }
 
-Ref<Image> GLTFSpecGloss::get_diffuse_img() {
+Ref<Image> GLTFSpecGloss_::get_diffuse_img() {
 	return diffuse_img;
 }
 
-void GLTFSpecGloss::set_diffuse_img(Ref<Image> p_diffuse_img) {
+void GLTFSpecGloss_::set_diffuse_img(Ref<Image> p_diffuse_img) {
 	diffuse_img = p_diffuse_img;
 }
 
-Color GLTFSpecGloss::get_diffuse_factor() {
+Color GLTFSpecGloss_::get_diffuse_factor() {
 	return diffuse_factor;
 }
 
-void GLTFSpecGloss::set_diffuse_factor(Color p_diffuse_factor) {
+void GLTFSpecGloss_::set_diffuse_factor(Color p_diffuse_factor) {
 	diffuse_factor = p_diffuse_factor;
 }
 
-float GLTFSpecGloss::get_gloss_factor() {
+float GLTFSpecGloss_::get_gloss_factor() {
 	return gloss_factor;
 }
 
-void GLTFSpecGloss::set_gloss_factor(float p_gloss_factor) {
+void GLTFSpecGloss_::set_gloss_factor(float p_gloss_factor) {
 	gloss_factor = p_gloss_factor;
 }
 
-Color GLTFSpecGloss::get_specular_factor() {
+Color GLTFSpecGloss_::get_specular_factor() {
 	return specular_factor;
 }
 
-void GLTFSpecGloss::set_specular_factor(Color p_specular_factor) {
+void GLTFSpecGloss_::set_specular_factor(Color p_specular_factor) {
 	specular_factor = p_specular_factor;
 }
 
-Ref<Image> GLTFSpecGloss::get_spec_gloss_img() {
+Ref<Image> GLTFSpecGloss_::get_spec_gloss_img() {
 	return spec_gloss_img;
 }
 
-void GLTFSpecGloss::set_spec_gloss_img(Ref<Image> p_spec_gloss_img) {
+void GLTFSpecGloss_::set_spec_gloss_img(Ref<Image> p_spec_gloss_img) {
 	spec_gloss_img = p_spec_gloss_img;
 }

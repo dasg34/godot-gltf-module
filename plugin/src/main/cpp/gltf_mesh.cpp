@@ -30,25 +30,25 @@
 
 #include "gltf_mesh.h"
 
-void GLTFMesh::_register_methods() {
-	register_method("_init", &GLTFMesh::_init);
+void GLTFMesh_::_register_methods() {
+	register_method("_init", &GLTFMesh_::_init);
 
-	register_property<GLTFMesh, Ref<ArrayMesh>>("mesh", &GLTFMesh::set_mesh, &GLTFMesh::get_mesh, Ref<ArrayMesh>());
-	register_property<GLTFMesh, PoolRealArray>("blend_weights", &GLTFMesh::set_blend_weights, &GLTFMesh::get_blend_weights, PoolRealArray()); // Vector<float>
+	register_property<GLTFMesh_, Ref<ArrayMesh>>("mesh", &GLTFMesh_::set_mesh, &GLTFMesh_::get_mesh, Ref<ArrayMesh>());
+	register_property<GLTFMesh_, PoolRealArray>("blend_weights", &GLTFMesh_::set_blend_weights, &GLTFMesh_::get_blend_weights, PoolRealArray()); // Vector<float>
 }
 
-Ref<ArrayMesh> GLTFMesh::get_mesh() {
+Ref<ArrayMesh> GLTFMesh_::get_mesh() {
 	return mesh;
 }
 
-void GLTFMesh::set_mesh(Ref<ArrayMesh> p_mesh) {
+void GLTFMesh_::set_mesh(Ref<ArrayMesh> p_mesh) {
 	mesh = p_mesh;
 }
 
-PoolRealArray GLTFMesh::get_blend_weights() {
+PoolRealArray GLTFMesh_::get_blend_weights() {
 	return blend_weights;
 }
 
-void GLTFMesh::set_blend_weights(PoolRealArray p_blend_weights) {
+void GLTFMesh_::set_blend_weights(PoolRealArray p_blend_weights) {
 	blend_weights = p_blend_weights;
 }

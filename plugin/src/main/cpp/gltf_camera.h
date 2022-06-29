@@ -35,8 +35,8 @@
 #include <Resource.hpp>
 using namespace godot;
 
-class GLTFCamera : public Resource {
-	GODOT_CLASS(GLTFCamera, Resource);
+class GLTFCamera_ : public Resource {
+	GODOT_CLASS(GLTFCamera_, Resource);
 
 private:
 	bool perspective = true;

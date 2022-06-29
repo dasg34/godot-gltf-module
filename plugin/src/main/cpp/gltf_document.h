@@ -65,11 +65,11 @@ namespace godot{
 
 Ref<NativeScript> class_by_name(const char* type_name);
 
-class GLTFState;
-class GLTFSkin;
-class GLTFNode;
-class GLTFSpecGloss;
-class GLTFSkeleton;
+class GLTFState_;
+class GLTFSkin_;
+class GLTFNode_;
+class GLTFSpecGloss_;
+class GLTFSkeleton_;
 
 using GLTFAccessorIndex = int;
 using GLTFAnimationIndex = int;
@@ -88,11 +88,11 @@ using GLTFTextureIndex = int;
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-class GLTFDocument : public Reference {
-	GODOT_CLASS(GLTFDocument, Reference);
-	friend class GLTFState;
-	friend class GLTFSkin;
-	friend class GLTFSkeleton;
+class GLTFDocument_ : public Reference {
+	GODOT_CLASS(GLTFDocument_, Reference);
+	friend class GLTFState_;
+	friend class GLTFSkin_;
+	friend class GLTFSkeleton_;
 
 public:
 	const int32_t JOINT_GROUP_SIZE = 4;
@@ -181,28 +181,28 @@ private:
 	double _filter_number(double p_float);
 	String _get_component_type_name(const uint32_t p_component);
 	int _get_component_type_size(const int component_type);
-	Error _parse_scenes(Ref<GLTFState> state);
-	Error _parse_nodes(Ref<GLTFState> state);
+	Error _parse_scenes(Ref<GLTFState_> state);
+	Error _parse_nodes(Ref<GLTFState_> state);
 	String _get_type_name(const GLTFType p_component);
-	String _get_accessor_type_name(const GLTFDocument::GLTFType p_type);
-	String _gen_unique_name(Ref<GLTFState> state, const String &p_name);
+	String _get_accessor_type_name(const GLTFDocument_::GLTFType p_type);
+	String _gen_unique_name(Ref<GLTFState_> state, const String &p_name);
 	String _sanitize_animation_name(const String &name);
-	String _gen_unique_animation_name(Ref<GLTFState> state, const String &p_name);
+	String _gen_unique_animation_name(Ref<GLTFState_> state, const String &p_name);
 	String _sanitize_bone_name(const String &name);
-	String _gen_unique_bone_name(Ref<GLTFState> state,
+	String _gen_unique_bone_name(Ref<GLTFState_> state,
 			const GLTFSkeletonIndex skel_i,
 			const String &p_name);
-	GLTFTextureIndex _set_texture(Ref<GLTFState> state, Ref<Texture> p_texture);
-	Ref<Texture> _get_texture(Ref<GLTFState> state,
+	GLTFTextureIndex _set_texture(Ref<GLTFState_> state, Ref<Texture> p_texture);
+	Ref<Texture> _get_texture(Ref<GLTFState_> state,
 			const GLTFTextureIndex p_texture);
-	Error _parse_json(PoolByteArray bytes, Ref<GLTFState> state);
-	Error _parse_glb(const PoolByteArray bytes, Ref<GLTFState> state);
-	void _compute_node_heights(Ref<GLTFState> state);
-	Error _parse_buffers(Ref<GLTFState> state, const String &p_base_path);
-	Error _parse_buffer_views(Ref<GLTFState> state);
+	Error _parse_json(PoolByteArray bytes, Ref<GLTFState_> state);
+	Error _parse_glb(const PoolByteArray bytes, Ref<GLTFState_> state);
+	void _compute_node_heights(Ref<GLTFState_> state);
+	Error _parse_buffers(Ref<GLTFState_> state, const String &p_base_path);
+	Error _parse_buffer_views(Ref<GLTFState_> state);
 	GLTFType _get_type_from_str(const String &p_string);
-	Error _parse_accessors(Ref<GLTFState> state);
-	Error _decode_buffer_view(Ref<GLTFState> state, double *dst,
+	Error _parse_accessors(Ref<GLTFState_> state);
+	Error _decode_buffer_view(Ref<GLTFState_> state, double *dst,
 			const GLTFBufferViewIndex p_buffer_view,
 			const int skip_every, const int skip_bytes,
 			const int element_size, const int count,
@@ -210,120 +210,120 @@ private:
 			const int component_type, const int component_size,
 			const bool normalized, const int byte_offset,
 			const bool for_vertex);
-	void _decode_accessor(Ref<GLTFState> state,
+	void _decode_accessor(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<double> &out_buffer);
-	void _decode_accessor_as_floats(Ref<GLTFState> state,
+	void _decode_accessor_as_floats(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			PoolRealArray &out_buffer);
-	void _decode_accessor_as_ints(Ref<GLTFState> state,
+	void _decode_accessor_as_ints(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			PoolIntArray &out_buffer);
-	void _decode_accessor_as_vec2(Ref<GLTFState> state,
+	void _decode_accessor_as_vec2(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			PoolVector2Array &out_buffer);
-	void _decode_accessor_as_vec3(Ref<GLTFState> state,
+	void _decode_accessor_as_vec3(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			PoolVector3Array &out_buffer);
-	void _decode_accessor_as_vec3(Ref<GLTFState> state,
+	void _decode_accessor_as_vec3(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<Vector3> &out_buffer);
-	void _decode_accessor_as_color(Ref<GLTFState> state,
+	void _decode_accessor_as_color(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			PoolColorArray &out_buffer);
-	void _decode_accessor_as_quat(Ref<GLTFState> state,
+	void _decode_accessor_as_quat(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<Quat> &out_buffer);
-	void _decode_accessor_as_xform2d(Ref<GLTFState> state,
+	void _decode_accessor_as_xform2d(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<Transform2D> &out_buffer);
-	void _decode_accessor_as_basis(Ref<GLTFState> state,
+	void _decode_accessor_as_basis(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<Basis> &out_buffer);
-	void _decode_accessor_as_xform(Ref<GLTFState> state,
+	void _decode_accessor_as_xform(Ref<GLTFState_> state,
 			const GLTFAccessorIndex p_accessor,
 			const bool p_for_vertex,
 			Vector<Transform> &out_buffer);
 
-	Error _parse_meshes(Ref<GLTFState> state);
-	Error _serialize_textures(Ref<GLTFState> state);
-	Error _serialize_images(Ref<GLTFState> state, const String &p_path);
-	Error _serialize_lights(Ref<GLTFState> state);
-	Error _parse_images(Ref<GLTFState> state, const String &p_base_path);
-	Error _parse_textures(Ref<GLTFState> state);
-	Error _parse_materials(Ref<GLTFState> state);
+	Error _parse_meshes(Ref<GLTFState_> state);
+	Error _serialize_textures(Ref<GLTFState_> state);
+	Error _serialize_images(Ref<GLTFState_> state, const String &p_path);
+	Error _serialize_lights(Ref<GLTFState_> state);
+	Error _parse_images(Ref<GLTFState_> state, const String &p_base_path);
+	Error _parse_textures(Ref<GLTFState_> state);
+	Error _parse_materials(Ref<GLTFState_> state);
 	void _set_texture_transform_uv1(const Dictionary &d, Ref<SpatialMaterial> material);
-	void spec_gloss_to_rough_metal(Ref<GLTFSpecGloss> r_spec_gloss,
+	void spec_gloss_to_rough_metal(Ref<GLTFSpecGloss_> r_spec_gloss,
 			Ref<SpatialMaterial> p_material);
 	static void spec_gloss_to_metal_base_color(const Color &p_specular_factor,
 			const Color &p_diffuse,
 			Color &r_base_color,
 			float &r_metallic);
-	GLTFNodeIndex _find_highest_node(Ref<GLTFState> state,
+	GLTFNodeIndex _find_highest_node(Ref<GLTFState_> state,
 			const Vector<GLTFNodeIndex> &subset);
-	bool _capture_nodes_in_skin(Ref<GLTFState> state, Ref<GLTFSkin> skin,
+	bool _capture_nodes_in_skin(Ref<GLTFState_> state, Ref<GLTFSkin_> skin,
 			const GLTFNodeIndex node_index);
-	void _capture_nodes_for_multirooted_skin(Ref<GLTFState> state, Ref<GLTFSkin> skin);
-	Error _expand_skin(Ref<GLTFState> state, Ref<GLTFSkin> skin);
-	Error _verify_skin(Ref<GLTFState> state, Ref<GLTFSkin> skin);
-	Error _parse_skins(Ref<GLTFState> state);
-	Error _determine_skeletons(Ref<GLTFState> state);
+	void _capture_nodes_for_multirooted_skin(Ref<GLTFState_> state, Ref<GLTFSkin_> skin);
+	Error _expand_skin(Ref<GLTFState_> state, Ref<GLTFSkin_> skin);
+	Error _verify_skin(Ref<GLTFState_> state, Ref<GLTFSkin_> skin);
+	Error _parse_skins(Ref<GLTFState_> state);
+	Error _determine_skeletons(Ref<GLTFState_> state);
 	Error _reparent_non_joint_skeleton_subtrees(
-			Ref<GLTFState> state, Ref<GLTFSkeleton> skeleton,
+			Ref<GLTFState_> state, Ref<GLTFSkeleton_> skeleton,
 			const Vector<GLTFNodeIndex> &non_joints);
-	Error _reparent_to_fake_joint(Ref<GLTFState> state, Ref<GLTFSkeleton> skeleton,
+	Error _reparent_to_fake_joint(Ref<GLTFState_> state, Ref<GLTFSkeleton_> skeleton,
 			const GLTFNodeIndex node_index);
-	Error _determine_skeleton_roots(Ref<GLTFState> state,
+	Error _determine_skeleton_roots(Ref<GLTFState_> state,
 			const GLTFSkeletonIndex skel_i);
-	Error _create_skeletons(Ref<GLTFState> state);
-	Error _map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState> state);
-	Error _serialize_skins(Ref<GLTFState> state);
-	Error _create_skins(Ref<GLTFState> state);
+	Error _create_skeletons(Ref<GLTFState_> state);
+	Error _map_skin_joints_indices_to_skeleton_bone_indices(Ref<GLTFState_> state);
+	Error _serialize_skins(Ref<GLTFState_> state);
+	Error _create_skins(Ref<GLTFState_> state);
 	bool _skins_are_same(const Ref<Skin> skin_a, const Ref<Skin> skin_b);
-	void _remove_duplicate_skins(Ref<GLTFState> state);
-	Error _serialize_cameras(Ref<GLTFState> state);
-	Error _parse_cameras(Ref<GLTFState> state);
-	Error _parse_lights(Ref<GLTFState> state);
-	Error _parse_animations(Ref<GLTFState> state);
-	Error _serialize_animations(Ref<GLTFState> state);
-	BoneAttachment *_generate_bone_attachment(Ref<GLTFState> state,
+	void _remove_duplicate_skins(Ref<GLTFState_> state);
+	Error _serialize_cameras(Ref<GLTFState_> state);
+	Error _parse_cameras(Ref<GLTFState_> state);
+	Error _parse_lights(Ref<GLTFState_> state);
+	Error _parse_animations(Ref<GLTFState_> state);
+	Error _serialize_animations(Ref<GLTFState_> state);
+	BoneAttachment *_generate_bone_attachment(Ref<GLTFState_> state,
 			Skeleton *skeleton,
 			const GLTFNodeIndex node_index,
 			const GLTFNodeIndex bone_index);
-	Spatial *_generate_mesh_instance(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index);
-	Camera *_generate_camera(Ref<GLTFState> state, Node *scene_parent,
+	Spatial *_generate_mesh_instance(Ref<GLTFState_> state, Node *scene_parent, const GLTFNodeIndex node_index);
+	Camera *_generate_camera(Ref<GLTFState_> state, Node *scene_parent,
 			const GLTFNodeIndex node_index);
-	Spatial *_generate_light(Ref<GLTFState> state, Node *scene_parent, const GLTFNodeIndex node_index);
-	Spatial *_generate_spatial(Ref<GLTFState> state, Node *scene_parent,
+	Spatial *_generate_light(Ref<GLTFState_> state, Node *scene_parent, const GLTFNodeIndex node_index);
+	Spatial *_generate_spatial(Ref<GLTFState_> state, Node *scene_parent,
 			const GLTFNodeIndex node_index);
-	void _assign_scene_names(Ref<GLTFState> state);
+	void _assign_scene_names(Ref<GLTFState_> state);
 	template <class T>
 	T _interpolate_track(const Vector<float> &p_times, const Vector<T> &p_values,
 			const float p_time,
-			const GLTFAnimation::Interpolation p_interp);
-	GLTFAccessorIndex _encode_accessor_as_quats(Ref<GLTFState> state,
+			const GLTFAnimation_::Interpolation p_interp);
+	GLTFAccessorIndex _encode_accessor_as_quats(Ref<GLTFState_> state,
 			const Vector<Quat> &p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_weights(Ref<GLTFState_> state,
 			PoolColorArray p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_joints(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_joints(Ref<GLTFState_> state,
 			PoolColorArray p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_floats(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_floats(Ref<GLTFState_> state,
 			const Vector<float> &p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_vec2(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_vec2(Ref<GLTFState_> state,
 			PoolVector2Array p_attribs,
 			const bool p_for_vertex);
 
@@ -342,49 +342,49 @@ private:
 		}
 	}
 
-	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState_> state,
 			const Vector<Vector3> &p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_vec3(Ref<GLTFState_> state,
 			PoolVector3Array p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_color(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_color(Ref<GLTFState_> state,
 			PoolColorArray p_attribs,
 			const bool p_for_vertex);
 
 	void _calc_accessor_min_max(int p_i, const int p_element_count, Vector<double> &p_type_max, const Vector<double> &p_attribs, Vector<double> &p_type_min);
 
-	GLTFAccessorIndex _encode_accessor_as_ints(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_ints(Ref<GLTFState_> state,
 			PoolIntArray p_attribs,
 			const bool p_for_vertex);
-	GLTFAccessorIndex _encode_accessor_as_xform(Ref<GLTFState> state,
+	GLTFAccessorIndex _encode_accessor_as_xform(Ref<GLTFState_> state,
 			const Vector<Transform> &p_attribs,
 			const bool p_for_vertex);
-	Error _encode_buffer_view(Ref<GLTFState> state, const double *src,
+	Error _encode_buffer_view(Ref<GLTFState_> state, const double *src,
 			const int count, const GLTFType type,
 			const int component_type, const bool normalized,
 			const int byte_offset, const bool for_vertex,
 			GLTFBufferViewIndex &r_accessor);
-	Error _encode_accessors(Ref<GLTFState> state);
-	Error _encode_buffer_views(Ref<GLTFState> state);
-	Error _serialize_materials(Ref<GLTFState> state);
-	Error _serialize_meshes(Ref<GLTFState> state);
-	Error _serialize_nodes(Ref<GLTFState> state);
-	Error _serialize_scenes(Ref<GLTFState> state);
-	String interpolation_to_string(const GLTFAnimation::Interpolation p_interp);
-	void _convert_animation_track(Ref<GLTFState> state,
-			GLTFAnimation::Track &p_track,
+	Error _encode_accessors(Ref<GLTFState_> state);
+	Error _encode_buffer_views(Ref<GLTFState_> state);
+	Error _serialize_materials(Ref<GLTFState_> state);
+	Error _serialize_meshes(Ref<GLTFState_> state);
+	Error _serialize_nodes(Ref<GLTFState_> state);
+	Error _serialize_scenes(Ref<GLTFState_> state);
+	String interpolation_to_string(const GLTFAnimation_::Interpolation p_interp);
+	void _convert_animation_track(Ref<GLTFState_> state,
+			GLTFAnimation_::Track &p_track,
 			Ref<Animation> p_animation, Transform p_bone_rest,
 			int32_t p_track_i,
 			GLTFNodeIndex p_node_i);
-	Error _encode_buffer_bins(Ref<GLTFState> state, const String &p_path);
-	Error _encode_buffer_glb(Ref<GLTFState> state, const String &p_path);
-	Error _serialize_bone_attachment(Ref<GLTFState> state);
+	Error _encode_buffer_bins(Ref<GLTFState_> state, const String &p_path);
+	Error _encode_buffer_glb(Ref<GLTFState_> state, const String &p_path);
+	Error _serialize_bone_attachment(Ref<GLTFState_> state);
 	Dictionary _serialize_texture_transform_uv1(Ref<SpatialMaterial> p_material);
 	Dictionary _serialize_texture_transform_uv2(Ref<SpatialMaterial> p_material);
-	Error _serialize_version(Ref<GLTFState> state);
-	Error _serialize_file(Ref<GLTFState> state, const String p_path);
-	Error _serialize_extensions(Ref<GLTFState> state) const;
+	Error _serialize_version(Ref<GLTFState_> state);
+	Error _serialize_file(Ref<GLTFState_> state, const String p_path);
+	Error _serialize_extensions(Ref<GLTFState_> state) const;
 
 public:
 	// http://www.itu.int/rec/R-REC-BT.601
@@ -420,75 +420,75 @@ public:
 	void _init();
 
 public:
-	void _process_mesh_instances(Ref<GLTFState> state, Node *scene_root);
-	void _generate_scene_node(Ref<GLTFState> state, Node *scene_parent,
+	void _process_mesh_instances(Ref<GLTFState_> state, Node *scene_root);
+	void _generate_scene_node(Ref<GLTFState_> state, Node *scene_parent,
 			Spatial *scene_root,
 			const GLTFNodeIndex node_index);
-	void _generate_skeleton_bone_node(Ref<GLTFState> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index);
-	void _import_animation(Ref<GLTFState> state, AnimationPlayer *ap,
+	void _generate_skeleton_bone_node(Ref<GLTFState_> state, Node *scene_parent, Spatial *scene_root, const GLTFNodeIndex node_index);
+	void _import_animation(Ref<GLTFState_> state, AnimationPlayer *ap,
 			const GLTFAnimationIndex index, const int bake_fps);
-	GLTFMeshIndex _convert_mesh_instance(Ref<GLTFState> state,
+	GLTFMeshIndex _convert_mesh_instance(Ref<GLTFState_> state,
 			MeshInstance *p_mesh_instance);
-	void _convert_mesh_instances(Ref<GLTFState> state);
-	GLTFCameraIndex _convert_camera(Ref<GLTFState> state, Camera *p_camera);
-	void _convert_light_to_gltf(Light *light, Ref<GLTFState> state, Spatial *spatial, Ref<GLTFNode> gltf_node);
-	GLTFLightIndex _convert_light(Ref<GLTFState> state, Light *p_light);
-	GLTFSkeletonIndex _convert_skeleton(Ref<GLTFState> state, Skeleton *p_skeleton);
-	void _convert_spatial(Ref<GLTFState> state, Spatial *p_spatial, Ref<GLTFNode> p_node);
-	void _convert_scene_node(Ref<GLTFState> state, Node *p_current, Node *p_root,
+	void _convert_mesh_instances(Ref<GLTFState_> state);
+	GLTFCameraIndex _convert_camera(Ref<GLTFState_> state, Camera *p_camera);
+	void _convert_light_to_gltf(Light *light, Ref<GLTFState_> state, Spatial *spatial, Ref<GLTFNode_> gltf_node);
+	GLTFLightIndex _convert_light(Ref<GLTFState_> state, Light *p_light);
+	GLTFSkeletonIndex _convert_skeleton(Ref<GLTFState_> state, Skeleton *p_skeleton);
+	void _convert_spatial(Ref<GLTFState_> state, Spatial *p_spatial, Ref<GLTFNode_> p_node);
+	void _convert_scene_node(Ref<GLTFState_> state, Node *p_current, Node *p_root,
 			const GLTFNodeIndex p_gltf_current,
 			const GLTFNodeIndex p_gltf_root);
 
 #ifdef MODULE_CSG_ENABLED
-	void _convert_csg_shape_to_gltf(Node *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode> gltf_node, Ref<GLTFState> state);
+	void _convert_csg_shape_to_gltf(Node *p_current, GLTFNodeIndex p_gltf_parent, Ref<GLTFNode_> gltf_node, Ref<GLTFState_> state);
 #endif // MODULE_CSG_ENABLED
 
-	void _create_gltf_node(Ref<GLTFState> state,
+	void _create_gltf_node(Ref<GLTFState_> state,
 			Node *p_scene_parent,
 			GLTFNodeIndex current_node_i,
 			GLTFNodeIndex p_parent_node_index,
 			GLTFNodeIndex p_root_gltf_node,
-			Ref<GLTFNode> gltf_node);
+			Ref<GLTFNode_> gltf_node);
 	void _convert_animation_player_to_gltf(
-			AnimationPlayer *animation_player, Ref<GLTFState> state,
+			AnimationPlayer *animation_player, Ref<GLTFState_> state,
 			const GLTFNodeIndex &p_gltf_current,
 			const GLTFNodeIndex &p_gltf_root_index,
-			Ref<GLTFNode> p_gltf_node, Node *p_scene_parent,
+			Ref<GLTFNode_> p_gltf_node, Node *p_scene_parent,
 			Node *p_root);
 	void _check_visibility(Node *p_node, bool &retflag);
-	void _convert_camera_to_gltf(Camera *camera, Ref<GLTFState> state,
+	void _convert_camera_to_gltf(Camera *camera, Ref<GLTFState_> state,
 			Spatial *spatial,
-			Ref<GLTFNode> gltf_node);
+			Ref<GLTFNode_> gltf_node);
 #ifdef MODULE_GRIDMAP_ENABLED
 	void _convert_grid_map_to_gltf(
 			Node *p_scene_parent,
 			const GLTFNodeIndex &p_parent_node_index,
 			const GLTFNodeIndex &p_root_node_index,
-			Ref<GLTFNode> gltf_node, Ref<GLTFState> state,
+			Ref<GLTFNode_> gltf_node, Ref<GLTFState_> state,
 			Node *p_root_node);
 #endif // MODULE_GRIDMAP_ENABLED
 	void _convert_mult_mesh_instance_to_gltf(
 			Node *p_scene_parent,
 			const GLTFNodeIndex &p_parent_node_index,
 			const GLTFNodeIndex &p_root_node_index,
-			Ref<GLTFNode> gltf_node, Ref<GLTFState> state,
+			Ref<GLTFNode_> gltf_node, Ref<GLTFState_> state,
 			Node *p_root_node);
 	void _convert_skeleton_to_gltf(
-			Node *p_scene_parent, Ref<GLTFState> state,
+			Node *p_scene_parent, Ref<GLTFState_> state,
 			const GLTFNodeIndex &p_parent_node_index,
 			const GLTFNodeIndex &p_root_node_index,
-			Ref<GLTFNode> gltf_node, Node *p_root_node);
+			Ref<GLTFNode_> gltf_node, Node *p_root_node);
 	void _convert_bone_attachment_to_gltf(Node *p_scene_parent,
-			Ref<GLTFState> state,
-			Ref<GLTFNode> gltf_node,
+			Ref<GLTFState_> state,
+			Ref<GLTFNode_> gltf_node,
 			bool &retflag);
 	void _convert_mesh_to_gltf(Node *p_scene_parent,
-			Ref<GLTFState> state, Spatial *spatial,
-			Ref<GLTFNode> gltf_node);
-	void _convert_animation(Ref<GLTFState> state, AnimationPlayer *ap,
+			Ref<GLTFState_> state, Spatial *spatial,
+			Ref<GLTFNode_> gltf_node);
+	void _convert_animation(Ref<GLTFState_> state, AnimationPlayer *ap,
 			String p_animation_track_name);
-	Error serialize(Ref<GLTFState> state, Node *p_root, const String &p_path);
-	Error parse(Ref<GLTFState> state, String p_paths, const PoolByteArray bytes, bool p_read_binary = false);
+	Error serialize(Ref<GLTFState_> state, Node *p_root, const String &p_path);
+	Error parse(Ref<GLTFState_> state, String p_paths, const PoolByteArray bytes, bool p_read_binary = false);
 };
 
 #endif // GLTF_DOCUMENT_H

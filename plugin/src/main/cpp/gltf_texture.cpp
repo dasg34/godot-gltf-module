@@ -30,16 +30,16 @@
 
 #include "gltf_texture.h"
 
-void GLTFTexture::_register_methods() {
-	register_method("_init", &GLTFTexture::_init);
+void GLTFTexture_::_register_methods() {
+	register_method("_init", &GLTFTexture_::_init);
 
-	register_property<GLTFTexture, int>("src_image", &GLTFTexture::set_src_image, &GLTFTexture::get_src_image, 0); // int
+	register_property<GLTFTexture_, int>("src_image", &GLTFTexture_::set_src_image, &GLTFTexture_::get_src_image, 0); // int
 }
 
-GLTFImageIndex GLTFTexture::get_src_image() const {
+GLTFImageIndex GLTFTexture_::get_src_image() const {
 	return src_image;
 }
 
-void GLTFTexture::set_src_image(GLTFImageIndex val) {
+void GLTFTexture_::set_src_image(GLTFImageIndex val) {
 	src_image = val;
 }

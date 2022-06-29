@@ -36,9 +36,9 @@
 #include "gltf_document.h"
 using namespace godot;
 
-class GLTFBufferView : public Resource {
-	GODOT_CLASS(GLTFBufferView, Resource);
-	friend class GLTFDocument;
+class GLTFBufferView_ : public Resource {
+	GODOT_CLASS(GLTFBufferView_, Resource);
+	friend class GLTFDocument_;
 
 private:
 	GLTFBufferIndex buffer = -1;
