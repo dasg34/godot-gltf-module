@@ -37,7 +37,7 @@ class WebRequest : public SceneTree {
 	GODOT_CLASS(WebRequest, SceneTree);
 
 private:
-	Map<String, Ref<HTTPClient>> client_cache;
+	Ref<HTTPClient> client;
 
 	static WebRequest *_singleton;
 
@@ -46,7 +46,6 @@ public:
 	void _init() {}
 
 	const PoolByteArray load_bytes(String url);
-	void close(String url);
 
 	static inline WebRequest *get_singleton()
 	{

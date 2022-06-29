@@ -120,8 +120,6 @@ Node *PackedSceneGLTF_::import_scene(const String &p_path, const PoolByteArray b
 		}
 	}
 
-	WebRequest::get_singleton()->close(p_path);
-
 	return root;
 }
 

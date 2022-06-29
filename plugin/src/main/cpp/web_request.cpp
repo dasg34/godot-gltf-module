@@ -136,14 +136,8 @@ const PoolByteArray WebRequest::load_bytes(String url)
 {
 	PoolByteArray ret;
 	Ref<HTTPClient> client;
-	if (client_cache.has(url.get_base_dir()))
-	{
-		client = client_cache[url.get_base_dir()];
-	}
-	else
-	{
-		client.instance();
-	}
+
+	client.instance();
 	String host;
 	String path;
 	String scheme;
@@ -157,7 +151,6 @@ const PoolByteArray WebRequest::load_bytes(String url)
 	while (client->get_status() == HTTPClient::STATUS_CONNECTING || client->get_status() == HTTPClient::STATUS_RESOLVING)
 	{
 		client->poll();
-		OS::get_singleton()->delay_msec(10);
 	}
 	ERR_FAIL_COND_V_MSG(client->get_status() != HTTPClient::STATUS_CONNECTED, ret, "Failed to connect to host: " + url);
 
@@ -169,7 +162,6 @@ const PoolByteArray WebRequest::load_bytes(String url)
 	while (client->get_status() == HTTPClient::STATUS_REQUESTING)
 	{
 		client->poll();
-		OS::get_singleton()->delay_msec(10);
 	}
 
 	ERR_FAIL_COND_V_MSG(client->get_status() != HTTPClient::STATUS_BODY && client->get_status() != HTTPClient::STATUS_CONNECTED,
@@ -181,25 +173,13 @@ const PoolByteArray WebRequest::load_bytes(String url)
 		{
 			client->poll();
 			PoolByteArray chunk = client->read_response_body_chunk();
-			if (chunk.size() == 0)
-			{
-				OS::get_singleton()->delay_msec(10);
-			}
-			else
+			if (chunk.size() != 0)
 			{
 				ret.append_array(chunk);
 			}
 		}
 	}
+	client->close();
 
 	return ret;
-}
-
-void WebRequest::close(String url)
-{
-	if (client_cache.has(url.get_base_dir()))
-	{
-		Ref<HTTPClient> client = client_cache[url.get_base_dir()];
-		client->close();
-	}
 }
